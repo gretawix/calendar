@@ -4,9 +4,11 @@
     --grey-dark: #3c4043;
     --grey-medium: #70757a;
     --grey-light: #dadce0;
+    --grey-super-light: #f1f3f4;
     --blue: #1967d2;
     --blue-medium: #e1f3fc;
     --blue-light: #f1f3f4;
+    --info-col-width: 49px;
 }
 
 *,
@@ -20,4 +22,67 @@
     font-weight: 400;
     font-style: normal;
     color: var(--grey-dark);
+}
+body {
+    width: 100%;
+    height: 100vh;
+}
+
+.calendar,
+.week-view {
+    width: 100%;
+    height: 100%;
+}
+
+.time-zone,
+.hour {
+    font-size: 10px;
+    line-height: 1;
+    color: var(--grey-medium);
+    text-align: right;
+}
+
+.time-zone-cell {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    .time-zone {
+        padding: 2px;
+        width: 100%;
+    }
+}
+.day-name {
+    font-size: 11px;
+    line-height: 1;
+    color: var(--grey-medium);
+    padding-bottom: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.day-number {
+    width: 46px;
+    height: 46px;
+    line-height: 1;
+    border-radius: 50%;
+    background-color: transparent;
+    font-weight: 400;
+    color: var(--grey-dark);
+    font-size: 24px;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--grey-super-light);
+    }
+}
+
+.week-view {
+    .week-days-part {
+        display: grid;
+        grid-template-columns: var(--info-col-width) 1fr;
+    }
 }
