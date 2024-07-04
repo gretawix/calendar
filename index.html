@@ -225,31 +225,28 @@
                             <button type="button">Appointment schedule</button>
                         </div>
                         <div class="event-settings-selection">
-                            <div class="time-date has-icon">
+                            <div
+                                class="time-date has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         schedule
                                     </i>
                                 </div>
-                                <div
-                                    class="selection-content time-date-selection"
-                                >
+                                <div class="selection-content">
                                     <div class="to-select">
-                                        <div class="selection-actions">
-                                            <p class="date-selection clickable">
+                                        <p>
+                                            <span class="clickable">
                                                 Thursday, July 4
-                                            </p>
-                                            <p class="time-selection">
-                                                <span
-                                                    class="time-start clickable"
-                                                    >9:00am</span
-                                                >
-                                                –
-                                                <span class="time-end clickable"
-                                                    >9:30am</span
-                                                >
-                                            </p>
-                                        </div>
+                                            </span>
+                                            <span class="clickable"
+                                                >9:00am</span
+                                            >
+                                            –
+                                            <span class="clickable"
+                                                >9:30am</span
+                                            >
+                                        </p>
                                         <ul class="action-description">
                                             <li>Time zone</li>
                                             <li>Does not repeat</li>
@@ -270,7 +267,7 @@
                                                     type="text"
                                                     id="time-start"
                                                     class="standard-input time-input"
-                                                    value="09:00am"
+                                                    value="9:00am"
                                                 />
                                             </label>
                                             <p>–</p>
@@ -279,19 +276,23 @@
                                                     type="text"
                                                     id="time-end"
                                                     class="standard-input time-input"
-                                                    value="09:30am"
+                                                    value="9:30am"
                                                 />
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="find-time no-icon">
+                            <div
+                                class="find-time no-icon modal-event-side-margins"
+                            >
                                 <button type="button" class="blue">
                                     Find a time
                                 </button>
                             </div>
-                            <div class="guests has-icon">
+                            <div
+                                class="guests has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         group
@@ -311,7 +312,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="google-meet has-icon">
+                            <div
+                                class="google-meet has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <img
                                         alt="google meeting icon"
@@ -323,7 +326,9 @@
                                     Add Google Meet video conferencing
                                 </button>
                             </div>
-                            <div class="location has-icon">
+                            <div
+                                class="location has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         location_on
@@ -340,10 +345,12 @@
                                             >
                                         </p>
                                     </div>
-                                    <div class="settings"></div>
+                                    <div class="settings">settings</div>
                                 </div>
                             </div>
-                            <div class="description has-icon">
+                            <div
+                                class="description has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         subject
@@ -362,10 +369,12 @@
                                             >
                                         </p>
                                     </div>
-                                    <div class="settings"></div>
+                                    <div class="settings">settings</div>
                                 </div>
                             </div>
-                            <div class="status has-icon">
+                            <div
+                                class="status has-icon modal-event-side-margins"
+                            >
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         event
@@ -383,11 +392,12 @@
                                             <li>Notify 10 minutes before</li>
                                         </ul>
                                     </div>
+                                    <div class="settings">settings</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="event-control-buttons">
+                    <div class="event-control-buttons modal-event-side-margins">
                         <button type="button">More options</button>
                         <button type="button" class="cta">Save</button>
                     </div>
