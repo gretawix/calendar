@@ -18,6 +18,13 @@ button {
     &:hover {
         background-color: var(--grey-super-light);
     }
+    &.blue {
+        color: var(--blue);
+        &:hover {
+            background-color: var(--blue-light);
+            color: var(--blue-shaded);
+        }
+    }
     &.selected {
         background-color: var(--blue-medium);
         color: var(--blue);

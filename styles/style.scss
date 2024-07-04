@@ -13,7 +13,7 @@
     --blue-shaded: #0d60cc;
     --blue-medium: #e8f0fe;
     --blue-medium-shaded: #d7e3f7;
-    --blue-light: #f1f3f4;
+    --blue-light: #f6fafe;
     --info-col-width: 49px;
     --divider-width: 9px;
     --cell-height: 49px;
@@ -42,8 +42,11 @@ body {
 }
 
 .material-symbols-outlined {
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
     color: var(--grey-medium-dark);
+    &.small {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 16;
+    }
 }
 
 ::-webkit-scrollbar {

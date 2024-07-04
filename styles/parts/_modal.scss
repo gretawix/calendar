@@ -3,7 +3,7 @@
     top: 100px;
     left: 100px;
     z-index: 1;
-    // width: 448px;
+    min-width: 448px;
     background-color: var(--white);
     box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
         0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
@@ -53,5 +53,22 @@
     }
     .event-control-buttons {
         justify-content: flex-end;
+    }
+    .event-settings {
+        .event-settings-selection {
+            padding: var(--spacing-sides) 0;
+        }
+        .no-icon {
+            padding-left: 44px;
+        }
+        .has-icon {
+            display: flex;
+            gap: 8px;
+            .modal-icon {
+                width: 44px;
+                display: flex;
+                justify-content: center;
+            }
+        }
     }
 }
