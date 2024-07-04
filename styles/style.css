@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 :root {
   --white: #fff;
@@ -205,6 +206,7 @@ img {
 .event-modal {
   --side-icon-width: 36px;
   font-size: 0.875rem;
+  line-height: 1.5;
   position: absolute;
   top: 100px;
   left: 100px;
@@ -275,8 +277,8 @@ img {
   justify-content: center;
   align-items: center;
 }
-.event-modal .event-settings .has-icon .to-selecet {
-  padding: 4px 8px;
+.event-modal .event-settings .to-select {
+  padding: 6px 8px;
   width: calc(100% - var(--side-icon-width));
   min-height: 36px;
   transition: background-color 0.5s ease;
@@ -286,9 +288,70 @@ img {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  cursor: pointer;
 }
-.event-modal .event-settings .has-icon .to-selecet:hover {
+.event-modal .event-settings .to-select:hover {
   background-color: var(--grey-super-light);
+}
+.event-modal .event-settings .to-select.open:hover {
+  background-color: transparent;
+}
+.event-modal .event-settings .action-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  line-height: 20px;
+  list-style-type: none;
+}
+.event-modal .event-settings .action-description li {
+  color: var(--grey-medium-dark);
+  white-space: nowrap;
+  position: relative;
+}
+.event-modal .event-settings .action-description li:after {
+  padding: 0 4px;
+  content: "·";
+  font-weight: bold;
+  height: 14px;
+}
+.event-modal .event-settings .action-description li:last-child:after {
+  display: none;
+}
+.event-modal .event-settings .clickable {
+  position: relative;
+  cursor: pointer;
+}
+.event-modal .event-settings .clickable:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: var(--grey-medium-dark);
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.event-modal .event-settings .clickable:hover:after {
+  opacity: 1;
+}
+.event-modal .event-settings .time-date .selection-actions,
+.event-modal .event-settings .time-date .time-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+.event-modal .event-settings .time-date .time-date-selection {
+  width: 100%;
+}
+.event-modal .event-settings .time-date .time-date-selection .selection-actions {
+  gap: 16px;
+}
+.event-modal .event-settings .time-date .time-date-selection .time-selection {
+  gap: 8px;
 }
 .event-modal .event-settings .google-meet {
   margin-top: 2px;

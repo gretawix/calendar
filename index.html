@@ -206,9 +206,10 @@
                 </div>
                 <div class="event-content">
                     <div class="event-title">
-                        <label class="text-input-label large">
+                        <label class="text-input-label large" for="title">
                             <input
                                 type="text"
+                                id="title"
                                 placeholder="Add title"
                                 class="text-input large"
                                 autofocus
@@ -224,14 +225,44 @@
                             <button type="button">Appointment schedule</button>
                         </div>
                         <div class="event-settings-selection">
-                            <div class="time-date-select has-icon">
+                            <div class="time-date has-icon">
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         schedule
                                     </i>
                                 </div>
-                                <div class="time-date-selection to-selecet">
-                                    time
+                                <div class="time-date-selection">
+                                    <div class="to-select">
+                                        <div class="selection-actions">
+                                            <p class="date-selection clickable">
+                                                Thursday, July 9
+                                            </p>
+                                            <p class="time-selection">
+                                                <span
+                                                    class="time-start clickable"
+                                                    >9:00am</span
+                                                >
+                                                –
+                                                <span class="time-end clickable"
+                                                    >9:30am</span
+                                                >
+                                            </p>
+                                        </div>
+                                        <ul class="action-description">
+                                            <li>Time zone</li>
+                                            <li>Does not repeat</li>
+                                        </ul>
+                                    </div>
+                                    <div class="time-date-selection-setting">
+                                        <label for="date">
+                                            <input
+                                                type="date"
+                                                id="date"
+                                                placeholder="Thursday, July 4"
+                                                value="Thursday, July 4"
+                                            />
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="find-time no-icon">
@@ -239,14 +270,14 @@
                                     Find a time
                                 </button>
                             </div>
-                            <div class="add-guests has-icon">
+                            <div class="guests has-icon">
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         group
                                     </i>
                                 </div>
-                                <div class="guest-selection to-selecet">
-                                    guest
+                                <div class="guest-selection to-select">
+                                    Add guests
                                 </div>
                             </div>
                             <div class="google-meet has-icon">
@@ -267,7 +298,7 @@
                                         location_on
                                     </i>
                                 </div>
-                                <div class="location-selection to-selecet">
+                                <div class="location-selection to-select">
                                     location
                                 </div>
                             </div>
@@ -277,18 +308,23 @@
                                         subject
                                     </i>
                                 </div>
-                                <div class="description-selection to-selecet">
+                                <div class="description-selection to-select">
                                     description
                                 </div>
                             </div>
-                            <div class="my-status has-icon">
+                            <div class="status has-icon">
                                 <div class="modal-icon">
                                     <i class="material-symbols-outlined small">
                                         event
                                     </i>
                                 </div>
-                                <div class="status-selection to-selecet">
+                                <div class="status-selection to-select">
                                     my status
+                                    <ul class="action-description">
+                                        <li>Busy</li>
+                                        <li>Default visibility</li>
+                                        <li>Notify 10 minutes before</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
