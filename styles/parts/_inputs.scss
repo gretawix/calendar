@@ -1,0 +1,52 @@
+input,
+select {
+    outline: none;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    border: 0;
+    display: flex;
+    transition-property: color, background-color, border;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    &.standard-input {
+        background-color: transparent;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: 6px 8px;
+        border-radius: 4px;
+        height: 36px;
+        border-bottom: 2px solid transparent;
+        &:hover {
+            background-color: var(--grey-light-2);
+        }
+        &:focus {
+            border-bottom: 2px solid var(--blue);
+            background-color: var(--grey-super-light);
+            &:hover {
+                background-color: var(--grey-super-light);
+            }
+        }
+    }
+}
+
+.text-input-label {
+    display: block;
+    .text-input {
+        position: relative;
+        transition: border 0.5s ease;
+        color: var(--grey-dark);
+    }
+    &.large {
+        height: 34px;
+        .text-input {
+            font-size: 22px;
+            line-height: 28px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--grey-light);
+            &:focus {
+                border-bottom: 2px solid var(--blue);
+            }
+        }
+    }
+}
