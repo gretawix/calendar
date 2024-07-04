@@ -75,10 +75,13 @@
                 align-items: center;
             }
         }
+        .selection-content {
+            width: calc(100% - var(--side-icon-width) - 8px);
+        }
         .to-select {
-            padding: 6px 8px;
-            width: calc(100% - var(--side-icon-width));
+            padding: 0;
             min-height: 36px;
+            width: 100%;
             transition: background-color 0.5s ease;
             background-color: transparent;
             border-radius: 4px;
@@ -90,11 +93,6 @@
             &:hover {
                 background-color: var(--grey-super-light);
             }
-            &.open {
-                &:hover {
-                    background-color: transparent;
-                }
-            }
         }
         .action-description {
             display: flex;
@@ -104,6 +102,7 @@
             font-size: 0.75rem;
             line-height: 20px;
             list-style-type: none;
+            padding: 0 8px 6px 8px;
             li {
                 color: var(--grey-medium-dark);
                 white-space: nowrap;
@@ -141,6 +140,21 @@
                 }
             }
         }
+
+        .guests,
+        .location,
+        .description {
+            .to-select {
+                p,
+                span {
+                    color: var(--grey-medium-dark);
+                }
+                p {
+                    padding: 0 8px;
+                }
+            }
+        }
+
         .time-date {
             .selection-actions,
             .time-selection {
@@ -149,16 +163,38 @@
                 justify-content: center;
                 align-items: flex-start;
             }
-            .time-date-selection {
-                width: 100%;
-                .selection-actions {
-                    gap: 16px;
+            .selection-actions {
+                padding-top: 6px;
+            }
+            .to-select {
+                .clickable {
+                    margin: 0 8px;
                 }
-                .time-selection {
-                    gap: 8px;
+            }
+            .settings {
+                .time-date-inputs-wrapper {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    .date-input {
+                        width: 120px;
+                    }
+                    .time-input {
+                        width: 74px;
+                    }
                 }
             }
         }
+
+        .guests {
+            .settings {
+                input {
+                    width: 100%;
+                }
+            }
+        }
+
         .google-meet {
             margin-top: 2px;
             .google-meet-selection {
@@ -168,5 +204,32 @@
                 width: 20px;
             }
         }
+
+        .status {
+            .to-select {
+                .name-wrapper {
+                    padding-top: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    p {
+                        padding: 0 8px;
+                    }
+                }
+            }
+        }
     }
+}
+
+.bubble {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    &.blue {
+        background-color: var(--blue-medium-dark);
+    }
+}
+
+.settings {
+    display: none;
 }

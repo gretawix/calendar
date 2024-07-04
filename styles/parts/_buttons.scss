@@ -6,8 +6,8 @@ button {
     cursor: pointer;
     text-align: center;
     transition-property: color, background-color, transform;
-    transition-duration: 0.2s;
-    transition-timing-function: linear;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
     padding: 0 8px;
     font-size: 0.875rem;
     line-height: 36px;

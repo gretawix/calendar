@@ -231,11 +231,13 @@
                                         schedule
                                     </i>
                                 </div>
-                                <div class="time-date-selection">
+                                <div
+                                    class="selection-content time-date-selection"
+                                >
                                     <div class="to-select">
                                         <div class="selection-actions">
                                             <p class="date-selection clickable">
-                                                Thursday, July 9
+                                                Thursday, July 4
                                             </p>
                                             <p class="time-selection">
                                                 <span
@@ -253,15 +255,34 @@
                                             <li>Does not repeat</li>
                                         </ul>
                                     </div>
-                                    <div class="time-date-selection-setting">
-                                        <label for="date">
-                                            <input
-                                                type="date"
-                                                id="date"
-                                                placeholder="Thursday, July 4"
-                                                value="Thursday, July 4"
-                                            />
-                                        </label>
+                                    <div class="settings">
+                                        <div class="time-date-inputs-wrapper">
+                                            <label for="date">
+                                                <input
+                                                    type="text"
+                                                    id="date"
+                                                    class="standard-input date-input"
+                                                    value="Thursday, July 4"
+                                                />
+                                            </label>
+                                            <label for="time-start">
+                                                <input
+                                                    type="text"
+                                                    id="time-start"
+                                                    class="standard-input time-input"
+                                                    value="09:00am"
+                                                />
+                                            </label>
+                                            <p>–</p>
+                                            <label for="time-end">
+                                                <input
+                                                    type="text"
+                                                    id="time-end"
+                                                    class="standard-input time-input"
+                                                    value="09:30am"
+                                                />
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -276,8 +297,18 @@
                                         group
                                     </i>
                                 </div>
-                                <div class="guest-selection to-select">
-                                    Add guests
+                                <div class="selection-content">
+                                    <div class="to-select">
+                                        <p>Add guests</p>
+                                    </div>
+                                    <div class="settings">
+                                        <input
+                                            type="text"
+                                            id="date"
+                                            class="standard-input date-input"
+                                            placeholder="Add guests"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div class="google-meet has-icon">
@@ -298,8 +329,18 @@
                                         location_on
                                     </i>
                                 </div>
-                                <div class="location-selection to-select">
-                                    location
+                                <div class="selection-content">
+                                    <div class="to-select">
+                                        <p>
+                                            Add
+                                            <span class="clickable">rooms</span>
+                                            or
+                                            <span class="clickable"
+                                                >location</span
+                                            >
+                                        </p>
+                                    </div>
+                                    <div class="settings"></div>
                                 </div>
                             </div>
                             <div class="description has-icon">
@@ -308,8 +349,20 @@
                                         subject
                                     </i>
                                 </div>
-                                <div class="description-selection to-select">
-                                    description
+                                <div class="selection-content">
+                                    <div class="to-select">
+                                        <p>
+                                            Add
+                                            <span class="clickable"
+                                                >description</span
+                                            >
+                                            or
+                                            <span class="clickable"
+                                                >attachments</span
+                                            >
+                                        </p>
+                                    </div>
+                                    <div class="settings"></div>
                                 </div>
                             </div>
                             <div class="status has-icon">
@@ -318,13 +371,18 @@
                                         event
                                     </i>
                                 </div>
-                                <div class="status-selection to-select">
-                                    my status
-                                    <ul class="action-description">
-                                        <li>Busy</li>
-                                        <li>Default visibility</li>
-                                        <li>Notify 10 minutes before</li>
-                                    </ul>
+                                <div class="selection-content">
+                                    <div class="to-select">
+                                        <div class="name-wrapper">
+                                            <p>Name Surname</p>
+                                            <div class="bubble blue"></div>
+                                        </div>
+                                        <ul class="action-description">
+                                            <li>Busy</li>
+                                            <li>Default visibility</li>
+                                            <li>Notify 10 minutes before</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

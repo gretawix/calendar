@@ -6,9 +6,11 @@
   --grey-medium-dark: #70757a;
   --grey-medium: #b6b9bc;
   --grey-light: #dadce0;
+  --grey-light-2: #e4e5e6;
   --grey-super-light: #f1f3f4;
   --blue: #1a73e8;
   --blue-shaded: #0d60cc;
+  --blue-medium-dark: #039be5;
   --blue-medium: #e8f0fe;
   --blue-medium-shaded: #d7e3f7;
   --blue-light: #f6fafe;
@@ -277,10 +279,13 @@ img {
   justify-content: center;
   align-items: center;
 }
+.event-modal .event-settings .selection-content {
+  width: calc(100% - var(--side-icon-width) - 8px);
+}
 .event-modal .event-settings .to-select {
-  padding: 6px 8px;
-  width: calc(100% - var(--side-icon-width));
+  padding: 0;
   min-height: 36px;
+  width: 100%;
   transition: background-color 0.5s ease;
   background-color: transparent;
   border-radius: 4px;
@@ -293,9 +298,6 @@ img {
 .event-modal .event-settings .to-select:hover {
   background-color: var(--grey-super-light);
 }
-.event-modal .event-settings .to-select.open:hover {
-  background-color: transparent;
-}
 .event-modal .event-settings .action-description {
   display: flex;
   flex-direction: row;
@@ -304,6 +306,7 @@ img {
   font-size: 0.75rem;
   line-height: 20px;
   list-style-type: none;
+  padding: 0 8px 6px 8px;
 }
 .event-modal .event-settings .action-description li {
   color: var(--grey-medium-dark);
@@ -337,6 +340,19 @@ img {
 .event-modal .event-settings .clickable:hover:after {
   opacity: 1;
 }
+.event-modal .event-settings .guests .to-select p,
+.event-modal .event-settings .guests .to-select span,
+.event-modal .event-settings .location .to-select p,
+.event-modal .event-settings .location .to-select span,
+.event-modal .event-settings .description .to-select p,
+.event-modal .event-settings .description .to-select span {
+  color: var(--grey-medium-dark);
+}
+.event-modal .event-settings .guests .to-select p,
+.event-modal .event-settings .location .to-select p,
+.event-modal .event-settings .description .to-select p {
+  padding: 0 8px;
+}
 .event-modal .event-settings .time-date .selection-actions,
 .event-modal .event-settings .time-date .time-selection {
   display: flex;
@@ -344,14 +360,26 @@ img {
   justify-content: center;
   align-items: flex-start;
 }
-.event-modal .event-settings .time-date .time-date-selection {
+.event-modal .event-settings .time-date .selection-actions {
+  padding-top: 6px;
+}
+.event-modal .event-settings .time-date .to-select .clickable {
+  margin: 0 8px;
+}
+.event-modal .event-settings .time-date .settings .time-date-inputs-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.event-modal .event-settings .time-date .settings .time-date-inputs-wrapper .date-input {
+  width: 120px;
+}
+.event-modal .event-settings .time-date .settings .time-date-inputs-wrapper .time-input {
+  width: 74px;
+}
+.event-modal .event-settings .guests .settings input {
   width: 100%;
-}
-.event-modal .event-settings .time-date .time-date-selection .selection-actions {
-  gap: 16px;
-}
-.event-modal .event-settings .time-date .time-date-selection .time-selection {
-  gap: 8px;
 }
 .event-modal .event-settings .google-meet {
   margin-top: 2px;
@@ -362,6 +390,28 @@ img {
 .event-modal .event-settings .google-meet .custom-icon {
   width: 20px;
 }
+.event-modal .event-settings .status .to-select .name-wrapper {
+  padding-top: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.event-modal .event-settings .status .to-select .name-wrapper p {
+  padding: 0 8px;
+}
+
+.bubble {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.bubble.blue {
+  background-color: var(--blue-medium-dark);
+}
+
+.settings {
+  display: none;
+}
 
 button {
   outline: none;
@@ -371,8 +421,8 @@ button {
   cursor: pointer;
   text-align: center;
   transition-property: color, background-color, transform;
-  transition-duration: 0.2s;
-  transition-timing-function: linear;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
   padding: 0 8px;
   font-size: 0.875rem;
   line-height: 36px;
@@ -410,13 +460,40 @@ button.cta:hover {
   transform: scale(1.01);
 }
 
-input {
+input,
+select {
   outline: none;
   position: relative;
   background-color: transparent;
   border: none;
   border: 0;
   display: flex;
+  transition-property: color, background-color, border;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+input.standard-input,
+select.standard-input {
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 6px 8px;
+  border-radius: 4px;
+  height: 36px;
+  border-bottom: 2px solid transparent;
+}
+input.standard-input:hover,
+select.standard-input:hover {
+  background-color: var(--grey-light-2);
+}
+input.standard-input:focus,
+select.standard-input:focus {
+  border-bottom: 2px solid var(--blue);
+  background-color: var(--grey-super-light);
+}
+input.standard-input:focus:hover,
+select.standard-input:focus:hover {
+  background-color: var(--grey-super-light);
 }
 
 .text-input-label {
