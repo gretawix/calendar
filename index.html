@@ -3,6 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+        />
         <link rel="stylesheet" href="./styles/style.css" />
         <title>Google calendar</title>
     </head>
@@ -193,10 +197,30 @@
             </div>
             <div class="event-modal">
                 <div class="top-controls">
-                    <button type="button">=</button>
-                    <button type="button">X</button>
+                    <button type="button">
+                        <i class="material-symbols-outlined"> drag_handle </i>
+                    </button>
+                    <button type="button">
+                        <i class="material-symbols-outlined"> close </i>
+                    </button>
                 </div>
-                <div class="event-content"></div>
+                <div class="event-content">
+                    <div class="event-title">
+                        <label class="text-input-label large">
+                            <input
+                                type="text"
+                                placeholder="Add title"
+                                class="text-input large"
+                                autofocus
+                            />
+                        </label>
+                    </div>
+                    <div class="event-settings">
+                        <div class="event-type-buttons">
+                            <button type="button">Event</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </body>

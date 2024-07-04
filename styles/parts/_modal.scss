@@ -18,20 +18,31 @@
         align-items: center;
         justify-content: space-between;
         button {
-            outline: none;
-            border: none;
-            cursor: pointer;
-            height: 28px;
-            width: 28px;
+            padding: 2px;
             border-radius: 50%;
-            transition: background-color 0.5s ease;
             background-color: transparent;
             &:hover {
                 background-color: var(--grey-light);
+            }
+            i {
+                font-weight: 300;
             }
         }
     }
     .event-content {
         padding: var(--spacing-sides);
+
+        .event-title,
+        .event-type-buttons {
+            padding-left: 52px;
+        }
+        .event-title {
+            padding-bottom: 18px;
+            width: 100%;
+            position: relative;
+            input {
+                width: 100%;
+            }
+        }
     }
 }

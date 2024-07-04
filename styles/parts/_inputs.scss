@@ -1,0 +1,29 @@
+input {
+    outline: none;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    border: 0;
+    display: flex;
+}
+
+.text-input-label {
+    display: block;
+    .text-input {
+        position: relative;
+        transition: border 0.5s ease;
+        color: var(--grey-dark);
+    }
+    &.large {
+        height: 34px;
+        .text-input {
+            font-size: 22px;
+            line-height: 28px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--grey-light);
+            &:focus {
+                border-bottom: 2px solid var(--blue);
+            }
+        }
+    }
+}
