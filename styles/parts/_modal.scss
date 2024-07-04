@@ -3,12 +3,12 @@
     top: 100px;
     left: 100px;
     z-index: 1;
-    width: 448px;
+    // width: 448px;
     background-color: var(--white);
     box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
         0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    height: 500px;
+    // height: 500px;
     overflow: hidden;
     .top-controls {
         background-color: var(--blue-light);
@@ -30,7 +30,8 @@
         }
     }
     .event-content {
-        padding: var(--spacing-sides);
+        padding: var(--spacing-sides) var(--spacing-sides)
+            calc(var(--spacing-sides) / 2) var(--spacing-sides);
 
         .event-title,
         .event-type-buttons {
@@ -44,5 +45,13 @@
                 width: 100%;
             }
         }
+        .event-type-buttons,
+        .event-control-buttons {
+            display: flex;
+            gap: 8px;
+        }
+    }
+    .event-control-buttons {
+        justify-content: flex-end;
     }
 }

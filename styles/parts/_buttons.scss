@@ -2,6 +2,37 @@ button {
     outline: none;
     border: none;
     display: flex;
+    justify-content: center;
     cursor: pointer;
-    transition: background-color 0.5s ease;
+    text-align: center;
+    transition-property: color, background-color, transform;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    padding: 0 8px;
+    font-size: 0.875rem;
+    line-height: 36px;
+    font-weight: 500;
+    color: var(--grey-medium-dark);
+    border-radius: 4px;
+    background-color: transparent;
+    &:hover {
+        background-color: var(--grey-super-light);
+    }
+    &.selected {
+        background-color: var(--blue-medium);
+        color: var(--blue);
+        &:hover {
+            background-color: var(--blue-medium-shaded);
+        }
+    }
+    &.cta {
+        background-color: var(--blue);
+        color: var(--white);
+        min-width: 80px;
+        transform: scale(1);
+        &:hover {
+            background-color: var(--blue-shaded);
+            transform: scale(1.01);
+        }
+    }
 }

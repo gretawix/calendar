@@ -6,8 +6,10 @@
   --grey-medium: #b6b9bc;
   --grey-light: #dadce0;
   --grey-super-light: #f1f3f4;
-  --blue: #1967d2;
-  --blue-medium: #e1f3fc;
+  --blue: #1a73e8;
+  --blue-shaded: #0d60cc;
+  --blue-medium: #e8f0fe;
+  --blue-medium-shaded: #d7e3f7;
   --blue-light: #f1f3f4;
   --info-col-width: 49px;
   --divider-width: 9px;
@@ -195,11 +197,9 @@ body {
   top: 100px;
   left: 100px;
   z-index: 1;
-  width: 448px;
   background-color: var(--white);
   box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  height: 500px;
   overflow: hidden;
 }
 .event-modal .top-controls {
@@ -222,7 +222,7 @@ body {
   font-weight: 300;
 }
 .event-modal .event-content {
-  padding: var(--spacing-sides);
+  padding: var(--spacing-sides) var(--spacing-sides) calc(var(--spacing-sides) / 2) var(--spacing-sides);
 }
 .event-modal .event-content .event-title,
 .event-modal .event-content .event-type-buttons {
@@ -236,13 +236,52 @@ body {
 .event-modal .event-content .event-title input {
   width: 100%;
 }
+.event-modal .event-content .event-type-buttons,
+.event-modal .event-content .event-control-buttons {
+  display: flex;
+  gap: 8px;
+}
+.event-modal .event-control-buttons {
+  justify-content: flex-end;
+}
 
 button {
   outline: none;
   border: none;
   display: flex;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.5s ease;
+  text-align: center;
+  transition-property: color, background-color, transform;
+  transition-duration: 0.2s;
+  transition-timing-function: linear;
+  padding: 0 8px;
+  font-size: 0.875rem;
+  line-height: 36px;
+  font-weight: 500;
+  color: var(--grey-medium-dark);
+  border-radius: 4px;
+  background-color: transparent;
+}
+button:hover {
+  background-color: var(--grey-super-light);
+}
+button.selected {
+  background-color: var(--blue-medium);
+  color: var(--blue);
+}
+button.selected:hover {
+  background-color: var(--blue-medium-shaded);
+}
+button.cta {
+  background-color: var(--blue);
+  color: var(--white);
+  min-width: 80px;
+  transform: scale(1);
+}
+button.cta:hover {
+  background-color: var(--blue-shaded);
+  transform: scale(1.01);
 }
 
 input {
