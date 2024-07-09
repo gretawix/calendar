@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 :root {
   --white: #fff;
+  --black: 000;
   --grey-dark: #3c4043;
   --grey-medium-dark: #70757a;
   --grey-medium: #b6b9bc;
@@ -388,9 +389,15 @@ img {
 }
 .event-modal .event-settings .time-date .to-select p {
   padding-top: 6px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .event-modal .event-settings .time-date .to-select .clickable {
   margin: 0 8px;
+}
+.event-modal .event-settings .time-date .to-select .clickable-wrapper {
+  display: block;
 }
 .event-modal .event-settings .time-date .settings .time-date-inputs-wrapper {
   display: flex;
@@ -403,6 +410,18 @@ img {
 }
 .event-modal .event-settings .time-date .settings .time-date-inputs-wrapper .time-input {
   width: 74px;
+}
+.event-modal .event-settings .time-date .settings button {
+  color: var(--grey-dark);
+  font-weight: 400;
+}
+.event-modal .event-settings .time-date .settings .time-date-other-settings {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.event-modal .event-settings .time-date .settings .checkbox-input {
+  margin-left: 8px;
 }
 .event-modal .event-settings .guests .settings input {
   width: 100%;
@@ -433,10 +452,6 @@ img {
 }
 .bubble.blue {
   background-color: var(--blue-medium-dark);
-}
-
-.settings {
-  display: none;
 }
 
 button {
@@ -541,4 +556,66 @@ select.standard-input:focus:hover {
 }
 .text-input-label.large .text-input:focus {
   border-bottom: 2px solid var(--blue);
+}
+
+.checkbox-input {
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 0 8px 0 28px;
+  height: 36px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.checkbox-input .checkmark {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: var(--white);
+  border: 2px solid var(--grey-medium-dark);
+  border-radius: 2px;
+  transition: all 0.5s ease;
+}
+.checkbox-input .checkmark:after {
+  display: none;
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: -1px;
+  width: 8px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.checkbox-input input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkbox-input input:checked ~ .checkmark {
+  background-color: var(--blue);
+  border-color: var(--blue);
+}
+.checkbox-input input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-input:hover input ~ .checkmark {
+  border-color: var(--black);
+  background-color: var(--grey-super-light);
+}
+.checkbox-input:hover input:checked ~ .checkmark {
+  border-color: var(--blue-shaded);
+  background-color: var(--blue-shaded);
+}
+
+.select-input button.dropdown {
+  color: var(--grey-dark);
+  font-weight: 400;
 }/*# sourceMappingURL=style.css.map */

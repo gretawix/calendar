@@ -163,9 +163,15 @@
             .to-select {
                 p {
                     padding-top: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
                 }
                 .clickable {
                     margin: 0 8px;
+                }
+                .clickable-wrapper {
+                    display: block;
                 }
             }
             .settings {
@@ -180,6 +186,18 @@
                     .time-input {
                         width: 74px;
                     }
+                }
+                button {
+                    color: var(--grey-dark);
+                    font-weight: 400;
+                }
+                .time-date-other-settings {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-start;
+                }
+                .checkbox-input {
+                    margin-left: 8px;
                 }
             }
         }
@@ -227,9 +245,9 @@
     }
 }
 
-.settings {
-    display: none;
-}
+// .settings {
+//     display: none;
+// }
 // .to-select {
 //     display: none !important;
 // }

@@ -238,16 +238,30 @@
                                 <div class="selection-content">
                                     <div class="to-select">
                                         <p>
-                                            <span class="clickable">
-                                                Thursday, July 4
+                                            <span
+                                                id="date-btn"
+                                                class="clickable-wrapper"
+                                                ><span class="clickable">
+                                                    Thursday, July 4
+                                                </span>
                                             </span>
-                                            <span class="clickable"
-                                                >9:00am</span
+                                            <span
+                                                id="time-start-btn"
+                                                class="clickable-wrapper"
                                             >
+                                                <span class="clickable"
+                                                    >9:00am</span
+                                                >
+                                            </span>
                                             –
-                                            <span class="clickable"
-                                                >9:30am</span
+                                            <span
+                                                id="time-end-btn"
+                                                class="clickable-wrapper"
                                             >
+                                                <span class="clickable"
+                                                    >9:30am</span
+                                                >
+                                            </span>
                                         </p>
                                         <ul class="action-description">
                                             <li>Time zone</li>
@@ -255,37 +269,96 @@
                                         </ul>
                                     </div>
                                     <div class="settings">
-                                        <div class="time-date-inputs-wrapper">
-                                            <label for="date">
-                                                <input
-                                                    type="text"
-                                                    id="date"
-                                                    class="standard-input date-input"
-                                                    value="Thursday, July 4"
-                                                />
-                                            </label>
-                                            <label for="time-start">
-                                                <input
-                                                    type="text"
-                                                    id="time-start"
-                                                    class="standard-input time-input"
-                                                    value="9:00am"
-                                                />
-                                            </label>
-                                            <p>–</p>
-                                            <label for="time-end">
-                                                <input
-                                                    type="text"
-                                                    id="time-end"
-                                                    class="standard-input time-input"
-                                                    value="9:30am"
-                                                />
-                                            </label>
+                                        <div class="settings-inner">
+                                            <div
+                                                class="time-date-inputs-wrapper"
+                                            >
+                                                <label for="date">
+                                                    <input
+                                                        type="text"
+                                                        id="date"
+                                                        class="standard-input date-input"
+                                                        value="Thursday, July 4"
+                                                    />
+                                                </label>
+                                                <label for="time-start">
+                                                    <input
+                                                        type="text"
+                                                        id="time-start"
+                                                        class="standard-input time-input"
+                                                        value="9:00am"
+                                                    />
+                                                </label>
+                                                <p>–</p>
+                                                <label for="time-end">
+                                                    <input
+                                                        type="text"
+                                                        id="time-end"
+                                                        class="standard-input time-input"
+                                                        value="9:30am"
+                                                    />
+                                                </label>
+                                            </div>
+                                            <div
+                                                class="time-date-other-settings"
+                                            >
+                                                <label for="all-day" class="checkbox-input">All day
+                                                    <input
+                                                        type="checkbox"
+                                                        id="all-day"
+                                                    /><span class="checkmark"></span>
+                                                </label>
+                                                <button type="button" id="time-zone">
+                                                    Time zone
+                                                </button>
+                                            </div>
+                                            <div class="select-input">
+                                                <button type="button" class="dropdown">
+                                                    Does not repeat
+                                                </button>
+                                                <ul class="repeat-options"></ul>
+                                                    <li
+                                                    id="does-not-repeat"
+                                                    >
+                                                        Does not repeat
+                                                    </li>
+                                                    <li
+                                                    id="repeat-daily"
+                                                    >
+                                                        Daily
+                                                    </li>
+                                                    <li
+                                                    id="repeat-weekly"
+                                                    >
+                                                        Weekly on {{Today}}
+                                                    </li>
+                                                    <li
+                                                    id="repeat-monthly"
+                                                    >
+                                                        Monthly on {{nth}}
+                                                        {{Today}}
+                                                    </li>
+                                                    <li
+                                                        id="repeat-anually"
+                                                    >
+                                                        Anually on {{Motnh day}}
+                                                    </li>
+                                                    <li
+                                                        id="repeat-every-weekday"
+                                                    >
+                                                        Every weekday(Monday to
+                                                        Friday)
+                                                    </li>
+                                                    <li id="repeat-custom">
+                                                        Custom
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div
+                            <!-- <div
                                 class="find-time no-icon modal-event-side-margins"
                             >
                                 <button type="button" class="blue">
@@ -396,7 +469,7 @@
                                     </div>
                                     <div class="settings">settings</div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="event-control-buttons modal-event-side-margins">
