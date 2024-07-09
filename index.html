@@ -227,14 +227,16 @@
                                     <div class="to-select">
                                         <p>
                                             <span id="date-btn" class="clickable-wrapper"
-                                                ><span class="clickable"> Thursday, July 4 </span>
+                                                ><span class="clickable" data-clickable-id="date">
+                                                    Thursday, July 4
+                                                </span>
                                             </span>
                                             <span id="time-start-btn" class="clickable-wrapper">
-                                                <span class="clickable">9:00am</span>
+                                                <span class="clickable" data-clickable-id="time-start">9:00am</span>
                                             </span>
                                             –
                                             <span id="time-end-btn" class="clickable-wrapper">
-                                                <span class="clickable">9:30am</span>
+                                                <span class="clickable" data-clickable-id="time-end">9:30am</span>
                                             </span>
                                         </p>
                                         <ul class="action-description">
@@ -251,6 +253,7 @@
                                                         id="date"
                                                         class="standard-input date-input"
                                                         value="Thursday, July 4"
+                                                        data-clickable-input="date"
                                                     />
                                                 </label>
                                                 <label for="time-start">
@@ -259,6 +262,7 @@
                                                         id="time-start"
                                                         class="standard-input time-input"
                                                         value="9:00am"
+                                                        data-clickable-input="time-start"
                                                     />
                                                 </label>
                                                 <p>–</p>
@@ -268,6 +272,7 @@
                                                         id="time-end"
                                                         class="standard-input time-input"
                                                         value="9:30am"
+                                                        data-clickable-input="time-end"
                                                     />
                                                 </label>
                                             </div>
@@ -314,7 +319,7 @@
                                     <div class="settings">
                                         <input
                                             type="text"
-                                            id="date"
+                                            id="guests"
                                             class="standard-input date-input"
                                             placeholder="Add guests"
                                         />
