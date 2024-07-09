@@ -79,6 +79,15 @@
                 align-items: center;
             }
         }
+
+        .full-settings {
+            display: none;
+            flex-direction: column;
+            .has-icon {
+                width: 100%;
+                align-items: flex-start;
+            }
+        }
         .selection-content {
             width: calc(100% - var(--side-icon-width) - 8px);
         }
@@ -202,7 +211,8 @@
             }
         }
 
-        .guests {
+        .guests,
+        .location {
             .settings {
                 input {
                     width: 100%;
@@ -232,6 +242,9 @@
                     }
                 }
             }
+            .no-icon {
+                margin-left: -8px;
+            }
         }
     }
 }
@@ -243,8 +256,4 @@
     &.blue {
         background-color: var(--blue-medium-dark);
     }
-}
-
-.settings {
-    display: none;
 }

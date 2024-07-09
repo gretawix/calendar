@@ -175,4 +175,10 @@ select {
             display: block;
         }
     }
+    &.dropdown-above {
+        .select-options {
+            top: unset;
+            bottom: 100%;
+        }
+    }
 }

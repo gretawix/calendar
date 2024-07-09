@@ -313,6 +313,14 @@ img {
   justify-content: center;
   align-items: center;
 }
+.event-modal .event-settings .full-settings {
+  display: none;
+  flex-direction: column;
+}
+.event-modal .event-settings .full-settings .has-icon {
+  width: 100%;
+  align-items: flex-start;
+}
 .event-modal .event-settings .selection-content {
   width: calc(100% - var(--side-icon-width) - 8px);
 }
@@ -423,7 +431,8 @@ img {
 .event-modal .event-settings .time-date .settings .checkbox-input {
   margin-left: 8px;
 }
-.event-modal .event-settings .guests .settings input {
+.event-modal .event-settings .guests .settings input,
+.event-modal .event-settings .location .settings input {
   width: 100%;
 }
 .event-modal .event-settings .google-meet {
@@ -444,6 +453,9 @@ img {
 .event-modal .event-settings .status .to-select .name-wrapper p {
   padding: 0 8px;
 }
+.event-modal .event-settings .status .no-icon {
+  margin-left: -8px;
+}
 
 .bubble {
   width: 14px;
@@ -452,10 +464,6 @@ img {
 }
 .bubble.blue {
   background-color: var(--blue-medium-dark);
-}
-
-.settings {
-  display: none;
 }
 
 button {
@@ -678,4 +686,8 @@ select.standard-input:focus:hover {
 }
 .select-input.open .select-options {
   display: block;
+}
+.select-input.dropdown-above .select-options {
+  top: unset;
+  bottom: 100%;
 }/*# sourceMappingURL=style.css.map */
