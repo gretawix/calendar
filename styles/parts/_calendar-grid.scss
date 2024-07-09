@@ -1,3 +1,8 @@
+@mixin verticalScrollStyle {
+    max-height: calc(100vh - var(--week-days-height));
+    overflow: auto;
+}
+
 .calendar,
 .week-view {
     width: 100%;
@@ -29,6 +34,14 @@
 }
 
 .hours-labels-column {
+    @include verticalScrollStyle;
+    padding-bottom: var(--scrollbar-width);
+    &:hover {
+        overflow: hidden;
+    }
+    &::-webkit-scrollbar {
+        display: none;
+    }
     .hour-label-cell {
         position: relative;
         .hour {
@@ -43,7 +56,6 @@
         }
     }
 }
-
 .week-days-part {
     height: var(--week-days-height);
     padding-right: var(--scrollbar-width);
@@ -52,7 +64,7 @@
 .week-days-part,
 .time-grid {
     display: grid;
-    grid-template-columns: var(--info-col-width) var(--divider-width) 1fr;
+    grid-template-columns: var(--info-col-width) 1fr;
     .divider,
     .week-days {
         border-bottom: 1px solid var(--grey-light);
@@ -61,16 +73,22 @@
 
 .time-grid {
     height: calc(100% - var(--week-days-height));
-    // overflow-x: hidden;
 }
 
 .week-days,
 .hours-cells-all {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: var(--divider-width) repeat(7, 1fr);
 }
 
 .week-days {
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    &:hover {
+        overflow: hidden;
+    }
     .one-day {
         display: flex;
         flex-direction: column;
@@ -137,9 +155,8 @@
     );
 }
 .inner-hour-cell-column {
-    height: calc(24 * var(--cell-height));
+    height: calc(24 * var(--cell-height) - 10px);
 }
 .hours-cells-all {
-    max-height: calc(100vh - var(--week-days-height));
-    overflow: auto;
+    @include verticalScrollStyle;
 }

@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script type="module" src="./scrips/index.js"></script>
         <link
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,100..700,0..1,-50..200"
             rel="stylesheet"
@@ -17,8 +18,8 @@
                     <div class="time-zone-cell">
                         <p class="time-zone">GMT+03</p>
                     </div>
-                    <div class="divider"></div>
-                    <div class="week-days">
+                    <div class="week-days" id="days-row">
+                        <div class="divider-no-border"></div>
                         <div class="one-day cell-width">
                             <div class="divider-vertical"></div>
                             <p class="day-name">Mon</p>
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 <div class="time-grid">
-                    <div class="hours-labels-column">
+                    <div class="hours-labels-column" id="hours-col">
                         <div class="hour-label-cell cell-height">
                             <p class="hour">00:00</p>
                         </div>
@@ -131,32 +132,33 @@
                             <p class="hour">23:00</p>
                         </div>
                     </div>
-                    <div class="divider-column">
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                    </div>
-                    <div class="hours-cells-all">
+
+                    <div class="hours-cells-all" id="days-hours-grid">
+                        <div class="divider-column">
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                        </div>
                         <div class="hours-cells-column">
                             <div class="inner-hour-cell-column">
                                 <div class="hours-cell cell-height"></div>
@@ -195,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="event-modal">
+            <div class="event-modal">
                 <div class="top-controls">
                     <button type="button">
                         <i class="material-symbols-outlined"> drag_handle </i>
@@ -402,7 +404,7 @@
                         <button type="button" class="cta">Save</button>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </section>
     </body>
 </html>

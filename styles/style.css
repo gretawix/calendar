@@ -107,6 +107,17 @@ img {
   height: var(--cell-height);
 }
 
+.hours-labels-column {
+  max-height: calc(100vh - var(--week-days-height));
+  overflow: auto;
+  padding-bottom: var(--scrollbar-width);
+}
+.hours-labels-column:hover {
+  overflow: hidden;
+}
+.hours-labels-column::-webkit-scrollbar {
+  display: none;
+}
 .hours-labels-column .hour-label-cell {
   position: relative;
 }
@@ -127,7 +138,7 @@ img {
 .week-days-part,
 .time-grid {
   display: grid;
-  grid-template-columns: var(--info-col-width) var(--divider-width) 1fr;
+  grid-template-columns: var(--info-col-width) 1fr;
 }
 .week-days-part .divider,
 .week-days-part .week-days,
@@ -143,9 +154,18 @@ img {
 .week-days,
 .hours-cells-all {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: var(--divider-width) repeat(7, 1fr);
 }
 
+.week-days {
+  overflow: scroll;
+}
+.week-days::-webkit-scrollbar {
+  display: none;
+}
+.week-days:hover {
+  overflow: hidden;
+}
 .week-days .one-day {
   display: flex;
   flex-direction: column;
@@ -204,7 +224,7 @@ img {
 }
 
 .inner-hour-cell-column {
-  height: calc(24 * var(--cell-height));
+  height: calc(24 * var(--cell-height) - 10px);
 }
 
 .hours-cells-all {
