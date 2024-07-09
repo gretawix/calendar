@@ -1,4 +1,5 @@
 import { setSameWidth } from "./utils.js";
+import { toggleDropdown } from "./inputFuntionality.js";
 
 const modalfunctionality = () => {
     setSameWidth("#date-btn", "#date");
@@ -14,6 +15,8 @@ const modalfunctionality = () => {
             item.style.display = "none";
         });
     });
+
+    toggleDropdown();
 };
 
 export default modalfunctionality;
