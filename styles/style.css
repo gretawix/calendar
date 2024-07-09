@@ -84,6 +84,7 @@ img {
   position: relative;
   overflow: hidden;
   z-index: 0;
+  --min-col-width: 81px;
 }
 
 .time-zone-cell {
@@ -137,7 +138,6 @@ img {
 
 .time-grid {
   height: calc(100% - var(--week-days-height));
-  overflow-x: hidden;
 }
 
 .week-days,
@@ -152,6 +152,7 @@ img {
   align-items: center;
   padding: 16px 0 6px 0;
   position: relative;
+  min-width: var(--min-col-width);
 }
 .week-days .one-day .divider-vertical {
   position: absolute;
@@ -198,11 +199,17 @@ img {
 .hours-cells-column {
   border-left: 1px solid var(--grey-light);
   padding-right: 12px;
+  min-width: var(--min-col-width);
   background: repeating-linear-gradient(var(--white), var(--white) 48px, var(--grey-light) 48px, var(--grey-light) var(--cell-height));
 }
 
 .inner-hour-cell-column {
   height: calc(24 * var(--cell-height));
+}
+
+.hours-cells-all {
+  max-height: calc(100vh - var(--week-days-height));
+  overflow: auto;
 }
 
 .event-modal {
