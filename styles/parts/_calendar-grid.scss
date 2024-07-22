@@ -156,6 +156,7 @@
 }
 .inner-hour-cell-column {
     height: calc(24 * var(--cell-height) - 10px);
+    position: relative;
 }
 .hours-cells-all {
     @include verticalScrollStyle;

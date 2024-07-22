@@ -13,6 +13,7 @@
     --grey-super-light: #f1f3f4;
 
     --blue: #1a73e8;
+    --event-blue: #039be5;
     --blue-shaded: #0d60cc;
     --blue-medium-dark: #039be5;
     --blue-medium: #e8f0fe;
@@ -84,3 +85,4 @@ img {
 @import "./parts/modal";
 @import "./parts/buttons";
 @import "./parts/inputs";
+@import "./parts/event-tile";
