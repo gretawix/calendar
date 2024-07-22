@@ -1,0 +1,62 @@
+.event-tile {
+    position: absolute;
+    width: 100%;
+    left: -1px;
+
+    background-color: var(--event-blue);
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 4px 0 4px 8px;
+
+    overflow: hidden;
+    cursor: pointer;
+    p {
+        color: var(--white);
+        line-height: 1.4;
+    }
+    .event-tile-title {
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    .event-tile-time {
+        font-weight: 300;
+    }
+    &.shortest {
+        top: calc(var(--cell-height) * 10 - 1px);
+        height: calc(var(--cell-height) / 4);
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        p {
+            font-size: 11px;
+        }
+        .event-tile-title {
+            padding-right: 6px;
+        }
+    }
+    &.short {
+        top: calc(var(--cell-height) * 10 - 1px);
+        height: calc(var(--cell-height) / 2);
+        padding-top: 3px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .event-tile-title {
+            padding-right: 6px;
+        }
+    }
+    &.regular {
+        top: calc(var(--cell-height) * 10.5 - 1px);
+        height: calc(var(--cell-height) - 4px);
+    }
+    &.long {
+        top: calc(var(--cell-height) * 12 - 1px);
+        height: calc(var(--cell-height) * 2 - 4px);
+        .event-tile-title {
+            font-weight: 500;
+            white-space: unset;
+        }
+    }
+}
