@@ -8,8 +8,8 @@
     z-index: 1;
     min-width: 448px;
     background-color: var(--white);
-    box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
-        0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12),
+        0 11px 15px -7px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     .top-controls {
         background-color: var(--blue-light);
@@ -63,6 +63,18 @@
     .event-settings {
         .event-settings-selection {
             padding: var(--spacing-sides) 0;
+            .single-setting-section {
+                &.separated-top {
+                    border-top: 1px solid var(--grey-light);
+                    padding-top: 8px;
+                    margin-top: 7px;
+                }
+                &.separated-bottom {
+                    border-bottom: 1px solid var(--grey-light);
+                    padding-bottom: 8px;
+                    margin-bottom: 7px;
+                }
+            }
         }
         .no-icon {
             padding-left: 60px;
@@ -77,6 +89,18 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
+        }
+
+        .full-settings {
+            display: none;
+            flex-direction: column;
+            .has-icon {
+                width: 100%;
+                align-items: flex-start;
+            }
+            &.active {
+                display: flex;
             }
         }
         .selection-content {
@@ -163,9 +187,15 @@
             .to-select {
                 p {
                     padding-top: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
                 }
                 .clickable {
                     margin: 0 8px;
+                }
+                .clickable-wrapper {
+                    display: block;
                 }
             }
             .settings {
@@ -181,10 +211,23 @@
                         width: 74px;
                     }
                 }
+                button {
+                    color: var(--grey-dark);
+                    font-weight: 400;
+                }
+                .time-date-other-settings {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-start;
+                }
+                .checkbox-input {
+                    margin-left: 8px;
+                }
             }
         }
 
-        .guests {
+        .guests,
+        .location {
             .settings {
                 input {
                     width: 100%;
@@ -214,6 +257,9 @@
                     }
                 }
             }
+            .no-icon {
+                margin-left: -8px;
+            }
         }
     }
 }
@@ -226,10 +272,3 @@
         background-color: var(--blue-medium-dark);
     }
 }
-
-.settings {
-    display: none;
-}
-// .to-select {
-//     display: none !important;
-// }

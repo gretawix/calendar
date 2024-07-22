@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script type="module" src="./scrips/index.js"></script>
         <link
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,100..700,0..1,-50..200"
             rel="stylesheet"
@@ -17,8 +18,8 @@
                     <div class="time-zone-cell">
                         <p class="time-zone">GMT+03</p>
                     </div>
-                    <div class="divider"></div>
-                    <div class="week-days">
+                    <div class="week-days" id="days-row">
+                        <div class="divider-no-border"></div>
                         <div class="one-day cell-width">
                             <div class="divider-vertical"></div>
                             <p class="day-name">Mon</p>
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 <div class="time-grid">
-                    <div class="hours-labels-column">
+                    <div class="hours-labels-column" id="hours-col">
                         <div class="hour-label-cell cell-height">
                             <p class="hour">00:00</p>
                         </div>
@@ -131,32 +132,33 @@
                             <p class="hour">23:00</p>
                         </div>
                     </div>
-                    <div class="divider-column">
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                        <div class="divider cell-height"></div>
-                    </div>
-                    <div class="hours-cells-all">
+
+                    <div class="hours-cells-all" id="days-hours-grid">
+                        <div class="divider-column">
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                            <div class="divider cell-height"></div>
+                        </div>
                         <div class="hours-cells-column">
                             <div class="inner-hour-cell-column">
                                 <div class="hours-cell cell-height"></div>
@@ -207,114 +209,152 @@
                 <div class="event-content">
                     <div class="event-title">
                         <label class="text-input-label large" for="title">
-                            <input
-                                type="text"
-                                id="title"
-                                placeholder="Add title"
-                                class="text-input large"
-                                autofocus
-                            />
+                            <input type="text" id="title" placeholder="Add title" class="text-input large" autofocus />
                         </label>
                     </div>
                     <div class="event-settings">
                         <div class="event-type-buttons">
-                            <button type="button" class="selected">
-                                Event
-                            </button>
+                            <button type="button" class="selected">Event</button>
                             <button type="button">Task</button>
                             <button type="button">Appointment schedule</button>
                         </div>
                         <div class="event-settings-selection">
-                            <div
-                                class="time-date has-icon modal-event-side-margins"
-                            >
-                                <div class="modal-icon">
-                                    <i class="material-symbols-outlined small">
-                                        schedule
-                                    </i>
-                                </div>
-                                <div class="selection-content">
-                                    <div class="to-select">
-                                        <p>
-                                            <span class="clickable">
-                                                Thursday, July 4
-                                            </span>
-                                            <span class="clickable"
-                                                >9:00am</span
-                                            >
-                                            –
-                                            <span class="clickable"
-                                                >9:30am</span
-                                            >
-                                        </p>
-                                        <ul class="action-description">
-                                            <li>Time zone</li>
-                                            <li>Does not repeat</li>
-                                        </ul>
+                            <div class="time-date single-setting-section">
+                                <div class="has-icon modal-event-side-margins preview-settings">
+                                    <div class="modal-icon">
+                                        <i class="material-symbols-outlined small"> schedule </i>
                                     </div>
-                                    <div class="settings">
-                                        <div class="time-date-inputs-wrapper">
-                                            <label for="date">
-                                                <input
-                                                    type="text"
-                                                    id="date"
-                                                    class="standard-input date-input"
-                                                    value="Thursday, July 4"
-                                                />
-                                            </label>
-                                            <label for="time-start">
-                                                <input
-                                                    type="text"
-                                                    id="time-start"
-                                                    class="standard-input time-input"
-                                                    value="9:00am"
-                                                />
-                                            </label>
-                                            <p>–</p>
-                                            <label for="time-end">
-                                                <input
-                                                    type="text"
-                                                    id="time-end"
-                                                    class="standard-input time-input"
-                                                    value="9:30am"
-                                                />
-                                            </label>
+                                    <div class="selection-content">
+                                        <div class="to-select">
+                                            <p>
+                                                <span id="date-btn" class="clickable-wrapper"
+                                                    ><span class="clickable" data-clickable-id="date">
+                                                        Thursday, July 4
+                                                    </span>
+                                                </span>
+                                                <span id="time-start-btn" class="clickable-wrapper">
+                                                    <span class="clickable" data-clickable-id="time-start">9:00am</span>
+                                                </span>
+                                                –
+                                                <span id="time-end-btn" class="clickable-wrapper">
+                                                    <span class="clickable" data-clickable-id="time-end">9:30am</span>
+                                                </span>
+                                            </p>
+                                            <ul class="action-description">
+                                                <li>Time zone</li>
+                                                <li>Does not repeat</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="full-settings">
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> schedule </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <div class="settings-inner">
+                                                    <div class="time-date-inputs-wrapper">
+                                                        <label for="date">
+                                                            <input
+                                                                type="text"
+                                                                id="date"
+                                                                class="standard-input date-input"
+                                                                value="Thursday, July 4"
+                                                                data-clickable-input="date"
+                                                            />
+                                                        </label>
+                                                        <label for="time-start">
+                                                            <input
+                                                                type="text"
+                                                                id="time-start"
+                                                                class="standard-input time-input"
+                                                                value="9:00am"
+                                                                data-clickable-input="time-start"
+                                                            />
+                                                        </label>
+                                                        <p>–</p>
+                                                        <label for="time-end">
+                                                            <input
+                                                                type="text"
+                                                                id="time-end"
+                                                                class="standard-input time-input"
+                                                                value="9:30am"
+                                                                data-clickable-input="time-end"
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                    <div class="time-date-other-settings">
+                                                        <label for="all-day" class="checkbox-input"
+                                                            >All day <input type="checkbox" id="all-day" /><span
+                                                                class="checkmark"
+                                                            ></span>
+                                                        </label>
+                                                        <button type="button" id="time-zone">Time zone</button>
+                                                    </div>
+                                                    <div class="select-input">
+                                                        <button type="button" class="dropdown">
+                                                            <span class="dropdown-label">Does not repeat</span>
+                                                            <span class="dropdown-arrow"
+                                                                ><img src="./assets/arrow-drop-down.svg" />
+                                                            </span>
+                                                        </button>
+                                                        <ul class="repeat-options select-options">
+                                                            <li id="does-not-repeat" class="selected">
+                                                                Does not repeat
+                                                            </li>
+                                                            <li id="repeat-daily">Daily</li>
+                                                            <li id="repeat-weekly">Weekly on {{Today}}</li>
+                                                            <li id="repeat-monthly">Monthly on {{nth}} {{Today}}</li>
+                                                            <li id="repeat-anually">Anually on {{Motnh day}}</li>
+                                                            <li id="repeat-every-weekday">
+                                                                Every weekday (Monday to Friday)
+                                                            </li>
+                                                            <li id="repeat-custom">Custom...</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="find-time no-icon modal-event-side-margins"
-                            >
-                                <button type="button" class="blue">
-                                    Find a time
-                                </button>
+                            <div class="find-time no-icon modal-event-side-margins">
+                                <button type="button" class="blue">Find a time</button>
                             </div>
-                            <div
-                                class="guests has-icon modal-event-side-margins"
-                            >
-                                <div class="modal-icon">
-                                    <i class="material-symbols-outlined small">
-                                        group
-                                    </i>
-                                </div>
-                                <div class="selection-content">
-                                    <div class="to-select">
-                                        <p>Add guests</p>
+                            <div class="guests single-setting-section">
+                                <div class="has-icon modal-event-side-margins preview-settings">
+                                    <div class="modal-icon">
+                                        <i class="material-symbols-outlined small"> group </i>
                                     </div>
-                                    <div class="settings">
-                                        <input
-                                            type="text"
-                                            id="date"
-                                            class="standard-input date-input"
-                                            placeholder="Add guests"
-                                        />
+                                    <div class="selection-content">
+                                        <div class="to-select">
+                                            <p>Add guests</p>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="full-settings">
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> group </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <label for="guests">
+                                                    <input
+                                                        type="text"
+                                                        id="guests"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add guests"
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div
-                                class="google-meet has-icon modal-event-side-margins"
-                            >
+                            <div class="google-meet has-icon modal-event-side-margins">
                                 <div class="modal-icon">
                                     <img
                                         alt="google meeting icon"
@@ -322,77 +362,206 @@
                                         class="custom-icon"
                                     />
                                 </div>
-                                <button class="cta google-meet-selection">
-                                    Add Google Meet video conferencing
-                                </button>
+                                <button class="cta google-meet-selection">Add Google Meet video conferencing</button>
                             </div>
-                            <div
-                                class="location has-icon modal-event-side-margins"
-                            >
-                                <div class="modal-icon">
-                                    <i class="material-symbols-outlined small">
-                                        location_on
-                                    </i>
-                                </div>
-                                <div class="selection-content">
-                                    <div class="to-select">
-                                        <p>
-                                            Add
-                                            <span class="clickable">rooms</span>
-                                            or
-                                            <span class="clickable"
-                                                >location</span
-                                            >
-                                        </p>
+                            <div class="location single-setting-section with-separator">
+                                <div class="has-icon modal-event-side-margins preview-settings">
+                                    <div class="modal-icon">
+                                        <i class="material-symbols-outlined small"> location_on </i>
                                     </div>
-                                    <div class="settings">settings</div>
-                                </div>
-                            </div>
-                            <div
-                                class="description has-icon modal-event-side-margins"
-                            >
-                                <div class="modal-icon">
-                                    <i class="material-symbols-outlined small">
-                                        subject
-                                    </i>
-                                </div>
-                                <div class="selection-content">
-                                    <div class="to-select">
-                                        <p>
-                                            Add
-                                            <span class="clickable"
-                                                >description</span
-                                            >
-                                            or
-                                            <span class="clickable"
-                                                >attachments</span
-                                            >
-                                        </p>
-                                    </div>
-                                    <div class="settings">settings</div>
-                                </div>
-                            </div>
-                            <div
-                                class="status has-icon modal-event-side-margins"
-                            >
-                                <div class="modal-icon">
-                                    <i class="material-symbols-outlined small">
-                                        event
-                                    </i>
-                                </div>
-                                <div class="selection-content">
-                                    <div class="to-select">
-                                        <div class="name-wrapper">
-                                            <p>Name Surname</p>
-                                            <div class="bubble blue"></div>
+                                    <div class="selection-content">
+                                        <div class="to-select">
+                                            <p>
+                                                Add
+                                                <span class="clickable">rooms</span>
+                                                or
+                                                <span class="clickable">location</span>
+                                            </p>
                                         </div>
-                                        <ul class="action-description">
-                                            <li>Busy</li>
-                                            <li>Default visibility</li>
-                                            <li>Notify 10 minutes before</li>
-                                        </ul>
                                     </div>
-                                    <div class="settings">settings</div>
+                                </div>
+                                <div class="full-settings">
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> meeting_room </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <label for="rooms">
+                                                    <input
+                                                        type="text"
+                                                        id="rooms"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add rooms"
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> location_on </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <label for="location">
+                                                    <input
+                                                        type="text"
+                                                        id="location"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add location"
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="description single-setting-section with-separator">
+                                <div class="has-icon modal-event-side-margins preview-settings">
+                                    <div class="modal-icon">
+                                        <i class="material-symbols-outlined small"> subject </i>
+                                    </div>
+                                    <div class="selection-content">
+                                        <div class="to-select">
+                                            <p>
+                                                Add
+                                                <span class="clickable">description</span>
+                                                or
+                                                <span class="clickable">attachments</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="full-settings">
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> subject </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">Add description</div>
+                                        </div>
+                                    </div>
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> attach_file </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">Add attachment</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="status single-setting-section with-separator">
+                                <div class="has-icon modal-event-side-margins preview-settings">
+                                    <div class="modal-icon">
+                                        <i class="material-symbols-outlined small"> event </i>
+                                    </div>
+                                    <div class="selection-content">
+                                        <div class="to-select">
+                                            <div class="name-wrapper">
+                                                <p>Name Surname</p>
+                                                <div class="bubble blue"></div>
+                                            </div>
+                                            <ul class="action-description">
+                                                <li>Busy</li>
+                                                <li>Default visibility</li>
+                                                <li>Notify 10 minutes before</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="full-settings">
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> event </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">name surname</div>
+                                        </div>
+                                    </div>
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> work </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <div class="select-input">
+                                                    <button type="button" class="dropdown">
+                                                        <span class="dropdown-label">Busy</span>
+                                                        <span class="dropdown-arrow"
+                                                            ><img src="./assets/arrow-drop-down.svg" />
+                                                        </span>
+                                                    </button>
+                                                    <ul class="availability-options select-options">
+                                                        <li id="availability-busy" class="selected">Busy</li>
+                                                        <li id="availability-free">Free</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> lock </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <div class="select-input">
+                                                    <button type="button" class="dropdown">
+                                                        <span class="dropdown-label">Default visibility</span>
+                                                        <span class="dropdown-arrow"
+                                                            ><img src="./assets/arrow-drop-down.svg" />
+                                                        </span>
+                                                    </button>
+                                                    <ul class="visibility-options select-options">
+                                                        <li id="default-visibility" class="selected">
+                                                            Default visibility
+                                                        </li>
+                                                        <li id="public-visibility">Public</li>
+                                                        <li id="private-visibility">Private</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="has-icon modal-event-side-margins">
+                                        <div class="modal-icon">
+                                            <i class="material-symbols-outlined small"> notifications </i>
+                                        </div>
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <div class="select-input dropdown-above">
+                                                    <button type="button" class="dropdown">
+                                                        <span class="dropdown-label">10 minutes before</span>
+                                                        <span class="dropdown-arrow"
+                                                            ><img src="./assets/arrow-drop-down.svg" />
+                                                        </span>
+                                                    </button>
+                                                    <ul class="notifications-options select-options">
+                                                        <li id="notifications-5">5 minutes before</li>
+                                                        <li id="notifications-10" class="selected">
+                                                            10 minutes before
+                                                        </li>
+                                                        <li id="notifications-15">15 minutes before</li>
+                                                        <li id="notifications-30">30 minutes before</li>
+                                                        <li id="notifications-1h">1 hour before</li>
+                                                        <li id="notifications-1d">1 day before</li>
+                                                        <li id="notifications-custom">Custom...</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="no-icon">
+                                        <div class="selection-content">
+                                            <div class="settings">
+                                                <button type="button" class="add-notification-btn">
+                                                    Add notification
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
