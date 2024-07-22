@@ -341,12 +341,14 @@
                                         </div>
                                         <div class="selection-content">
                                             <div class="settings">
-                                                <input
-                                                    type="text"
-                                                    id="guests"
-                                                    class="standard-input date-input"
-                                                    placeholder="Add guests"
-                                                />
+                                                <label for="guests">
+                                                    <input
+                                                        type="text"
+                                                        id="guests"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add guests"
+                                                    />
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -362,7 +364,7 @@
                                 </div>
                                 <button class="cta google-meet-selection">Add Google Meet video conferencing</button>
                             </div>
-                            <div class="location single-setting-section">
+                            <div class="location single-setting-section with-separator">
                                 <div class="has-icon modal-event-side-margins preview-settings">
                                     <div class="modal-icon">
                                         <i class="material-symbols-outlined small"> location_on </i>
@@ -384,7 +386,16 @@
                                             <i class="material-symbols-outlined small"> meeting_room </i>
                                         </div>
                                         <div class="selection-content">
-                                            <div class="settings">Add rooms</div>
+                                            <div class="settings">
+                                                <label for="rooms">
+                                                    <input
+                                                        type="text"
+                                                        id="rooms"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add rooms"
+                                                    />
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="has-icon modal-event-side-margins">
@@ -393,18 +404,20 @@
                                         </div>
                                         <div class="selection-content">
                                             <div class="settings">
-                                                <input
-                                                    type="text"
-                                                    id="location"
-                                                    class="standard-input date-input"
-                                                    placeholder="Add location"
-                                                />
+                                                <label for="location">
+                                                    <input
+                                                        type="text"
+                                                        id="location"
+                                                        class="standard-input date-input"
+                                                        placeholder="Add location"
+                                                    />
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="description single-setting-section">
+                            <div class="description single-setting-section with-separator">
                                 <div class="has-icon modal-event-side-margins preview-settings">
                                     <div class="modal-icon">
                                         <i class="material-symbols-outlined small"> subject </i>
@@ -439,7 +452,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="status single-setting-section">
+                            <div class="status single-setting-section with-separator">
                                 <div class="has-icon modal-event-side-margins preview-settings">
                                     <div class="modal-icon">
                                         <i class="material-symbols-outlined small"> event </i>

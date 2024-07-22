@@ -298,6 +298,16 @@ img {
 .event-modal .event-settings .event-settings-selection {
   padding: var(--spacing-sides) 0;
 }
+.event-modal .event-settings .event-settings-selection .single-setting-section.separated-top {
+  border-top: 1px solid var(--grey-light);
+  padding-top: 8px;
+  margin-top: 7px;
+}
+.event-modal .event-settings .event-settings-selection .single-setting-section.separated-bottom {
+  border-bottom: 1px solid var(--grey-light);
+  padding-bottom: 8px;
+  margin-bottom: 7px;
+}
 .event-modal .event-settings .no-icon {
   padding-left: 60px;
 }
@@ -320,6 +330,9 @@ img {
 .event-modal .event-settings .full-settings .has-icon {
   width: 100%;
   align-items: flex-start;
+}
+.event-modal .event-settings .full-settings.active {
+  display: flex;
 }
 .event-modal .event-settings .selection-content {
   width: calc(100% - var(--side-icon-width) - 8px);

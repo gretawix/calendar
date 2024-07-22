@@ -63,6 +63,18 @@
     .event-settings {
         .event-settings-selection {
             padding: var(--spacing-sides) 0;
+            .single-setting-section {
+                &.separated-top {
+                    border-top: 1px solid var(--grey-light);
+                    padding-top: 8px;
+                    margin-top: 7px;
+                }
+                &.separated-bottom {
+                    border-bottom: 1px solid var(--grey-light);
+                    padding-bottom: 8px;
+                    margin-bottom: 7px;
+                }
+            }
         }
         .no-icon {
             padding-left: 60px;
@@ -86,6 +98,9 @@
             .has-icon {
                 width: 100%;
                 align-items: flex-start;
+            }
+            &.active {
+                display: flex;
             }
         }
         .selection-content {

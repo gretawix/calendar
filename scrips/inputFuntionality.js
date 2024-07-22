@@ -26,4 +26,28 @@ const setInputLabel = (parentElement) => {
     labelElement.innerText = inputLabelText;
 };
 
-export { toggleDropdown };
+const separateInputs = (parent) => {
+    const parentClasses = parent.classList;
+    if (parentClasses.contains("with-separator")) {
+        const prevDiv = parent.previousElementSibling;
+        const nextDiv = parent.nextElementSibling;
+        if (
+            prevDiv &&
+            nextDiv &&
+            prevDiv.classList.contains("separated-bottom") &&
+            nextDiv.classList.contains("separated-top")
+        ) {
+            prevDiv.classList.remove("separated-bottom");
+            parentClasses.add("separated-top");
+        } else if (nextDiv && nextDiv.classList.contains("separated-top")) {
+            parentClasses.add("separated-top");
+        } else if (prevDiv && prevDiv.classList.contains("separated-bottom")) {
+            parentClasses.add("separated-bottom");
+        } else {
+            parentClasses.add("separated-top");
+            parentClasses.add("separated-bottom");
+        }
+    }
+};
+
+export { toggleDropdown, separateInputs };
