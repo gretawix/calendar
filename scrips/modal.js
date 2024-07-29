@@ -1,7 +1,7 @@
 import { setSameWidth } from "./utils.js";
 import { toggleDropdown, separateInputs } from "./inputFuntionality.js";
 
-const modalfunctionality = () => {
+const initModalView = () => {
     setSameWidth("#date-btn", "#date");
     setSameWidth("#time-start-btn", "#time-start");
     setSameWidth("#time-end-btn", "#time-end");
@@ -22,4 +22,4 @@ const modalfunctionality = () => {
     toggleDropdown();
 };
 
-export default modalfunctionality;
+export default initModalView;

@@ -1,7 +1,7 @@
-import weekViewFunctionality from "./weekView.js";
-import modalfunctionality from "./modal.js";
+import initWeekView from "./weekView.js";
+import initModalView from "./modal.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    weekViewFunctionality();
-    modalfunctionality();
+    initWeekView();
+    initModalView();
 });
