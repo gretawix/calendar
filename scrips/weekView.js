@@ -1,4 +1,5 @@
 import { createWeek, getTimeZone } from "./timeCalculations.js";
+import { openModal } from "./modal.js";
 
 const initWeekView = () => {
     drawWeekView();
@@ -8,6 +9,10 @@ const initWeekView = () => {
     grid.addEventListener("scroll", (event) => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
+    });
+    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
+    daysGridColumns.forEach((col) => {
+        col.addEventListener("click", openModal);
     });
 };
 

@@ -236,10 +236,12 @@ img {
 }
 
 .event-modal {
+  display: none;
   --side-icon-width: 36px;
   font-size: 0.875rem;
   line-height: 1.5;
   position: absolute;
+  overflow: hidden;
   top: 100px;
   left: 100px;
   z-index: 1;
