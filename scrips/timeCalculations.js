@@ -1,8 +1,11 @@
+import { weekDaysNumber } from "./calendarVars.js";
+
 const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
-    let dayOfWeek = currentDate.getDay();
-    let difference = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
+    let currentWeekDay = currentDate.getDay();
+    let difference = (currentWeekDay === 0 ? -6 : 1) - currentWeekDay;
     let monday = new Date();
+
     monday.setDate(monday.getDate() + difference);
 
     return monday;
@@ -12,7 +15,7 @@ const createWeek = (today) => {
     const week = [];
     const monday = getStartOfWeek(today);
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < weekDaysNumber; i++) {
         const day = new Date();
         day.setDate(monday.getDate() + i);
         const [weekDay, month, dayNum, year] = day.toString().split(" ");

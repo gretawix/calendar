@@ -1,29 +1,38 @@
-const toggleDropdown = () => {
-    const dropdowns = document.querySelectorAll(".select-input");
+const setInputLabel = (dropdownItem, selectedOption) => {
+    const inputLabelText = selectedOption.innerText.trim();
+    dropdownItem.querySelector("button.dropdown .dropdown-label").innerText = inputLabelText;
+};
+
+const selectDropdownItem = (dropdownItem) => {
+    const allOptions = dropdownItem.querySelectorAll(".select-options li");
+    allOptions.forEach((option) => {
+        option.addEventListener("click", (_) => {
+            allOptions.forEach((item) => item.classList.remove("selected"));
+            option.classList.add("selected");
+            setInputLabel(dropdownItem, option);
+        });
+    });
+};
+
+const initDropdownSelect = (modal) => {
+    const dropdowns = modal.querySelectorAll(".select-input");
+
     dropdowns.forEach((item) => {
         item.addEventListener("click", (event) => {
             item.classList.toggle("open");
             selectDropdownItem(item);
-            setInputLabel(item);
         });
     });
 };
 
-const selectDropdownItem = (parentElement) => {
-    const selectOptions = parentElement.querySelectorAll(".select-options li");
-    selectOptions.forEach((option) => {
-        option.addEventListener("click", (event) => {
-            selectOptions.forEach((item) => item.classList.remove("selected"));
-            option.classList.add("selected");
-        });
+const resetDropdownItem = (dropdownItem) => {
+    dropdownItem.querySelectorAll(".select-options li").forEach((item, index) => {
+        item.classList.remove("selected");
+        if (index === 0) {
+            item.classList.add("selected");
+            setInputLabel(dropdownItem, item);
+        }
     });
 };
 
-const setInputLabel = (parentElement) => {
-    const selectOption = parentElement.querySelector("li.selected");
-    const inputLabelText = selectOption.innerText.trim();
-    const labelElement = parentElement.querySelector("button.dropdown .dropdown-label");
-    labelElement.innerText = inputLabelText;
-};
-
-export { toggleDropdown };
+export { selectDropdownItem, initDropdownSelect, setInputLabel, resetDropdownItem };

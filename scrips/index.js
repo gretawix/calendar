@@ -1,6 +1,8 @@
 import initWeekView from "./weekView.js";
-import { initModal } from "./modal.js";
+import { getModal } from "./selectors.js";
+import { initDropdownSelect } from "./inputFuntionality.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     initWeekView();
+    initDropdownSelect(getModal());
 });

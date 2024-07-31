@@ -1,131 +1,75 @@
 import { createWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
-
-const initWeekView = () => {
-    drawWeekView();
-    const grid = document.querySelector("#days-hours-grid");
-    const daysRow = document.querySelector("#days-row");
-    const hoursCol = document.querySelector("#hours-col");
-    grid.addEventListener("scroll", (event) => {
-        hoursCol.scrollTop = grid.scrollTop;
-        daysRow.scrollLeft = grid.scrollLeft;
-    });
-    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
-    daysGridColumns.forEach((col) => {
-        col.addEventListener("click", openModal);
-    });
-};
-
-const drawWeekView = () => {
-    const today = new Date();
-    const week = createWeek(today);
-    const timeZone = getTimeZone(today);
-    const weekViewDiv = document.querySelector("#week-view");
-    const weekDaysPart = createWeekDaysPart(week, timeZone, today);
-    const timeGridPart = createTimeGridPart(week);
-
-    weekViewDiv.appendChild(weekDaysPart);
-    weekViewDiv.appendChild(timeGridPart);
-};
-
-const createWeekDaysPart = (week, timeZone, today) => {
-    const weekDaysPart = document.createElement("div");
-    weekDaysPart.className = "week-days-part";
-    const timeZoneCell = createTimeZoneCell(timeZone);
-    const weekDaysRow = createWeekDaysRow(week, today);
-
-    weekDaysPart.appendChild(timeZoneCell);
-    weekDaysPart.appendChild(weekDaysRow);
-
-    return weekDaysPart;
-};
+import { hoursNumber } from "./calendarVars.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = document.createElement("div");
+
     timeZoneCell.className = "time-zone-cell";
-    timeZoneCell.innerHTML = ` <p class="time-zone">${timeZone}</p>`;
+    timeZoneCell.innerHTML = `<p class="time-zone">${timeZone}</p>`;
 
     return timeZoneCell;
 };
 
 const createWeekDaysRow = (week, today) => {
     const weekDaysRow = document.createElement("div");
+    const divider = document.createElement("div");
+
     weekDaysRow.className = "week-days";
     weekDaysRow.id = "days-row";
-    const divider = document.createElement("div");
     divider.className = "divider-no-border";
-
     weekDaysRow.appendChild(divider);
 
     week.forEach((day) => {
         const dayDiv = document.createElement("div");
+
         dayDiv.classList.add("one-day", "cell-width");
         if (day.day == today.getDate()) dayDiv.classList.add("active");
         dayDiv.innerHTML = `<div class="divider-vertical"></div>
                             <p class="day-name">${day.weekDay}</p>
                             <p class="day-number">${day.day}</p>`;
-
         weekDaysRow.appendChild(dayDiv);
     });
 
     return weekDaysRow;
 };
 
-const createTimeGridPart = (week) => {
-    const timeGridPart = document.createElement("div");
-    timeGridPart.className = "time-grid";
-    const hoursColumn = createHoursColumn();
-    const timeGrid = createTimeGrid(week);
-
-    timeGridPart.appendChild(hoursColumn);
-    timeGridPart.appendChild(timeGrid);
-
-    return timeGridPart;
-};
-
 const createHoursColumn = () => {
     const hoursColumn = document.createElement("div");
+
     hoursColumn.className = "hours-labels-column";
     hoursColumn.id = "hours-col";
 
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < hoursNumber; i++) {
         const hourDiv = document.createElement("div");
-        hourDiv.classList.add("hour-label-cell", "cell-height");
         const hour = i > 9 ? i : `0${i}`;
-        hourDiv.innerHTML = `<p class="hour">${hour}:00</p>`;
 
+        hourDiv.classList.add("hour-label-cell", "cell-height");
+        hourDiv.innerHTML = `<p class="hour">${hour}:00</p>`;
         hoursColumn.appendChild(hourDiv);
     }
 
     return hoursColumn;
 };
 
-const createTimeGrid = (week) => {
-    const timeGrid = document.createElement("div");
-    timeGrid.className = "hours-cells-all";
-    timeGrid.id = "days-hours-grid";
-    const dividerColumn = createDividerColumn();
+const createWeekDaysWrapper = (week, timeZone, today) => {
+    const weekDaysWrapper = document.createElement("div");
+    const timeZoneCell = createTimeZoneCell(timeZone);
+    const weekDaysRow = createWeekDaysRow(week, today);
 
-    timeGrid.appendChild(dividerColumn);
+    weekDaysWrapper.className = "week-days-part";
+    weekDaysWrapper.appendChild(timeZoneCell);
+    weekDaysWrapper.appendChild(weekDaysRow);
 
-    week.forEach(() => {
-        const dayColumn = document.createElement("div");
-        dayColumn.className = "hours-cells-column";
-        dayColumn.innerHTML = `<div class="inner-hour-cell-column">
-                                <div class="hours-cell cell-height"></div>
-                            </div>`;
-
-        timeGrid.appendChild(dayColumn);
-    });
-
-    return timeGrid;
+    return weekDaysWrapper;
 };
 
 const createDividerColumn = () => {
     const dividerColumn = document.createElement("div");
+
     dividerColumn.className = "divider-column";
 
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < hoursNumber - 2; i++) {
         const divider = document.createElement("div");
         divider.className = "divider cell-height";
         dividerColumn.appendChild(divider);
@@ -133,4 +77,67 @@ const createDividerColumn = () => {
 
     return dividerColumn;
 };
+
+const createTimeGrid = (week) => {
+    const timeGrid = document.createElement("div");
+    const dividerColumn = createDividerColumn();
+
+    timeGrid.className = "hours-cells-all";
+    timeGrid.id = "days-hours-grid";
+    timeGrid.appendChild(dividerColumn);
+
+    week.forEach(() => {
+        const dayColumn = document.createElement("div");
+
+        dayColumn.className = "hours-cells-column";
+        dayColumn.innerHTML = `<div class="inner-hour-cell-column">
+                                <div class="hours-cell cell-height"></div>
+                            </div>`;
+        timeGrid.appendChild(dayColumn);
+    });
+
+    return timeGrid;
+};
+
+const createTimeGridWrapper = (week) => {
+    const timeGridWrapper = document.createElement("div");
+    const hoursColumn = createHoursColumn();
+    const timeGrid = createTimeGrid(week);
+
+    timeGridWrapper.className = "time-grid";
+    timeGridWrapper.appendChild(hoursColumn);
+    timeGridWrapper.appendChild(timeGrid);
+
+    return timeGridWrapper;
+};
+
+const drawWeekView = () => {
+    const today = new Date();
+    const week = createWeek(today);
+    const timeZone = getTimeZone(today);
+    const weekViewDiv = document.querySelector("#week-view");
+    const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
+    const timeGridWrapper = createTimeGridWrapper(week);
+
+    weekViewDiv.appendChild(weekDaysWrapper);
+    weekViewDiv.appendChild(timeGridWrapper);
+};
+
+const initWeekView = () => {
+    drawWeekView();
+
+    const grid = document.querySelector("#days-hours-grid");
+    const daysRow = document.querySelector("#days-row");
+    const hoursCol = document.querySelector("#hours-col");
+    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
+
+    grid.addEventListener("scroll", (event) => {
+        hoursCol.scrollTop = grid.scrollTop;
+        daysRow.scrollLeft = grid.scrollLeft;
+    });
+    daysGridColumns.forEach((col) => {
+        col.addEventListener("click", openModal);
+    });
+};
+
 export default initWeekView;
