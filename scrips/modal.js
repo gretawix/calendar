@@ -62,28 +62,52 @@ const closeModal = (closeBtn, selectionBtns) => {
 const initModal = (modal) => {
     const selectionBtns = document.querySelectorAll(".to-select");
     const closeBtn = document.querySelector("#close-modal");
+    const isModalCurrentlyOpen = false;
 
+    toggleModal(isModalCurrentlyOpen, modal);
     resetModal(modal);
     closeBtn.addEventListener("click", () => closeModal(closeBtn, selectionBtns));
     selectionBtns.forEach((item) => item.addEventListener("click", () => handleInputClick(item)));
 };
 
-const openModal = (event) => {
-    const modal = getModal();
-    const isModalCurrentyOpen = false;
-    const modalWidth = modal.getBoundingClientRect().width;
+const positionModalX = (modal, event) => {
     const clickedElement = event.target.getBoundingClientRect();
-    const titleInput = document.querySelector("#title");
+    const modalWidth = modal.getBoundingClientRect().width;
 
-    toggleModal(isModalCurrentyOpen, modal);
     modal.style.left = `${
         clickedElement.left < modalWidth
             ? clickedElement.left + clickedElement.width + 8
             : clickedElement.left - modalWidth - 12
     }px`;
-    modal.style.top = `${event.clientY - 100}px`;
+};
+
+const positionModalY = (modal, event) => {
+    const modalHeight = modal.getBoundingClientRect().height;
+    const bottomSpacing = 50;
+    const distanceFromClickToTop = event.clientY;
+    const distanceFromClickToBottom = window.innerHeight - distanceFromClickToTop;
+
+    modal.style.bottom = "unset";
+    modal.style.top = "unset";
+    if (distanceFromClickToTop < 130) {
+        modal.style.top = `${distanceFromClickToTop}px`;
+    } else {
+        if (modalHeight + bottomSpacing > distanceFromClickToBottom) {
+            modal.style.top = "unset";
+            modal.style.bottom = `${bottomSpacing}px`;
+        } else {
+            modal.style.top = `${distanceFromClickToTop - bottomSpacing}px`;
+        }
+    }
+};
+
+const openModal = (event) => {
+    const modal = getModal();
+
     initModal(modal);
-    titleInput.focus();
+    positionModalX(modal, event);
+    positionModalY(modal, event);
+    document.querySelector("#title").focus();
 };
 
 export { initModal, openModal, getModal };

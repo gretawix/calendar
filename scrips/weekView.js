@@ -2,6 +2,7 @@ import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
 import { hoursNumber, weekDaysNumber } from "./calendarVars.js";
 import { createDiv } from "./utils.js";
+import { createEventTile } from "./eventDisplay.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDiv("time-zone-cell");
@@ -137,7 +138,10 @@ const initWeekView = () => {
         daysRow.scrollLeft = grid.scrollLeft;
     });
     daysGridColumns.forEach((col) => {
-        col.addEventListener("click", openModal);
+        col.addEventListener("click", (event) => {
+            openModal(event);
+            createEventTile(event);
+        });
     });
 };
 
