@@ -1,5 +1,3 @@
-import { weekDaysNumber } from "./calendarVars.js";
-
 const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
     let currentWeekDay = currentDate.getDay();
@@ -11,25 +9,6 @@ const getStartOfWeek = (date) => {
     return monday;
 };
 
-const createWeek = (today) => {
-    const week = [];
-    const monday = getStartOfWeek(today);
-
-    for (let i = 0; i < weekDaysNumber; i++) {
-        const day = new Date();
-        day.setDate(monday.getDate() + i);
-        const [weekDay, month, dayNum, year] = day.toString().split(" ");
-        week.push({
-            weekDay: weekDay,
-            month: month,
-            day: dayNum,
-            year: year,
-        });
-    }
-
-    return week;
-};
-
 const getTimeZone = (today) => {
     const offsetInMinutes = today.getTimezoneOffset();
     const offsetHours = Math.floor(Math.abs(offsetInMinutes) / 60);
@@ -39,4 +18,4 @@ const getTimeZone = (today) => {
     return `GMT${sign}${formattedTimeZone}`;
 };
 
-export { createWeek, getTimeZone };
+export { getStartOfWeek, getTimeZone };

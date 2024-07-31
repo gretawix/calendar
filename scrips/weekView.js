@@ -1,6 +1,6 @@
-import { createWeek, getTimeZone } from "./timeCalculations.js";
+import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
-import { hoursNumber } from "./calendarVars.js";
+import { hoursNumber, weekDaysNumber } from "./calendarVars.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = document.createElement("div");
@@ -109,6 +109,25 @@ const createTimeGridWrapper = (week) => {
     timeGridWrapper.appendChild(timeGrid);
 
     return timeGridWrapper;
+};
+
+const createWeek = (today) => {
+    const week = [];
+    const monday = getStartOfWeek(today);
+
+    for (let i = 0; i < weekDaysNumber; i++) {
+        const day = new Date();
+        day.setDate(monday.getDate() + i);
+        const [weekDay, month, dayNum, year] = day.toString().split(" ");
+        week.push({
+            weekDay: weekDay,
+            month: month,
+            day: dayNum,
+            year: year,
+        });
+    }
+
+    return week;
 };
 
 const drawWeekView = () => {
