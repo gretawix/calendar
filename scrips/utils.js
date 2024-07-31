@@ -6,4 +6,12 @@ const setSameWidth = (baseElementId, targetElementId) => {
     baseElement.style.width = width;
 };
 
-export { setSameWidth };
+const createDiv = (classToAssign = "", idToAssign = "") => {
+    const div = document.createElement("div");
+    if (classToAssign) div.className = classToAssign;
+    if (idToAssign) div.id = idToAssign;
+
+    return div;
+};
+
+export { setSameWidth, createDiv };
