@@ -1,8 +1,7 @@
 import { setSameWidth } from "./utils.js";
 import { resetDropdownItem } from "./inputs.js";
-import { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getTitleInput } from "./selectors.js";
-import { removeUnsavedEventTile, constructEventInfo } from "./displayEvent.js";
-import { saveEvent } from "./eventsData.js";
+import { getModal, getCloseBtn, getSettingsToggleElements, getTitleInput } from "./selectors.js";
+import { removeUnsavedEventTile } from "./displayEvent.js";
 
 const setTimeDateInputWidths = (modal) => {
     modal.querySelector("#date-btn").style.width = "fit-content";
@@ -109,13 +108,10 @@ const positionModalY = (modal, event) => {
     }
 };
 
-const setTimeDateInputs = (event, modal) => {
-    const eventInfo = constructEventInfo(event);
-    const dateText = `${eventInfo.weekdayLong}, ${eventInfo.monthLong} ${eventInfo.day}`;
-    const start = eventInfo.eventStartTime;
-    const end = eventInfo.eventEndTime;
-
-    // setTimeDateInputWidths(modal);
+const setTimeDateInputs = (modal, newEventData) => {
+    const dateText = `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`;
+    const start = newEventData.eventStartTime;
+    const end = newEventData.eventEndTime;
 
     modal.querySelector("#date-btn span").innerText = dateText;
     modal.querySelector("#time-start-btn span").innerText = start;
@@ -126,16 +122,14 @@ const setTimeDateInputs = (event, modal) => {
     modal.querySelector("#time-end").value = end;
 };
 
-const openModal = (event) => {
+const openModal = (event, newEventData) => {
     const modal = getModal();
-    const saveBtn = getSaveBtn(modal);
 
-    saveBtn.addEventListener("click", () => saveEvent(modal, saveBtn));
-    setTimeDateInputs(event, modal);
+    setTimeDateInputs(modal, newEventData);
     initModal(modal);
     positionModalX(modal, event);
     positionModalY(modal, event);
     document.querySelector("#title").focus();
 };
 
-export { initModal, openModal, getModal, closeModal };
+export { openModal, closeModal };

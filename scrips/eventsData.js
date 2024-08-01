@@ -1,16 +1,12 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { getEventTileTopPosition } from "./displayEvent.js";
-import { getTitleInput } from "./selectors.js";
+import { getTitleInput, getModal } from "./selectors.js";
 import { closeModal } from "./modal.js";
+import { handleTitleInputChange } from "./inputs.js";
 
-const handleTitleInputChange = (event, titleInput) => {
-    if (event.target.value) titleInput.classList.remove("error");
-};
-
-const constructEventInfo = (event, title = "(no title)") => {
+const constructEventData = (event, title = "(no title)") => {
     const clickedColumn = event.target;
-
     const clickPosition = getEventTileTopPosition(event);
     const hour = formatHours(Math.floor(clickPosition / cellHeight));
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
@@ -19,7 +15,7 @@ const constructEventInfo = (event, title = "(no title)") => {
     let minutes = "00";
     if (clickPosition % cellHeight === cellHeight / 2) minutes = "30";
 
-    return {
+    const eventData = {
         eventTitle: title,
         eventStartTime: `${hour}:${minutes}`,
         eventEndTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
@@ -30,9 +26,12 @@ const constructEventInfo = (event, title = "(no title)") => {
         monthLong: getLongMonthName(monthNameShort),
         year: clickedColumn.getAttribute("data-year"),
     };
+
+    return eventData;
 };
 
-const saveEvent = (modal, saveBtn) => {
+const saveEvent = () => {
+    const modal = getModal();
     const titleInput = getTitleInput(modal);
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
 
@@ -40,13 +39,13 @@ const saveEvent = (modal, saveBtn) => {
         currentEventTile.querySelector(".event-tile-title").innerText = titleInput.value;
         currentEventTile.classList.remove("placeholder");
         currentEventTile.removeAttribute("id");
-        saveBtn.removeEventListener("click", saveEvent);
         titleInput.removeEventListener("change", (event) => handleTitleInputChange(event, titleInput));
         closeModal(modal);
     } else {
         titleInput.classList.add("error");
-        titleInput.addEventListener("change", (event) => handleTitleInputChange(event, titleInput));
+        titleInput.focus();
+        titleInput.addEventListener("input", (event) => handleTitleInputChange(event, titleInput));
     }
 };
 
-export { saveEvent, constructEventInfo };
+export { saveEvent, constructEventData };

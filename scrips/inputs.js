@@ -35,4 +35,8 @@ const resetDropdownItem = (dropdownItem) => {
     });
 };
 
-export { selectDropdownItem, initDropdownSelect, setInputLabel, resetDropdownItem };
+const handleTitleInputChange = (event, titleInput) => {
+    if (event.target.value) titleInput.classList.remove("error");
+};
+
+export { selectDropdownItem, initDropdownSelect, setInputLabel, resetDropdownItem, handleTitleInputChange };

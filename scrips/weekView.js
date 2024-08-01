@@ -1,8 +1,7 @@
 import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
-import { openModal } from "./modal.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
 import { createDomElement, formatHours } from "./utils.js";
-import { createNewEventTile } from "./displayEvent.js";
+import { handleEventCreationClick } from "./displayEvent.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -125,34 +124,30 @@ const drawWeekView = () => {
     const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
     const timeGridWrapper = createTimeGridWrapper(week);
 
+    document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
     weekViewDiv.appendChild(weekDaysWrapper);
     weekViewDiv.appendChild(timeGridWrapper);
 };
 
-const initWeekView = () => {
-    document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
-    drawWeekView();
-
-    const grid = document.querySelector("#days-hours-grid");
+const initTimeGridScroll = (grid) => {
     const daysRow = document.querySelector("#days-row");
     const hoursCol = document.querySelector("#hours-col");
-    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
 
     grid.addEventListener("scroll", () => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
     });
     grid.scrollBy(0, cellHeight * 7);
-    daysGridColumns.forEach((col) => {
-        col.addEventListener("click", (event) => {
-            const clickedWeekDayCol = event.target;
-            if (clickedWeekDayCol.hasAttribute("data-year")) {
-                openModal(event);
-                const eventTile = createNewEventTile(event);
-                clickedWeekDayCol.appendChild(eventTile);
-            }
-        });
-    });
+};
+
+const initWeekView = () => {
+    drawWeekView();
+
+    const grid = document.querySelector("#days-hours-grid");
+    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
+
+    initTimeGridScroll(grid);
+    daysGridColumns.forEach((col) => col.addEventListener("click", handleEventCreationClick));
 };
 
 export default initWeekView;

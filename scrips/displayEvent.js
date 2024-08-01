@@ -1,6 +1,7 @@
 import { createDomElement } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
-import { constructEventInfo } from "./eventsData.js";
+import { openModal } from "./modal.js";
+import { constructEventData } from "./eventsData.js";
 
 const getEventTileTopPosition = (event) => {
     const clickedElement = event.target;
@@ -24,11 +25,9 @@ const populateEventTile = (eventInfo) => {
     return eventTile;
 };
 
-const createNewEventTile = (event) => {
+const createNewEventTile = (event, newEventData) => {
     const tileTopPosition = getEventTileTopPosition(event);
-    const eventInfo = constructEventInfo(event);
-    const eventTile = populateEventTile(eventInfo);
-
+    const eventTile = populateEventTile(newEventData);
     eventTile.style.top = `${tileTopPosition}px`;
 
     return eventTile;
@@ -38,4 +37,16 @@ const removeUnsavedEventTile = () => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     if (currentEventTile) currentEventTile.parentElement.removeChild(currentEventTile);
 };
-export { createNewEventTile, removeUnsavedEventTile, constructEventInfo, getEventTileTopPosition };
+
+const handleEventCreationClick = (event) => {
+    const clickedWeekDayCol = event.target;
+
+    if (clickedWeekDayCol.hasAttribute("data-year")) {
+        const newEventData = constructEventData(event);
+        const eventTile = createNewEventTile(event, newEventData);
+        openModal(event, newEventData);
+        clickedWeekDayCol.appendChild(eventTile);
+    }
+};
+
+export { removeUnsavedEventTile, getEventTileTopPosition, handleEventCreationClick };
