@@ -1,17 +1,19 @@
-import { createDomElement } from "./utils.js";
-import { cellHeight } from "./calendarVars.js";
+import { createDomElement, formatHours } from "./utils.js";
+import { cellHeight, currentEventTileId } from "./calendarVars.js";
 
-const updateEventInfo = (title, startTime, endTime = null) => {
-    const eventInfo = {
+const getEventInfo = (title, clickPosition) => {
+    const hour = formatHours(Math.floor(clickPosition / cellHeight));
+    let minutes = "00";
+    if (clickPosition % cellHeight === cellHeight / 2) minutes = "30";
+
+    return {
         eventTitle: title,
-        eventStartTime: startTime,
+        eventStartTime: `${hour}:${minutes}`,
+        eventEndTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
     };
-    eventInfo.eventEndTime = endTime ? endTime : eventInfo.eventStartTime + 1;
-
-    return eventInfo;
 };
 
-const getEventTilePosition = (event) => {
+const getEventTileTopPosition = (event) => {
     const clickedElement = event.target;
     const distanceFromTop = clickedElement.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
@@ -20,10 +22,8 @@ const getEventTilePosition = (event) => {
     return Math.floor(clickPosition / increment) * increment;
 };
 
-const createEventTile = (event) => {
-    const eventTile = createDomElement("div", "event-tile regular placeholder");
-    const eventTilePosition = getEventTilePosition(event);
-    const eventInfo = updateEventInfo("(no title)", eventTilePosition);
+const populateEventTile = (eventInfo) => {
+    const eventTile = createDomElement("div", "event-tile regular placeholder", currentEventTileId);
     const titleElement = createDomElement("p", "event-tile-title");
     const timeSpanTextElement = createDomElement("p", "event-tile-time");
 
@@ -31,19 +31,22 @@ const createEventTile = (event) => {
     timeSpanTextElement.innerText = `${eventInfo.eventStartTime} - ${eventInfo.eventEndTime}`;
     eventTile.appendChild(titleElement);
     eventTile.appendChild(timeSpanTextElement);
-    eventTile.style.top = `${eventTilePosition}px`;
 
     return eventTile;
 };
 
-const placeEventTile = (event) => {
-    let clickedElement = event.target;
+const createNewEventTile = (event) => {
+    const tileTopPosition = getEventTileTopPosition(event);
+    const eventInfo = getEventInfo("(no title)", tileTopPosition);
+    const eventTile = populateEventTile(eventInfo);
 
-    const eventTile = createEventTile(event);
-
-    clickedElement.appendChild(eventTile);
+    eventTile.style.top = `${tileTopPosition}px`;
 
     return eventTile;
 };
 
-export { placeEventTile };
+const removeUnsavedEventTile = () => {
+    const currentEventTile = document.querySelector(`#${currentEventTileId}`);
+    if (currentEventTile) currentEventTile.parentElement.removeChild(currentEventTile);
+};
+export { createNewEventTile, removeUnsavedEventTile };

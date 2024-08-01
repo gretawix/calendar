@@ -1,6 +1,7 @@
 import { setSameWidth } from "./utils.js";
-import { setInputLabel, resetDropdownItem } from "./inputFuntionality.js";
+import { resetDropdownItem } from "./inputFuntionality.js";
 import { getModal } from "./selectors.js";
+import { removeUnsavedEventTile } from "./eventDisplay.js";
 
 const setTimeDateInputWidths = () => {
     setSameWidth("#date-btn", "#date");
@@ -18,6 +19,7 @@ const resetModal = (modal) => {
     modal.querySelectorAll(".preview-settings").forEach((item) => (item.style.display = "flex"));
     modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
     modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
+    removeUnsavedEventTile();
     setTimeDateInputWidths();
     removeSeparators(modal);
 };
@@ -54,6 +56,8 @@ const toggleModal = (isOpen, modal) => (modal.style.display = isOpen ? "none" : 
 
 const closeModal = (closeBtn, selectionBtns) => {
     const isModalCurrentyOpen = true;
+
+    removeUnsavedEventTile();
     toggleModal(isModalCurrentyOpen, getModal());
     closeBtn.removeEventListener("click", closeModal);
     selectionBtns.forEach((item) => item.removeEventListener("click", () => handleInputClick(item)));

@@ -1,8 +1,8 @@
 import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
-import { createDomElement } from "./utils.js";
-import { placeEventTile } from "./eventDisplay.js";
+import { createDomElement, formatHours } from "./utils.js";
+import { createNewEventTile } from "./eventDisplay.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -39,7 +39,7 @@ const createHoursColumn = () => {
 
     for (let i = 0; i < hoursNumber; i++) {
         const hourDiv = createDomElement("div", "hour-label-cell cell-height");
-        const hour = i > 9 ? i : `0${i}`;
+        const hour = formatHours(i);
 
         hourDiv.innerHTML = `<p class="hour">${hour}:00</p>`;
         hoursColumn.appendChild(hourDiv);
@@ -137,14 +137,16 @@ const initWeekView = () => {
     const hoursCol = document.querySelector("#hours-col");
     const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
 
-    grid.addEventListener("scroll", (event) => {
+    grid.addEventListener("scroll", () => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
     });
     daysGridColumns.forEach((col) => {
         col.addEventListener("click", (event) => {
+            const clickedWeekDayCol = event.target;
             openModal(event);
-            placeEventTile(event);
+            const eventTile = createNewEventTile(event);
+            if (clickedWeekDayCol.hasAttribute("data-weekday")) clickedWeekDayCol.appendChild(eventTile);
         });
     });
 };

@@ -14,4 +14,6 @@ const createDomElement = (domEl = "div", classToAssign = "", idToAssign = "") =>
     return div;
 };
 
-export { setSameWidth, createDomElement };
+const formatHours = (hour) => (hour < 10 ? `0${hour}` : `${hour}`);
+
+export { setSameWidth, createDomElement, formatHours };
