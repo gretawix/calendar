@@ -1,18 +1,49 @@
-import { createDiv } from "./utils.js";
+import { createDomElement } from "./utils.js";
+import { cellHeight } from "./calendarVars.js";
+
+const updateEventInfo = (title, startTime, endTime = null) => {
+    const eventInfo = {
+        eventTitle: title,
+        eventStartTime: startTime,
+    };
+    eventInfo.eventEndTime = endTime ? endTime : eventInfo.eventStartTime + 1;
+
+    return eventInfo;
+};
+
+const getEventTilePosition = (event) => {
+    const clickedElement = event.target;
+    const distanceFromTop = clickedElement.getBoundingClientRect().top;
+    const clickPosition = event.clientY - distanceFromTop;
+    const increment = cellHeight / 2;
+
+    return Math.floor(clickPosition / increment) * increment;
+};
 
 const createEventTile = (event) => {
-    const clickedElement = event.target;
-    const weekDaysRowHeight = document.querySelector("#days-row").getBoundingClientRect().height;
-    const left = clickedElement.getBoundingClientRect().left;
-    const eventTile = createDiv("event-tile regular");
+    const eventTile = createDomElement("div", "event-tile regular placeholder");
+    const eventTilePosition = getEventTilePosition(event);
+    const eventInfo = updateEventInfo("(no title)", eventTilePosition);
+    const titleElement = createDomElement("p", "event-tile-title");
+    const timeSpanTextElement = createDomElement("p", "event-tile-time");
 
-    eventTile.innerHTML = `<p class="event-tile-title">Event title very long text is going here</p>
-                            <p class="event-tile-time">10:30 - 11:30am</p>`;
+    titleElement.innerText = eventInfo.eventTitle;
+    timeSpanTextElement.innerText = `${eventInfo.eventStartTime} - ${eventInfo.eventEndTime}`;
+    eventTile.appendChild(titleElement);
+    eventTile.appendChild(timeSpanTextElement);
+    eventTile.style.top = `${eventTilePosition}px`;
 
-    eventTile.style.top = `${event.clientY - weekDaysRowHeight}px`;
+    return eventTile;
+};
+
+const placeEventTile = (event) => {
+    let clickedElement = event.target;
+
+    const eventTile = createEventTile(event);
+
     clickedElement.appendChild(eventTile);
 
     return eventTile;
 };
 
-export { createEventTile };
+export { placeEventTile };

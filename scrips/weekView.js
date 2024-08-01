@@ -1,18 +1,21 @@
 import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
-import { hoursNumber, weekDaysNumber } from "./calendarVars.js";
-import { createDiv } from "./utils.js";
-import { createEventTile } from "./eventDisplay.js";
+import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
+import { createDomElement } from "./utils.js";
+import { placeEventTile } from "./eventDisplay.js";
 
 const createTimeZoneCell = (timeZone) => {
-    const timeZoneCell = createDiv("time-zone-cell");
+    const timeZoneCell = createDomElement("div", "time-zone-cell");
     timeZoneCell.innerHTML = `<p class="time-zone">${timeZone}</p>`;
 
     return timeZoneCell;
 };
 
 const createSingleWeekDay = (day, today) => {
-    const dayDiv = createDiv("one-day cell-width");
+    const dayDiv = createDomElement("div", "one-day cell-width");
+    Object.entries(day).forEach(([key, value]) => {
+        dayDiv.setAttribute(`data-${key}`, value);
+    });
     if (day.day == today.getDate()) dayDiv.classList.add("active");
     dayDiv.innerHTML = `<div class="divider-vertical"></div>
                         <p class="day-name">${day.weekDay}</p>
@@ -22,8 +25,8 @@ const createSingleWeekDay = (day, today) => {
 };
 
 const createWeekDaysRow = (week, today) => {
-    const weekDaysRow = createDiv("week-days", "days-row");
-    const divider = createDiv("divider-no-border");
+    const weekDaysRow = createDomElement("div", "week-days", "days-row");
+    const divider = createDomElement("div", "divider-no-border");
 
     weekDaysRow.appendChild(divider);
     week.forEach((day) => weekDaysRow.appendChild(createSingleWeekDay(day, today)));
@@ -32,10 +35,10 @@ const createWeekDaysRow = (week, today) => {
 };
 
 const createHoursColumn = () => {
-    const hoursColumn = createDiv("hours-labels-column", "hours-col");
+    const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
 
     for (let i = 0; i < hoursNumber; i++) {
-        const hourDiv = createDiv("hour-label-cell cell-height");
+        const hourDiv = createDomElement("div", "hour-label-cell cell-height");
         const hour = i > 9 ? i : `0${i}`;
 
         hourDiv.innerHTML = `<p class="hour">${hour}:00</p>`;
@@ -46,7 +49,7 @@ const createHoursColumn = () => {
 };
 
 const createWeekDaysWrapper = (week, timeZone, today) => {
-    const weekDaysWrapper = createDiv("week-days-part");
+    const weekDaysWrapper = createDomElement("div", "week-days-part");
     const timeZoneCell = createTimeZoneCell(timeZone);
     const weekDaysRow = createWeekDaysRow(week, today);
 
@@ -57,10 +60,10 @@ const createWeekDaysWrapper = (week, timeZone, today) => {
 };
 
 const createDividerColumn = () => {
-    const dividerColumn = createDiv("divider-column");
+    const dividerColumn = createDomElement("div", "divider-column");
 
     for (let i = 0; i < hoursNumber - 2; i++) {
-        const divider = createDiv("divider cell-height");
+        const divider = createDomElement("div", "divider cell-height");
         dividerColumn.appendChild(divider);
     }
 
@@ -68,15 +71,15 @@ const createDividerColumn = () => {
 };
 
 const createTimeGrid = (week) => {
-    const timeGrid = createDiv("hours-cells-all", "days-hours-grid");
+    const timeGrid = createDomElement("div", "hours-cells-all", "days-hours-grid");
     const dividerColumn = createDividerColumn();
 
     timeGrid.appendChild(dividerColumn);
-    week.forEach(() => {
-        const dayColumn = createDiv("hours-cells-column");
-        dayColumn.innerHTML = `<div class="inner-hour-cell-column">
-                                <div class="hours-cell cell-height"></div>
-                            </div>`;
+    week.forEach((day) => {
+        const dayColumn = createDomElement("div", "hours-cells-column");
+        Object.entries(day).forEach(([key, value]) => {
+            dayColumn.setAttribute(`data-${key}`, value);
+        });
         timeGrid.appendChild(dayColumn);
     });
 
@@ -84,7 +87,7 @@ const createTimeGrid = (week) => {
 };
 
 const createTimeGridWrapper = (week) => {
-    const timeGridWrapper = createDiv("time-grid");
+    const timeGridWrapper = createDomElement("div", "time-grid");
     const hoursColumn = createHoursColumn();
     const timeGrid = createTimeGrid(week);
 
@@ -126,6 +129,7 @@ const drawWeekView = () => {
 };
 
 const initWeekView = () => {
+    document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
     drawWeekView();
 
     const grid = document.querySelector("#days-hours-grid");
@@ -140,7 +144,7 @@ const initWeekView = () => {
     daysGridColumns.forEach((col) => {
         col.addEventListener("click", (event) => {
             openModal(event);
-            createEventTile(event);
+            placeEventTile(event);
         });
     });
 };
