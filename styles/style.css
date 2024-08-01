@@ -578,6 +578,9 @@ select.standard-input:focus:hover {
   padding-bottom: 4px;
   border-bottom: 1px solid var(--grey-light);
 }
+.text-input-label.large .text-input.error {
+  border-color: red;
+}
 .text-input-label.large .text-input:focus {
   border-bottom: 2px solid var(--blue);
 }

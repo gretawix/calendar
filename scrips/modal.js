@@ -1,9 +1,14 @@
 import { setSameWidth } from "./utils.js";
-import { resetDropdownItem } from "./inputFuntionality.js";
-import { getModal } from "./selectors.js";
-import { removeUnsavedEventTile } from "./eventDisplay.js";
+import { resetDropdownItem } from "./inputs.js";
+import { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getTitleInput } from "./selectors.js";
+import { removeUnsavedEventTile, constructEventInfo } from "./displayEvent.js";
+import { saveEvent } from "./eventsData.js";
 
-const setTimeDateInputWidths = () => {
+const setTimeDateInputWidths = (modal) => {
+    modal.querySelector("#date-btn").style.width = "fit-content";
+    modal.querySelector("#time-start-btn").style.width = "fit-content";
+    modal.querySelector("#time-end-btn").style.width = "fit-content";
+
     setSameWidth("#date-btn", "#date");
     setSameWidth("#time-start-btn", "#time-start");
     setSameWidth("#time-end-btn", "#time-end");
@@ -20,7 +25,7 @@ const resetModal = (modal) => {
     modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
     modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
     removeUnsavedEventTile();
-    setTimeDateInputWidths();
+    setTimeDateInputWidths(modal);
     removeSeparators(modal);
 };
 
@@ -54,24 +59,23 @@ const handleInputClick = (item) => {
 
 const toggleModal = (isOpen, modal) => (modal.style.display = isOpen ? "none" : "block");
 
-const closeModal = (closeBtn, selectionBtns) => {
+const closeModal = (modal) => {
     const isModalCurrentyOpen = true;
 
+    getTitleInput(modal).value = "";
     removeUnsavedEventTile();
     toggleModal(isModalCurrentyOpen, getModal());
-    closeBtn.removeEventListener("click", closeModal);
-    selectionBtns.forEach((item) => item.removeEventListener("click", () => handleInputClick(item)));
+    getCloseBtn(modal).removeEventListener("click", closeModal);
+    getSettingsToggleElements(modal).forEach((item) => item.removeEventListener("click", () => handleInputClick(item)));
 };
 
 const initModal = (modal) => {
-    const selectionBtns = document.querySelectorAll(".to-select");
-    const closeBtn = document.querySelector("#close-modal");
     const isModalCurrentlyOpen = false;
 
     toggleModal(isModalCurrentlyOpen, modal);
     resetModal(modal);
-    closeBtn.addEventListener("click", () => closeModal(closeBtn, selectionBtns));
-    selectionBtns.forEach((item) => item.addEventListener("click", () => handleInputClick(item)));
+    getCloseBtn(modal).addEventListener("click", () => closeModal(modal));
+    getSettingsToggleElements(modal).forEach((item) => item.addEventListener("click", () => handleInputClick(item)));
 };
 
 const positionModalX = (modal, event) => {
@@ -105,13 +109,33 @@ const positionModalY = (modal, event) => {
     }
 };
 
+const setTimeDateInputs = (event, modal) => {
+    const eventInfo = constructEventInfo(event);
+    const dateText = `${eventInfo.weekdayLong}, ${eventInfo.monthLong} ${eventInfo.day}`;
+    const start = eventInfo.eventStartTime;
+    const end = eventInfo.eventEndTime;
+
+    // setTimeDateInputWidths(modal);
+
+    modal.querySelector("#date-btn span").innerText = dateText;
+    modal.querySelector("#time-start-btn span").innerText = start;
+    modal.querySelector("#time-end-btn span").innerText = end;
+
+    modal.querySelector("#date").value = dateText;
+    modal.querySelector("#time-start").value = start;
+    modal.querySelector("#time-end").value = end;
+};
+
 const openModal = (event) => {
     const modal = getModal();
+    const saveBtn = getSaveBtn(modal);
 
+    saveBtn.addEventListener("click", () => saveEvent(modal, saveBtn));
+    setTimeDateInputs(event, modal);
     initModal(modal);
     positionModalX(modal, event);
     positionModalY(modal, event);
     document.querySelector("#title").focus();
 };
 
-export { initModal, openModal, getModal };
+export { initModal, openModal, getModal, closeModal };

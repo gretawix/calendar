@@ -2,7 +2,7 @@ import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
 import { createDomElement, formatHours } from "./utils.js";
-import { createNewEventTile } from "./eventDisplay.js";
+import { createNewEventTile } from "./displayEvent.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -102,8 +102,9 @@ const createWeek = (today) => {
     const monday = getStartOfWeek(today);
 
     for (let i = 0; i < weekDaysNumber; i++) {
-        const day = new Date();
+        const day = new Date(monday);
         day.setDate(monday.getDate() + i);
+
         const [weekDay, month, dayNum, year] = day.toString().split(" ");
         week.push({
             weekDay: weekDay,
@@ -141,12 +142,15 @@ const initWeekView = () => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
     });
+    grid.scrollBy(0, cellHeight * 7);
     daysGridColumns.forEach((col) => {
         col.addEventListener("click", (event) => {
             const clickedWeekDayCol = event.target;
-            openModal(event);
-            const eventTile = createNewEventTile(event);
-            if (clickedWeekDayCol.hasAttribute("data-weekday")) clickedWeekDayCol.appendChild(eventTile);
+            if (clickedWeekDayCol.hasAttribute("data-year")) {
+                openModal(event);
+                const eventTile = createNewEventTile(event);
+                clickedWeekDayCol.appendChild(eventTile);
+            }
         });
     });
 };

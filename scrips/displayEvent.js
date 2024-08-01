@@ -1,17 +1,6 @@
-import { createDomElement, formatHours } from "./utils.js";
+import { createDomElement } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
-
-const getEventInfo = (title, clickPosition) => {
-    const hour = formatHours(Math.floor(clickPosition / cellHeight));
-    let minutes = "00";
-    if (clickPosition % cellHeight === cellHeight / 2) minutes = "30";
-
-    return {
-        eventTitle: title,
-        eventStartTime: `${hour}:${minutes}`,
-        eventEndTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
-    };
-};
+import { constructEventInfo } from "./eventsData.js";
 
 const getEventTileTopPosition = (event) => {
     const clickedElement = event.target;
@@ -37,7 +26,7 @@ const populateEventTile = (eventInfo) => {
 
 const createNewEventTile = (event) => {
     const tileTopPosition = getEventTileTopPosition(event);
-    const eventInfo = getEventInfo("(no title)", tileTopPosition);
+    const eventInfo = constructEventInfo(event);
     const eventTile = populateEventTile(eventInfo);
 
     eventTile.style.top = `${tileTopPosition}px`;
@@ -49,4 +38,4 @@ const removeUnsavedEventTile = () => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     if (currentEventTile) currentEventTile.parentElement.removeChild(currentEventTile);
 };
-export { createNewEventTile, removeUnsavedEventTile };
+export { createNewEventTile, removeUnsavedEventTile, constructEventInfo, getEventTileTopPosition };

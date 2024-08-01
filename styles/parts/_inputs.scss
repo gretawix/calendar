@@ -44,6 +44,9 @@ select {
             line-height: 28px;
             padding-bottom: 4px;
             border-bottom: 1px solid var(--grey-light);
+            &.error {
+                border-color: red;
+            }
             &:focus {
                 border-bottom: 2px solid var(--blue);
             }
