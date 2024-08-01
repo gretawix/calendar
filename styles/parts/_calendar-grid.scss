@@ -144,8 +144,9 @@
 }
 
 .hours-cells-column {
+    height: calc(24 * var(--cell-height));
+    position: relative;
     border-left: 1px solid var(--grey-light);
-    padding-right: 12px;
     min-width: var(--min-col-width);
     background: repeating-linear-gradient(
         var(--white),
@@ -153,10 +154,6 @@
         var(--grey-light) 48px,
         var(--grey-light) var(--cell-height)
     );
-}
-.inner-hour-cell-column {
-    height: calc(24 * var(--cell-height) - 10px);
-    position: relative;
 }
 .hours-cells-all {
     @include verticalScrollStyle;
