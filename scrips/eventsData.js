@@ -3,7 +3,6 @@ import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { getEventTileTopPosition, placeNewEventTile } from "./currentEventTile.js";
 import { getTitleInput, getModal } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { handleTitleInputError } from "./inputs.js";
 import {
     eventsDataKey,
     getDataFromLocalStorage,
@@ -36,9 +35,10 @@ const constructEventData = (event, title = "(no title)") => {
     return eventData;
 };
 
-const recordNewEvent = (newEventData) => {
+const recordNewEvent = (newEventData, currentEventTile) => {
     const allSavedEvents = getDataFromLocalStorage(savedEventsKey) || [];
 
+    placeNewEventTile(currentEventTile, newEventData);
     allSavedEvents.push(newEventData);
     storeDataInLocalStorage(savedEventsKey, allSavedEvents);
 };
@@ -51,14 +51,11 @@ const saveEvent = () => {
 
     if (titleInput.value) {
         eventData.title = titleInput.value;
-        placeNewEventTile(currentEventTile, eventData);
-        recordNewEvent(eventData);
-        titleInput.removeEventListener("change", (event) => handleTitleInputError(event, titleInput));
+        recordNewEvent(eventData, currentEventTile);
         closeModal(modal);
     } else {
         titleInput.classList.add("error");
         titleInput.focus();
-        titleInput.addEventListener("input", (event) => handleTitleInputError(event, titleInput));
     }
 };
 

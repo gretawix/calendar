@@ -1,7 +1,8 @@
 import { setSameWidth } from "./utils.js";
-import { resetDropdownItem } from "./inputs.js";
-import { getModal, getCloseBtn, getSettingsToggleElements, getTitleInput } from "./selectors.js";
+import { resetDropdownItem, initDropdownSelect, handleEmptyTitleInput } from "./inputs.js";
+import { getModal, getSaveBtn, getTitleInput, getCloseBtn, getSettingsToggleElements } from "./selectors.js";
 import { removeUnsavedEventTile } from "./currentEventTile.js";
+import { saveEvent } from "./eventsData.js";
 
 const setTimeDateInputWidths = (modal) => {
     modal.querySelector("#date-btn").style.width = "fit-content";
@@ -19,16 +20,7 @@ const removeSeparators = (modal) => {
     });
 };
 
-const resetModal = (modal) => {
-    modal.querySelectorAll(".preview-settings").forEach((item) => (item.style.display = "flex"));
-    modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
-    modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
-    removeUnsavedEventTile();
-    setTimeDateInputWidths(modal);
-    removeSeparators(modal);
-};
-
-const separateInputs = (parent) => {
+const addSeparators = (parent) => {
     const parentClasses = parent.classList;
     const [prevDiv, nextDiv] = [parent.previousElementSibling, parent.nextElementSibling];
     const [separatorTop, separatorBottom] = ["separated-top", "separated-bottom"];
@@ -47,34 +39,21 @@ const separateInputs = (parent) => {
     }
 };
 
-const handleInputClick = (item) => {
+const resetModal = (modal) => {
+    modal.querySelectorAll(".preview-settings").forEach((item) => (item.style.display = "flex"));
+    modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
+    modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
+    removeUnsavedEventTile();
+    setTimeDateInputWidths(modal);
+    removeSeparators(modal);
+};
+
+const handleSettingsClick = (item) => {
     const parent = item.closest(".single-setting-section");
     const settingsDiv = parent.querySelector(".full-settings");
     settingsDiv.classList.add("active");
     parent.querySelector(".preview-settings").style.display = "none";
-    separateInputs(parent);
-    item.removeEventListener("click", () => handleInputClick(item));
-};
-
-const toggleModal = (isOpen, modal) => (modal.style.display = isOpen ? "none" : "block");
-
-const closeModal = (modal) => {
-    const isModalCurrentyOpen = true;
-
-    getTitleInput(modal).value = "";
-    removeUnsavedEventTile();
-    toggleModal(isModalCurrentyOpen, getModal());
-    getCloseBtn(modal).removeEventListener("click", closeModal);
-    getSettingsToggleElements(modal).forEach((item) => item.removeEventListener("click", () => handleInputClick(item)));
-};
-
-const initModal = (modal) => {
-    const isModalCurrentlyOpen = false;
-
-    toggleModal(isModalCurrentlyOpen, modal);
-    resetModal(modal);
-    getCloseBtn(modal).addEventListener("click", () => closeModal(modal));
-    getSettingsToggleElements(modal).forEach((item) => item.addEventListener("click", () => handleInputClick(item)));
+    addSeparators(parent);
 };
 
 const positionModalX = (modal, event) => {
@@ -122,14 +101,39 @@ const setTimeDateInputs = (modal, newEventData) => {
     modal.querySelector("#time-end").value = end;
 };
 
+const closeModal = (modal) => {
+    getTitleInput(modal).value = "";
+    removeUnsavedEventTile();
+    modal.style.display = "none";
+};
+
 const openModal = (event, newEventData) => {
     const modal = getModal();
 
+    modal.style.display = "block";
     setTimeDateInputs(modal, newEventData);
-    initModal(modal);
+    resetModal(modal);
     positionModalX(modal, event);
     positionModalY(modal, event);
     document.querySelector("#title").focus();
 };
 
-export { openModal, closeModal };
+const initModal = () => {
+    const modal = getModal();
+    const saveBtn = getSaveBtn(modal);
+    const titleInput = getTitleInput(modal);
+    const closeBtn = getCloseBtn(modal);
+    const modalSettings = getSettingsToggleElements(modal);
+
+    initDropdownSelect(modal);
+    closeBtn.addEventListener("click", () => closeModal(modal));
+    saveBtn.addEventListener("click", saveEvent);
+    titleInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") saveEvent();
+        if (event.key === "Escape") closeModal(modal);
+    });
+    titleInput.addEventListener("input", (event) => handleEmptyTitleInput(event, titleInput));
+    modalSettings.forEach((item) => item.addEventListener("click", () => handleSettingsClick(item)));
+};
+
+export { openModal, closeModal, initModal };

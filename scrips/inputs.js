@@ -17,11 +17,11 @@ const selectDropdownItem = (dropdownItem) => {
 const initDropdownSelect = (modal) => {
     const dropdowns = modal.querySelectorAll(".select-input");
 
-    dropdowns.forEach((item) => {
-        item.addEventListener("click", () => {
-            item.classList.toggle("open");
-            selectDropdownItem(item);
+    dropdowns.forEach((dropdownItem) => {
+        dropdownItem.addEventListener("click", () => {
+            dropdownItem.classList.toggle("open");
         });
+        selectDropdownItem(dropdownItem);
     });
 };
 
@@ -35,8 +35,8 @@ const resetDropdownItem = (dropdownItem) => {
     });
 };
 
-const handleTitleInputError = (event, titleInput) => {
+const handleEmptyTitleInput = (event, titleInput) => {
     if (event.target.value) titleInput.classList.remove("error");
 };
 
-export { selectDropdownItem, initDropdownSelect, setInputLabel, resetDropdownItem, handleTitleInputError };
+export { initDropdownSelect, setInputLabel, resetDropdownItem, handleEmptyTitleInput };
