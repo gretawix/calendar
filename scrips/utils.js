@@ -53,9 +53,9 @@ const appendChildren = (parent, childrenToAppedn) => {
     return parent;
 };
 
-const formatHours = (hour) => (hour < 10 ? `0${hour}` : `${hour}`);
+const formatHours = (hour) => (parseInt(hour) < 10 ? `0${hour}` : `${hour}`);
 
-const formatMinutes = (minutes) => (minutes < 10 ? `${minutes}0` : `${minutes}`);
+const formatMinutes = (minutes) => (parseInt(minutes) < 10 ? `${minutes}0` : `${minutes}`);
 
 export {
     setSameWidth,

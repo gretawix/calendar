@@ -6,9 +6,8 @@ import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStora
 import { minutesToHour } from "./timeCalculations.js";
 
 const calculateTopPosition = (eventData) => {
-    let [startHour, startMin] = eventData.startTime.split(":");
-    startHour = parseInt(startHour, 10);
-    startMin = minutesToHour(startMin);
+    const startHour = parseInt(eventData.startTime.hour, 10);
+    const startMin = minutesToHour(eventData.startTime.minutes);
 
     return (startHour + startMin) * cellHeight;
 };
@@ -32,7 +31,7 @@ const createEventTile = (eventData) => {
 
     assignTileClass(eventTile, eventLength);
     title.innerText = eventData.title;
-    timeText.innerText = `${eventData.startTime} - ${eventData.endTime}`;
+    timeText.innerText = `${eventData.startTime.hour}:${eventData.startTime.minutes} - ${eventData.endTime.hour}:${eventData.endTime.minutes}`;
     eventTile.style.top = `${calculateTopPosition(eventData)}px`;
     eventTile.style.height = `${eventLength * cellHeight - 4}px`;
 
