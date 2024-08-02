@@ -1,7 +1,7 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
-import { getTitleInput, getModal, getGridDays } from "./selectors.js";
+import { getModalInput, getModal, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
 import { minutesToHour } from "./timeCalculations.js";
 import {
@@ -65,18 +65,20 @@ const getEventLength = (eventData) => {
 };
 
 const saveEvent = () => {
-    const modal = getModal();
-    const titleInput = getTitleInput(modal);
+    const title = getModalInput("title");
+    const dateInput = getModalInput("date");
+    const timeStart = getModalInput("time-start");
+    const timeEnd = getModalInput("time-end");
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     const eventData = getDataFromLocalStorage(currentEventDataKey);
 
-    if (titleInput.value) {
-        eventData.title = titleInput.value;
+    if (title.value) {
+        eventData.title = title.value;
         recordNewEvent(eventData, currentEventTile);
         closeModal();
     } else {
-        titleInput.classList.add("error");
-        titleInput.focus();
+        title.classList.add("error");
+        title.focus();
     }
 };
 

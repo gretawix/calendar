@@ -6,10 +6,10 @@ const getCloseBtn = (modal) => modal.querySelector("#close-modal");
 
 const getSettingsToggleElements = (modal) => modal.querySelectorAll(".to-select");
 
-const getTitleInput = (modal) => modal.querySelector("#title");
+const getModalInput = (inputId) => getModal().querySelector(`#${inputId}`);
 
 const getGrid = () => document.querySelector("#days-hours-grid");
 
 const getGridDays = () => getGrid().querySelectorAll(".hours-cells-column");
 
-export { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getTitleInput, getGrid, getGridDays };
+export { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getModalInput, getGrid, getGridDays };

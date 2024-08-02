@@ -1,6 +1,6 @@
 import { setSameWidth } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, handleEmptyTitleInput } from "./inputs.js";
-import { getModal, getSaveBtn, getTitleInput, getCloseBtn, getSettingsToggleElements } from "./selectors.js";
+import { getModal, getSaveBtn, getModalInput, getCloseBtn, getSettingsToggleElements } from "./selectors.js";
 import { removeUnsavedEventTile } from "./eventTile.js";
 import { saveEvent } from "./eventsData.js";
 
@@ -104,7 +104,7 @@ const setTimeDateInputs = (modal, newEventData) => {
 const closeModal = () => {
     const modal = getModal();
 
-    getTitleInput(modal).value = "";
+    getModalInput("title").value = "";
     removeUnsavedEventTile();
     modal.style.display = "none";
 };
@@ -123,7 +123,7 @@ const openModal = (event, newEventData) => {
 const initModal = () => {
     const modal = getModal();
     const saveBtn = getSaveBtn(modal);
-    const titleInput = getTitleInput(modal);
+    const titleInput = getModalInput("title");
     const closeBtn = getCloseBtn(modal);
     const modalSettings = getSettingsToggleElements(modal);
 
