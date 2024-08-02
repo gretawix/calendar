@@ -110,8 +110,8 @@ const positionModalY = (modal, event) => {
 
 const setTimeDateInputs = (modal, newEventData) => {
     const dateText = `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`;
-    const start = newEventData.eventStartTime;
-    const end = newEventData.eventEndTime;
+    const start = newEventData.startTime;
+    const end = newEventData.endTime;
 
     modal.querySelector("#date-btn span").innerText = dateText;
     modal.querySelector("#time-start-btn span").innerText = start;

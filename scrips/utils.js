@@ -47,6 +47,12 @@ const getLongMonthName = (shortName) => {
     return monthNames.find((name) => name.short === shortName).long;
 };
 
+const appendChildren = (parent, childrenToAppedn) => {
+    childrenToAppedn.forEach((child) => parent.appendChild(child));
+
+    return parent;
+};
+
 const formatHours = (hour) => (hour < 10 ? `0${hour}` : `${hour}`);
 
-export { setSameWidth, createDomElement, formatHours, getLongWeekDayName, getLongMonthName };
+export { setSameWidth, createDomElement, formatHours, getLongWeekDayName, getLongMonthName, appendChildren };

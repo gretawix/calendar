@@ -1,6 +1,7 @@
 import initWeekView from "./weekView.js";
 import { getModal, getSaveBtn, getTitleInput } from "./selectors.js";
 import { saveEvent } from "./eventsData.js";
+import { closeModal } from "./modal.js";
 
 import { initDropdownSelect } from "./inputs.js";
 
@@ -13,8 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initDropdownSelect(modal);
     saveBtn.addEventListener("click", saveEvent);
     titleInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            saveEvent();
-        }
+        if (event.key === "Enter") saveEvent();
+        if (event.key === "Escape") closeModal(modal);
     });
 });

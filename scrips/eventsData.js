@@ -16,9 +16,9 @@ const constructEventData = (event, title = "(no title)") => {
     if (clickPosition % cellHeight === cellHeight / 2) minutes = "30";
 
     const eventData = {
-        eventTitle: title,
-        eventStartTime: `${hour}:${minutes}`,
-        eventEndTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
+        title,
+        startTime: `${hour}:${minutes}`,
+        endTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
         weekday: weekdayShort,
         weekdayLong: getLongWeekDayName(weekdayShort),
         day: clickedColumn.getAttribute("data-day"),

@@ -1,28 +1,25 @@
-import { createDomElement } from "./utils.js";
+import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
 import { constructEventData } from "./eventsData.js";
 
 const getEventTileTopPosition = (event) => {
-    const clickedElement = event.target;
-    const distanceFromTop = clickedElement.getBoundingClientRect().top;
+    const distanceFromTop = event.target.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
     const increment = cellHeight / 2;
 
     return Math.floor(clickPosition / increment) * increment;
 };
 
-const populateEventTile = (eventInfo) => {
+const populateEventTile = (eventData) => {
     const eventTile = createDomElement("div", "event-tile regular placeholder", currentEventTileId);
-    const titleElement = createDomElement("p", "event-tile-title");
-    const timeSpanTextElement = createDomElement("p", "event-tile-time");
+    const title = createDomElement("p", "event-tile-title");
+    const timeText = createDomElement("p", "event-tile-time");
 
-    titleElement.innerText = eventInfo.eventTitle;
-    timeSpanTextElement.innerText = `${eventInfo.eventStartTime} - ${eventInfo.eventEndTime}`;
-    eventTile.appendChild(titleElement);
-    eventTile.appendChild(timeSpanTextElement);
+    title.innerText = eventData.title;
+    timeText.innerText = `${eventData.startTime} - ${eventData.endTime}`;
 
-    return eventTile;
+    return appendChildren(eventTile, [title, timeText]);
 };
 
 const createNewEventTile = (event, newEventData) => {
