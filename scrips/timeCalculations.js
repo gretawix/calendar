@@ -20,4 +20,8 @@ const getTimeZone = (today) => {
     return `GMT${sign}${formattedTimeZone}`;
 };
 
-export { getStartOfWeek, getTimeZone };
+const minutesToHour = (minutes) => {
+    return Math.round((parseInt(minutes, 10) / 60) * 100) / 100;
+};
+
+export { getStartOfWeek, getTimeZone, minutesToHour };

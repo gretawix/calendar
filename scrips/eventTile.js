@@ -1,29 +1,28 @@
 import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
-import { constructEventData } from "./eventsData.js";
+import { constructEventData, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
+import { minutesToHour } from "./timeCalculations.js";
 
-const eventPositionFromClick = (event) => {
-    const distanceFromTop = event.target.getBoundingClientRect().top;
-    const clickPosition = event.clientY - distanceFromTop;
-    const increment = cellHeight / 2;
+const calculateTopPosition = (eventData) => {
+    let [startHour, startMin] = eventData.startTime.split(":");
+    startHour = parseInt(startHour, 10);
+    startMin = minutesToHour(startMin);
 
-    return Math.floor(clickPosition / increment) * increment;
+    return (startHour + startMin) * cellHeight;
 };
 
-const eventPositionFromTime = (eventData) => {
-    return "100px";
-};
-
-const createEventTile = (eventData, topPosition) => {
-    const eventTile = createDomElement("div", "event-tile regular placeholder");
+const createEventTile = (eventData) => {
+    const eventTile = createDomElement("div", "event-tile");
     const title = createDomElement("p", "event-tile-title");
     const timeText = createDomElement("p", "event-tile-time");
+    const eventLength = getEventLength(eventData);
 
     title.innerText = eventData.title;
     timeText.innerText = `${eventData.startTime} - ${eventData.endTime}`;
-    eventTile.style.top = `${topPosition}px`;
+    eventTile.style.top = `${calculateTopPosition(eventData)}px`;
+    eventTile.style.height = `${eventLength * cellHeight - 4}px`;
 
     return appendChildren(eventTile, [title, timeText]);
 };
@@ -38,9 +37,9 @@ const handleEventCreationClick = (event) => {
 
     if (clickedWeekDayCol.hasAttribute("data-year")) {
         const newEventData = constructEventData(event);
-        const topPosition = eventPositionFromClick(event);
-        const eventTile = createEventTile(newEventData, topPosition);
+        const eventTile = createEventTile(newEventData);
 
+        eventTile.classList.add("placeholder");
         eventTile.id = currentEventTileId;
         storeDataInLocalStorage(currentEventDataKey, newEventData);
         openModal(event, newEventData);
@@ -54,4 +53,4 @@ const placeNewEventTile = (currentEventTile, eventData) => {
     currentEventTile.removeAttribute("id");
 };
 
-export { removeUnsavedEventTile, eventPositionFromClick, handleEventCreationClick, placeNewEventTile };
+export { removeUnsavedEventTile, handleEventCreationClick, placeNewEventTile, createEventTile };

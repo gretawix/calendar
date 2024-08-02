@@ -2,6 +2,7 @@ import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
 import { createDomElement, formatHours, appendChildren } from "./utils.js";
 import { handleEventCreationClick } from "./eventTile.js";
+import { getGrid, getGridDays } from "./selectors.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -135,11 +136,11 @@ const initTimeGridScroll = (grid) => {
 const initWeekView = () => {
     drawWeekView();
 
-    const grid = document.querySelector("#days-hours-grid");
-    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
+    const grid = getGrid();
+    const gridDays = getGridDays();
 
     initTimeGridScroll(grid);
-    daysGridColumns.forEach((col) => col.addEventListener("click", handleEventCreationClick));
+    gridDays.forEach((col) => col.addEventListener("click", handleEventCreationClick));
 };
 
 export default initWeekView;

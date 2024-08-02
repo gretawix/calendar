@@ -8,4 +8,8 @@ const getSettingsToggleElements = (modal) => modal.querySelectorAll(".to-select"
 
 const getTitleInput = (modal) => modal.querySelector("#title");
 
-export { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getTitleInput };
+const getGrid = () => document.querySelector("#days-hours-grid");
+
+const getGridDays = () => getGrid().querySelectorAll(".hours-cells-column");
+
+export { getModal, getSaveBtn, getCloseBtn, getSettingsToggleElements, getTitleInput, getGrid, getGridDays };
