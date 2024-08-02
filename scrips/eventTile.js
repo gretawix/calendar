@@ -1,7 +1,7 @@
 import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
-import { constructEventData, getEventLength } from "./eventsData.js";
+import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
 import { minutesToHour } from "./timeCalculations.js";
 
@@ -13,12 +13,24 @@ const calculateTopPosition = (eventData) => {
     return (startHour + startMin) * cellHeight;
 };
 
+const assignTileClass = (eventTile, eventLength) => {
+    eventTile.classList.remove("short", "long", "regular");
+    if (eventLength < 1) {
+        eventTile.classList.add("short");
+    } else if (eventLength > 1) {
+        eventTile.classList.add("long");
+    } else {
+        eventTile.classList.add("regular");
+    }
+};
+
 const createEventTile = (eventData) => {
     const eventTile = createDomElement("div", "event-tile");
     const title = createDomElement("p", "event-tile-title");
     const timeText = createDomElement("p", "event-tile-time");
     const eventLength = getEventLength(eventData);
 
+    assignTileClass(eventTile, eventLength);
     title.innerText = eventData.title;
     timeText.innerText = `${eventData.startTime} - ${eventData.endTime}`;
     eventTile.style.top = `${calculateTopPosition(eventData)}px`;
@@ -36,7 +48,7 @@ const handleEventCreationClick = (event) => {
     const clickedWeekDayCol = event.target;
 
     if (clickedWeekDayCol.hasAttribute("data-year")) {
-        const newEventData = constructEventData(event);
+        const newEventData = constructNewEvent(event);
         const eventTile = createEventTile(newEventData);
 
         eventTile.classList.add("placeholder");

@@ -1,9 +1,9 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
-import { cellHeight, currentEventTileId } from "./calendarVars.js";
+import { cellHeight, currentEventTileId, defaultEventLength } from "./calendarVars.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
-import { getModalInput, getModal, getGridDays } from "./selectors.js";
+import { getModalInput, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { minutesToHour } from "./timeCalculations.js";
+import { minutesToHour, hoursToMinutes } from "./timeCalculations.js";
 import {
     currentEventDataKey,
     getDataFromLocalStorage,
@@ -19,10 +19,30 @@ const createEventPosition = (event) => {
     return Math.floor(clickPosition / increment) * increment;
 };
 
-const constructEventData = (event, title = "(no title)") => {
+const getEndTime = (startHour, startMinutes) => {
+    const endTime = startHour + minutesToHour(startMinutes) + defaultEventLength;
+    const endHour = Math.floor(endTime);
+    const endMinutes = hoursToMinutes(endTime - endHour);
+
+    return `${formatHours(parseInt(endHour, 10))}:${endMinutes}`;
+};
+
+const getEventLength = (eventData) => {
+    let [startHour, startMin] = eventData.startTime.split(":");
+    let [endHour, endMin] = eventData.endTime.split(":");
+
+    startHour = parseInt(startHour, 10);
+    startMin = minutesToHour(startMin);
+    endHour = parseInt(endHour, 10);
+    endMin = minutesToHour(endMin);
+
+    return endHour + endMin - startHour - startMin;
+};
+
+const constructNewEvent = (event) => {
     const clickedColumn = event.target;
     const clickPosition = createEventPosition(event);
-    const hour = formatHours(Math.floor(clickPosition / cellHeight));
+    const startHour = Math.floor(clickPosition / cellHeight);
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
     const monthNameShort = clickedColumn.getAttribute("data-month");
 
@@ -30,9 +50,9 @@ const constructEventData = (event, title = "(no title)") => {
     if (clickPosition % cellHeight === cellHeight / 2) minutes = "30";
 
     const eventData = {
-        title,
-        startTime: `${hour}:${minutes}`,
-        endTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
+        title: "(no title)",
+        startTime: `${formatHours(parseInt(startHour, 10))}:${minutes}`,
+        endTime: getEndTime(startHour, minutes),
         weekday: weekdayShort,
         weekdayLong: getLongWeekDayName(weekdayShort),
         day: clickedColumn.getAttribute("data-day"),
@@ -50,18 +70,6 @@ const recordNewEvent = (newEventData, currentEventTile) => {
     placeNewEventTile(currentEventTile, newEventData);
     allSavedEvents.push(newEventData);
     storeDataInLocalStorage(savedEventsKey, allSavedEvents);
-};
-
-const getEventLength = (eventData) => {
-    let [startHour, startMin] = eventData.startTime.split(":");
-    let [endHour, endMin] = eventData.endTime.split(":");
-
-    startHour = parseInt(startHour, 10);
-    startMin = minutesToHour(startMin);
-    endHour = parseInt(endHour, 10);
-    endMin = minutesToHour(endMin);
-
-    return endHour + endMin - startHour - startMin;
 };
 
 const saveEvent = () => {
@@ -99,4 +107,4 @@ const displayAllSavedEvents = () => {
     });
 };
 
-export { saveEvent, constructEventData, getEventLength, displayAllSavedEvents };
+export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents };
