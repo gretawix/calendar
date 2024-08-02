@@ -1,7 +1,7 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
-import { placeNewEventTile } from "./eventTile.js";
-import { getTitleInput, getModal } from "./selectors.js";
+import { placeNewEventTile, createEventTile } from "./eventTile.js";
+import { getTitleInput, getModal, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
 import { minutesToHour } from "./timeCalculations.js";
 import {
@@ -80,4 +80,21 @@ const saveEvent = () => {
     }
 };
 
-export { saveEvent, constructEventData, getEventLength };
+const displayAllSavedEvents = () => {
+    const allSavedEvents = getDataFromLocalStorage(savedEventsKey) || [];
+    const gridDays = getGridDays();
+
+    allSavedEvents.forEach((oneEvent) => {
+        const eventTile = createEventTile(oneEvent);
+        const eventParentDiv = Array.from(gridDays).find(
+            (day) =>
+                day.dataset.day === oneEvent.day &&
+                day.dataset.month === oneEvent.month &&
+                day.dataset.year === oneEvent.year
+        );
+
+        eventParentDiv.appendChild(eventTile);
+    });
+};
+
+export { saveEvent, constructEventData, getEventLength, displayAllSavedEvents };
