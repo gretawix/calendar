@@ -1,7 +1,7 @@
 import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
 import { createDomElement, formatHours, appendChildren } from "./utils.js";
-import { handleEventCreationClick } from "./displayEvent.js";
+import { handleEventCreationClick } from "./currentEventTile.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");

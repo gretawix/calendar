@@ -1,7 +1,7 @@
 import { setSameWidth } from "./utils.js";
 import { resetDropdownItem } from "./inputs.js";
 import { getModal, getCloseBtn, getSettingsToggleElements, getTitleInput } from "./selectors.js";
-import { removeUnsavedEventTile } from "./displayEvent.js";
+import { removeUnsavedEventTile } from "./currentEventTile.js";
 
 const setTimeDateInputWidths = (modal) => {
     modal.querySelector("#date-btn").style.width = "fit-content";

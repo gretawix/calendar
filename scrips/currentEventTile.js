@@ -2,6 +2,7 @@ import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
 import { constructEventData } from "./eventsData.js";
+import { eventsDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
 
 const getEventTileTopPosition = (event) => {
     const distanceFromTop = event.target.getBoundingClientRect().top;
@@ -40,10 +41,17 @@ const handleEventCreationClick = (event) => {
 
     if (clickedWeekDayCol.hasAttribute("data-year")) {
         const newEventData = constructEventData(event);
+        storeDataInLocalStorage(eventsDataKey, newEventData);
         const eventTile = createNewEventTile(event, newEventData);
         openModal(event, newEventData);
         clickedWeekDayCol.appendChild(eventTile);
     }
 };
 
-export { removeUnsavedEventTile, getEventTileTopPosition, handleEventCreationClick };
+const placeNewEventTile = (currentEventTile, eventData) => {
+    currentEventTile.querySelector(".event-tile-title").innerText = eventData.title;
+    currentEventTile.classList.remove("placeholder");
+    currentEventTile.removeAttribute("id");
+};
+
+export { removeUnsavedEventTile, getEventTileTopPosition, handleEventCreationClick, placeNewEventTile };

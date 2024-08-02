@@ -1,9 +1,15 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
-import { getEventTileTopPosition } from "./displayEvent.js";
+import { getEventTileTopPosition, placeNewEventTile } from "./currentEventTile.js";
 import { getTitleInput, getModal } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { handleTitleInputChange } from "./inputs.js";
+import { handleTitleInputError } from "./inputs.js";
+import {
+    eventsDataKey,
+    getDataFromLocalStorage,
+    savedEventsKey,
+    storeDataInLocalStorage,
+} from "./handleLocalStorage.js";
 
 const constructEventData = (event, title = "(no title)") => {
     const clickedColumn = event.target;
@@ -30,21 +36,29 @@ const constructEventData = (event, title = "(no title)") => {
     return eventData;
 };
 
+const recordNewEvent = (newEventData) => {
+    const allSavedEvents = getDataFromLocalStorage(savedEventsKey) || [];
+
+    allSavedEvents.push(newEventData);
+    storeDataInLocalStorage(savedEventsKey, allSavedEvents);
+};
+
 const saveEvent = () => {
     const modal = getModal();
     const titleInput = getTitleInput(modal);
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
+    const eventData = getDataFromLocalStorage(eventsDataKey);
 
     if (titleInput.value) {
-        currentEventTile.querySelector(".event-tile-title").innerText = titleInput.value;
-        currentEventTile.classList.remove("placeholder");
-        currentEventTile.removeAttribute("id");
-        titleInput.removeEventListener("change", (event) => handleTitleInputChange(event, titleInput));
+        eventData.title = titleInput.value;
+        placeNewEventTile(currentEventTile, eventData);
+        recordNewEvent(eventData);
+        titleInput.removeEventListener("change", (event) => handleTitleInputError(event, titleInput));
         closeModal(modal);
     } else {
         titleInput.classList.add("error");
         titleInput.focus();
-        titleInput.addEventListener("input", (event) => handleTitleInputChange(event, titleInput));
+        titleInput.addEventListener("input", (event) => handleTitleInputError(event, titleInput));
     }
 };
 
