@@ -1,7 +1,7 @@
 import { formatHours, getLongWeekDayName, getLongMonthName, formatMinutes } from "./utils.js";
-import { cellHeight, currentEventTileId, defaultEventLength } from "./calendarVars.js";
+import { cellHeight, currentEventTileId, defaultEventLength, emptyEventTitle } from "./calendarVars.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
-import { getModalInput, getGridDays } from "./selectors.js";
+import { getModalInputs, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
 import { minutesToHour, hoursToMinutes } from "./timeCalculations.js";
 import {
@@ -11,7 +11,7 @@ import {
     storeDataInLocalStorage,
 } from "./handleLocalStorage.js";
 
-const adjustEventPosition = (event) => {
+const adjustEventTopPosition = (event) => {
     const distanceFromTop = event.target.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
     const increment = cellHeight / 2;
@@ -28,15 +28,15 @@ const getEventLength = (eventData) => {
     return endHour + endMin - startHour - startMin;
 };
 
-const setStartTime = (startHour, minutes) => {
+const setTime = (hour, minutes) => {
     return {
-        hour: `${formatHours(startHour)}`,
+        hour: `${formatHours(hour)}`,
         minutes: `${formatMinutes(minutes)}`,
     };
 };
 
-const setDefaultEndTime = (startHour, minutes) => {
-    const endTime = startHour + minutesToHour(minutes) + defaultEventLength;
+const setDefaultEndTime = (startHour, minutes, eventLength = defaultEventLength) => {
+    const endTime = parseInt(startHour, 10) + minutesToHour(parseInt(minutes, 10)) + eventLength;
     const endHour = Math.floor(endTime);
     const endMinutes = hoursToMinutes(endTime - endHour);
 
@@ -48,7 +48,7 @@ const setDefaultEndTime = (startHour, minutes) => {
 
 const constructNewEvent = (event) => {
     const clickedColumn = event.target;
-    const clickPosition = adjustEventPosition(event);
+    const clickPosition = adjustEventTopPosition(event);
     const startHour = Math.floor(clickPosition / cellHeight);
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
     const monthNameShort = clickedColumn.getAttribute("data-month");
@@ -57,8 +57,8 @@ const constructNewEvent = (event) => {
     if (clickPosition % cellHeight === cellHeight / 2) minutes = 30;
 
     return {
-        title: "(no title)",
-        startTime: setStartTime(startHour, minutes),
+        title: emptyEventTitle,
+        startTime: setTime(startHour, minutes),
         endTime: setDefaultEndTime(startHour, minutes),
         weekday: weekdayShort,
         weekdayLong: getLongWeekDayName(weekdayShort),
@@ -69,25 +69,37 @@ const constructNewEvent = (event) => {
     };
 };
 
-const recordNewEvent = (newEventData, currentEventTile) => {
+const recordNewEvent = (eventData) => {
     const allSavedEvents = getDataFromLocalStorage(savedEventsKey) || [];
+    const currentEventTile = document.querySelector(`#${currentEventTileId}`);
 
-    placeNewEventTile(currentEventTile, newEventData);
-    allSavedEvents.push(newEventData);
+    placeNewEventTile(currentEventTile, eventData);
+    allSavedEvents.push(eventData);
     storeDataInLocalStorage(savedEventsKey, allSavedEvents);
 };
 
+const updateEventData = (eventData, title, dateInput, startTime, endTime) => {
+    const [weekDayLong, date] = dateInput.split(", ");
+
+    eventData.weekday = weekDayLong.slice(0, 3);
+    eventData.weekdayLong = weekDayLong;
+    [eventData.monthLong, eventData.day] = date.split(" ");
+    eventData.month = eventData.monthLong.slice(0, 3);
+
+    eventData.title = title;
+    eventData.startTime = setTime(...startTime.split(":"));
+    eventData.endTime = setTime(...endTime.split(":"));
+
+    return eventData;
+};
+
 const saveEvent = () => {
-    const title = getModalInput("title");
-    const dateInput = getModalInput("date");
-    const timeStart = getModalInput("time-start");
-    const timeEnd = getModalInput("time-end");
-    const currentEventTile = document.querySelector(`#${currentEventTileId}`);
-    const eventData = getDataFromLocalStorage(currentEventDataKey);
+    const [title, dateInput, startTime, endTime] = getModalInputs();
+    let eventData = getDataFromLocalStorage(currentEventDataKey);
 
     if (title.value) {
-        eventData.title = title.value;
-        recordNewEvent(eventData, currentEventTile);
+        eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
+        recordNewEvent(eventData);
         closeModal();
     } else {
         title.classList.add("error");
@@ -112,4 +124,4 @@ const displayAllSavedEvents = () => {
     });
 };
 
-export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents };
+export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, setTime, setDefaultEndTime };

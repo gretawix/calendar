@@ -1,8 +1,10 @@
 import { setSameWidth } from "./utils.js";
-import { resetDropdownItem, initDropdownSelect, handleEmptyTitleInput } from "./inputs.js";
-import { getModal, getSaveBtn, getModalInput, getCloseBtn, getSettingsToggleElements } from "./selectors.js";
-import { removeUnsavedEventTile } from "./eventTile.js";
-import { saveEvent } from "./eventsData.js";
+import { resetDropdownItem, initDropdownSelect } from "./inputs.js";
+import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
+import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
+import { saveEvent, setTime, getEventLength, setDefaultEndTime } from "./eventsData.js";
+import { currentEventTileId, emptyEventTitle } from "./calendarVars.js";
+import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
 
 const setTimeDateInputWidths = (modal) => {
     modal.querySelector("#date-btn").style.width = "fit-content";
@@ -101,10 +103,37 @@ const setTimeDateInputs = (modal, newEventData) => {
     modal.querySelector("#time-end").value = end;
 };
 
+const handleTitleChange = (event) => {
+    const title = document.querySelector(`#${currentEventTileId}`).querySelector(".event-tile-title");
+    const inputValue = event.target.value;
+    if (inputValue) event.target.classList.remove("error");
+    if (event.type === "blur") title.innerText = inputValue || emptyEventTitle;
+};
+
+const handleDateChange = (event) => {
+    console.log(event.target.value);
+};
+
+const handleTimeChange = (event, timeKey, modal) => {
+    const currentEventTile = document.querySelector(`#${currentEventTileId}`);
+    const timeText = currentEventTile.querySelector(".event-tile-time");
+    const eventData = getDataFromLocalStorage(currentEventDataKey);
+    const eventLength = getEventLength(eventData);
+
+    eventData[timeKey] = setTime(...event.target.value.split(":"));
+    if (timeKey === "startTime") {
+        eventData.endTime = setDefaultEndTime(...event.target.value.split(":"), eventLength);
+        setTimeDateInputs(modal, eventData);
+    }
+    styleEventTile(currentEventTile, eventData);
+    updateTileTime(timeText, eventData);
+    storeDataInLocalStorage(currentEventDataKey, eventData);
+};
+
 const closeModal = () => {
     const modal = getModal();
 
-    getModalInput("title").value = "";
+    getModalInputById("title").value = "";
     removeUnsavedEventTile();
     modal.style.display = "none";
 };
@@ -122,19 +151,19 @@ const openModal = (event, newEventData) => {
 
 const initModal = () => {
     const modal = getModal();
-    const saveBtn = getSaveBtn(modal);
-    const titleInput = getModalInput("title");
-    const closeBtn = getCloseBtn(modal);
-    const modalSettings = getSettingsToggleElements(modal);
+    const [title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings] = getModalInputs();
 
     initDropdownSelect(modal);
     closeBtn.addEventListener("click", closeModal);
     saveBtn.addEventListener("click", saveEvent);
-    titleInput.addEventListener("keydown", (event) => {
+    title.addEventListener("input", handleTitleChange);
+    title.addEventListener("blur", handleTitleChange);
+    startTime.addEventListener("blur", (event) => handleTimeChange(event, "startTime", modal));
+    endTime.addEventListener("blur", (event) => handleTimeChange(event, "endTime", modal));
+    modal.addEventListener("keydown", (event) => {
         if (event.key === "Enter") saveEvent();
         if (event.key === "Escape") closeModal();
     });
-    titleInput.addEventListener("input", (event) => handleEmptyTitleInput(event, titleInput));
     modalSettings.forEach((item) => item.addEventListener("click", () => handleSettingsClick(item)));
 };
 

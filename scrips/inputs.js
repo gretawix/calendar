@@ -35,8 +35,4 @@ const resetDropdownItem = (dropdownItem) => {
     });
 };
 
-const handleEmptyTitleInput = (event, titleInput) => {
-    if (event.target.value) titleInput.classList.remove("error");
-};
-
-export { initDropdownSelect, setInputLabel, resetDropdownItem, handleEmptyTitleInput };
+export { initDropdownSelect, setInputLabel, resetDropdownItem };

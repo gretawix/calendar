@@ -12,8 +12,13 @@ const calculateTopPosition = (eventData) => {
     return (startHour + startMin) * cellHeight;
 };
 
-const assignTileClass = (eventTile, eventLength) => {
+const styleEventTile = (eventTile, eventData) => {
+    const eventLength = getEventLength(eventData);
+
+    eventTile.style.top = `${calculateTopPosition(eventData)}px`;
+    eventTile.style.height = `${eventLength * cellHeight - 4}px`;
     eventTile.classList.remove("short", "long", "regular");
+
     if (eventLength < 0.7) {
         eventTile.classList.add("short");
     } else if (eventLength > 1) {
@@ -23,17 +28,18 @@ const assignTileClass = (eventTile, eventLength) => {
     }
 };
 
+const updateTileTime = (timeText, eventData) => {
+    timeText.innerText = `${eventData.startTime.hour}:${eventData.startTime.minutes} - ${eventData.endTime.hour}:${eventData.endTime.minutes}`;
+};
+
 const createEventTile = (eventData) => {
     const eventTile = createDomElement("div", "event-tile");
     const title = createDomElement("p", "event-tile-title");
     const timeText = createDomElement("p", "event-tile-time");
-    const eventLength = getEventLength(eventData);
 
-    assignTileClass(eventTile, eventLength);
+    styleEventTile(eventTile, eventData);
     title.innerText = eventData.title;
-    timeText.innerText = `${eventData.startTime.hour}:${eventData.startTime.minutes} - ${eventData.endTime.hour}:${eventData.endTime.minutes}`;
-    eventTile.style.top = `${calculateTopPosition(eventData)}px`;
-    eventTile.style.height = `${eventLength * cellHeight - 4}px`;
+    updateTileTime(timeText, eventData);
 
     return appendChildren(eventTile, [title, timeText]);
 };
@@ -64,4 +70,11 @@ const placeNewEventTile = (currentEventTile, eventData) => {
     currentEventTile.removeAttribute("id");
 };
 
-export { removeUnsavedEventTile, handleEventCreationClick, placeNewEventTile, createEventTile };
+export {
+    removeUnsavedEventTile,
+    handleEventCreationClick,
+    placeNewEventTile,
+    createEventTile,
+    styleEventTile,
+    updateTileTime,
+};
