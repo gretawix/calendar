@@ -1,3 +1,5 @@
+import { weekDaysNumber } from "./calendarVars.js";
+
 const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
     let currentWeekDay = currentDate.getDay();
@@ -6,7 +8,7 @@ const getStartOfWeek = (date) => {
 
     monday.setDate(monday.getDate() + difference);
 
-    return monday;
+    return weekDaysNumber === 7 ? monday : currentDate;
 };
 
 const getTimeZone = (today) => {

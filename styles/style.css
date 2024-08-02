@@ -155,7 +155,7 @@ img {
 .week-days,
 .hours-cells-all {
   display: grid;
-  grid-template-columns: var(--divider-width) repeat(7, 1fr);
+  grid-template-columns: var(--divider-width) repeat(var(--week-grid), 1fr);
 }
 
 .week-days {

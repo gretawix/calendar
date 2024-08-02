@@ -2,9 +2,9 @@ import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
 import { constructEventData } from "./eventsData.js";
-import { eventsDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
+import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
 
-const getEventTileTopPosition = (event) => {
+const eventPositionFromClick = (event) => {
     const distanceFromTop = event.target.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
     const increment = cellHeight / 2;
@@ -12,23 +12,20 @@ const getEventTileTopPosition = (event) => {
     return Math.floor(clickPosition / increment) * increment;
 };
 
-const populateEventTile = (eventData) => {
-    const eventTile = createDomElement("div", "event-tile regular placeholder", currentEventTileId);
+const eventPositionFromTime = (eventData) => {
+    return "100px";
+};
+
+const createEventTile = (eventData, topPosition) => {
+    const eventTile = createDomElement("div", "event-tile regular placeholder");
     const title = createDomElement("p", "event-tile-title");
     const timeText = createDomElement("p", "event-tile-time");
 
     title.innerText = eventData.title;
     timeText.innerText = `${eventData.startTime} - ${eventData.endTime}`;
+    eventTile.style.top = `${topPosition}px`;
 
     return appendChildren(eventTile, [title, timeText]);
-};
-
-const createNewEventTile = (event, newEventData) => {
-    const tileTopPosition = getEventTileTopPosition(event);
-    const eventTile = populateEventTile(newEventData);
-    eventTile.style.top = `${tileTopPosition}px`;
-
-    return eventTile;
 };
 
 const removeUnsavedEventTile = () => {
@@ -41,8 +38,11 @@ const handleEventCreationClick = (event) => {
 
     if (clickedWeekDayCol.hasAttribute("data-year")) {
         const newEventData = constructEventData(event);
-        storeDataInLocalStorage(eventsDataKey, newEventData);
-        const eventTile = createNewEventTile(event, newEventData);
+        const topPosition = eventPositionFromClick(event);
+        const eventTile = createEventTile(newEventData, topPosition);
+
+        eventTile.id = currentEventTileId;
+        storeDataInLocalStorage(currentEventDataKey, newEventData);
         openModal(event, newEventData);
         clickedWeekDayCol.appendChild(eventTile);
     }
@@ -54,4 +54,4 @@ const placeNewEventTile = (currentEventTile, eventData) => {
     currentEventTile.removeAttribute("id");
 };
 
-export { removeUnsavedEventTile, getEventTileTopPosition, handleEventCreationClick, placeNewEventTile };
+export { removeUnsavedEventTile, eventPositionFromClick, handleEventCreationClick, placeNewEventTile };

@@ -1,7 +1,7 @@
 import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
 import { createDomElement, formatHours, appendChildren } from "./utils.js";
-import { handleEventCreationClick } from "./currentEventTile.js";
+import { handleEventCreationClick } from "./eventTile.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -91,11 +91,11 @@ const createTimeGridWrapper = (week) => {
 
 const createWeek = (today) => {
     const week = [];
-    const monday = getStartOfWeek(today);
+    const baseDay = getStartOfWeek(today);
 
     for (let i = 0; i < weekDaysNumber; i++) {
-        const day = new Date(monday);
-        day.setDate(monday.getDate() + i);
+        const day = new Date(baseDay);
+        day.setDate(baseDay.getDate() + i);
         const [weekDay, month, dayNum, year] = day.toString().split(" ");
         week.push({
             weekDay: weekDay,
@@ -117,6 +117,7 @@ const drawWeekView = () => {
     const timeGridWrapper = createTimeGridWrapper(week);
 
     document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
+    document.documentElement.style.setProperty("--week-grid", weekDaysNumber);
     appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
 };
 

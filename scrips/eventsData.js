@@ -1,10 +1,10 @@
 import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
-import { getEventTileTopPosition, placeNewEventTile } from "./currentEventTile.js";
+import { eventPositionFromClick, placeNewEventTile } from "./eventTile.js";
 import { getTitleInput, getModal } from "./selectors.js";
 import { closeModal } from "./modal.js";
 import {
-    eventsDataKey,
+    currentEventDataKey,
     getDataFromLocalStorage,
     savedEventsKey,
     storeDataInLocalStorage,
@@ -12,7 +12,7 @@ import {
 
 const constructEventData = (event, title = "(no title)") => {
     const clickedColumn = event.target;
-    const clickPosition = getEventTileTopPosition(event);
+    const clickPosition = eventPositionFromClick(event);
     const hour = formatHours(Math.floor(clickPosition / cellHeight));
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
     const monthNameShort = clickedColumn.getAttribute("data-month");
@@ -47,12 +47,12 @@ const saveEvent = () => {
     const modal = getModal();
     const titleInput = getTitleInput(modal);
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
-    const eventData = getDataFromLocalStorage(eventsDataKey);
+    const eventData = getDataFromLocalStorage(currentEventDataKey);
 
     if (titleInput.value) {
         eventData.title = titleInput.value;
         recordNewEvent(eventData, currentEventTile);
-        closeModal(modal);
+        closeModal();
     } else {
         titleInput.classList.add("error");
         titleInput.focus();

@@ -1,7 +1,7 @@
 import { setSameWidth } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, handleEmptyTitleInput } from "./inputs.js";
 import { getModal, getSaveBtn, getTitleInput, getCloseBtn, getSettingsToggleElements } from "./selectors.js";
-import { removeUnsavedEventTile } from "./currentEventTile.js";
+import { removeUnsavedEventTile } from "./eventTile.js";
 import { saveEvent } from "./eventsData.js";
 
 const setTimeDateInputWidths = (modal) => {
@@ -101,7 +101,9 @@ const setTimeDateInputs = (modal, newEventData) => {
     modal.querySelector("#time-end").value = end;
 };
 
-const closeModal = (modal) => {
+const closeModal = () => {
+    const modal = getModal();
+
     getTitleInput(modal).value = "";
     removeUnsavedEventTile();
     modal.style.display = "none";
@@ -126,11 +128,11 @@ const initModal = () => {
     const modalSettings = getSettingsToggleElements(modal);
 
     initDropdownSelect(modal);
-    closeBtn.addEventListener("click", () => closeModal(modal));
+    closeBtn.addEventListener("click", closeModal);
     saveBtn.addEventListener("click", saveEvent);
     titleInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") saveEvent();
-        if (event.key === "Escape") closeModal(modal);
+        if (event.key === "Escape") closeModal();
     });
     titleInput.addEventListener("input", (event) => handleEmptyTitleInput(event, titleInput));
     modalSettings.forEach((item) => item.addEventListener("click", () => handleSettingsClick(item)));

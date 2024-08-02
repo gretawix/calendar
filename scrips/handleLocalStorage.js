@@ -1,4 +1,4 @@
-const eventsDataKey = "currentEventData";
+const currentEventDataKey = "currentEventData";
 const savedEventsKey = "allSavedEvents";
 
 const storeDataInLocalStorage = (key, data) => {
@@ -24,4 +24,4 @@ const getDataFromLocalStorage = (key) => {
     }
 };
 
-export { storeDataInLocalStorage, getDataFromLocalStorage, eventsDataKey, savedEventsKey };
+export { storeDataInLocalStorage, getDataFromLocalStorage, currentEventDataKey, savedEventsKey };
