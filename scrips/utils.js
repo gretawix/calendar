@@ -55,4 +55,14 @@ const appendChildren = (parent, childrenToAppedn) => {
 
 const formatHours = (hour) => (hour < 10 ? `0${hour}` : `${hour}`);
 
-export { setSameWidth, createDomElement, formatHours, getLongWeekDayName, getLongMonthName, appendChildren };
+const formatMinutes = (minutes) => (minutes < 10 ? `${minutes}0` : `${minutes}`);
+
+export {
+    setSameWidth,
+    createDomElement,
+    formatHours,
+    getLongWeekDayName,
+    getLongMonthName,
+    appendChildren,
+    formatMinutes,
+};

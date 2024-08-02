@@ -1,4 +1,4 @@
-import { formatHours, getLongWeekDayName, getLongMonthName } from "./utils.js";
+import { formatHours, getLongWeekDayName, getLongMonthName, formatMinutes } from "./utils.js";
 import { cellHeight, currentEventTileId, defaultEventLength } from "./calendarVars.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInput, getGridDays } from "./selectors.js";
@@ -24,7 +24,7 @@ const getEndTime = (startHour, startMinutes) => {
     const endHour = Math.floor(endTime);
     const endMinutes = hoursToMinutes(endTime - endHour);
 
-    return `${formatHours(parseInt(endHour, 10))}:${endMinutes}`;
+    return `${formatHours(parseInt(endHour, 10))}:${formatMinutes(endMinutes)}`;
 };
 
 const getEventLength = (eventData) => {

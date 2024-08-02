@@ -15,7 +15,7 @@ const calculateTopPosition = (eventData) => {
 
 const assignTileClass = (eventTile, eventLength) => {
     eventTile.classList.remove("short", "long", "regular");
-    if (eventLength < 1) {
+    if (eventLength < 0.7) {
         eventTile.classList.add("short");
     } else if (eventLength > 1) {
         eventTile.classList.add("long");
