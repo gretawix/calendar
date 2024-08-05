@@ -7,6 +7,8 @@ import { getGrid, getGridDays } from "./selectors.js";
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
     timeZoneCell.innerHTML = `<p class="time-zone">${timeZone}</p>`;
+    const timeZoneCell = createDomElement("div", "time-zone-cell");
+    timeZoneCell.innerHTML = `<p class="time-zone">${timeZone}</p>`;
 
     return timeZoneCell;
 };
@@ -37,6 +39,11 @@ const createWeekDaysRow = (week, today) => {
 
 const createHoursColumn = () => {
     const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
+    const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
+
+    for (let i = 0; i < hoursNumber; i++) {
+        const hourDiv = createDomElement("div", "hour-label-cell cell-height");
+        const hour = formatHours(i);
 
     for (let i = 0; i < hoursNumber; i++) {
         const hourDiv = createDomElement("div", "hour-label-cell cell-height");
@@ -69,6 +76,7 @@ const createDividerColumn = () => {
 };
 
 const createTimeGrid = (week) => {
+    const timeGrid = createDomElement("div", "hours-cells-all", "days-hours-grid");
     const timeGrid = createDomElement("div", "hours-cells-all", "days-hours-grid");
     const dividerColumn = createDividerColumn();
 
