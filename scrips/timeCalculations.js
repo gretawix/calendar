@@ -4,8 +4,6 @@ const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
     let currentWeekDay = currentDate.getDay();
     let difference = (currentWeekDay === 0 ? -6 : 1) - currentWeekDay;
-    let currentWeekDay = currentDate.getDay();
-    let difference = (currentWeekDay === 0 ? -6 : 1) - currentWeekDay;
     let monday = new Date();
 
     monday.setDate(monday.getDate() + difference);

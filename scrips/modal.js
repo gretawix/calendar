@@ -27,14 +27,8 @@ const resetModal = (modal) => {
     modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
     modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
     removeUnsavedEventTile();
-    setTimeDateInputWidths();
+    setTimeDateInputWidths(modal);
     removeSeparators(modal);
-};
-
-const removeSeparators = (modal) => {
-    modal.querySelectorAll(".with-separator").forEach((item) => {
-        item.classList.remove("separated-top", "separated-bottom");
-    });
 };
 
 const addSeparators = (parent) => {
@@ -56,15 +50,6 @@ const addSeparators = (parent) => {
     }
 };
 
-const resetModal = (modal) => {
-    modal.querySelectorAll(".preview-settings").forEach((item) => (item.style.display = "flex"));
-    modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
-    modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
-    removeUnsavedEventTile();
-    setTimeDateInputWidths(modal);
-    removeSeparators(modal);
-};
-
 const handleSettingsClick = (item) => {
     const parent = item.closest(".single-setting-section");
     const settingsDiv = parent.querySelector(".full-settings");
@@ -75,7 +60,6 @@ const handleSettingsClick = (item) => {
 
 const positionModalX = (modal, event) => {
     const clickedElement = event.target.getBoundingClientRect();
-    const modalWidth = modal.getBoundingClientRect().width;
     const modalWidth = modal.getBoundingClientRect().width;
 
     modal.style.left = `${

@@ -120,7 +120,7 @@ const displayAllSavedEvents = () => {
                 day.dataset.year === oneEvent.year
         );
 
-        eventParentDiv.appendChild(eventTile);
+        if (eventParentDiv) eventParentDiv.appendChild(eventTile);
     });
 };
 
