@@ -104,10 +104,12 @@ const setTimeDateInputs = (modal, newEventData) => {
 };
 
 const handleTitleChange = (event) => {
-    const title = document.querySelector(`#${currentEventTileId}`).querySelector(".event-tile-title");
     const inputValue = event.target.value;
     if (inputValue) event.target.classList.remove("error");
-    if (event.type === "blur") title.innerText = inputValue || emptyEventTitle;
+    try {
+        const title = document.querySelector(`#${currentEventTileId}`).querySelector(".event-tile-title");
+        if (event.type === "blur") title.innerText = inputValue || emptyEventTitle;
+    } catch {}
 };
 
 const handleDateChange = (event) => {
