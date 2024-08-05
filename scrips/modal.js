@@ -1,5 +1,5 @@
-import { setSameWidth } from "./utils.js";
-import { resetDropdownItem, initDropdownSelect } from "./inputs.js";
+import { setSameWidth, displayTime } from "./utils.js";
+import { resetDropdownItem, initDropdownSelect, generateTimeDropdown } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
 import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
 import { saveEvent, setTime, getEventLength, setDefaultEndTime } from "./eventsData.js";
@@ -91,8 +91,8 @@ const positionModalY = (modal, event) => {
 
 const setTimeDateInputs = (modal, newEventData) => {
     const dateText = `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`;
-    const start = `${newEventData.startTime.hour}:${newEventData.startTime.minutes}`;
-    const end = `${newEventData.endTime.hour}:${newEventData.endTime.minutes}`;
+    const start = displayTime(newEventData.startTime.hour, newEventData.startTime.minutes);
+    const end = displayTime(newEventData.endTime.hour, newEventData.endTime.minutes);
 
     modal.querySelector("#date-btn span").innerText = dateText;
     modal.querySelector("#time-start-btn span").innerText = start;
@@ -155,6 +155,8 @@ const initModal = () => {
     const modal = getModal();
     const [title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings] = getModalInputs();
 
+    generateTimeDropdown(startTime);
+    generateTimeDropdown(endTime);
     initDropdownSelect(modal);
     closeBtn.addEventListener("click", closeModal);
     saveBtn.addEventListener("click", saveEvent);

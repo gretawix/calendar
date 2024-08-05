@@ -1,4 +1,4 @@
-import { createDomElement, appendChildren } from "./utils.js";
+import { createDomElement, appendChildren, displayTime } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
 import { constructNewEvent, getEventLength } from "./eventsData.js";
@@ -29,7 +29,10 @@ const styleEventTile = (eventTile, eventData) => {
 };
 
 const updateTileTime = (timeText, eventData) => {
-    timeText.innerText = `${eventData.startTime.hour}:${eventData.startTime.minutes} - ${eventData.endTime.hour}:${eventData.endTime.minutes}`;
+    timeText.innerText = `${displayTime(eventData.startTime.hour, eventData.startTime.minutes)} - ${displayTime(
+        eventData.endTime.hour,
+        eventData.endTime.minutes
+    )}`;
 };
 
 const createEventTile = (eventData) => {

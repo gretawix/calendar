@@ -4,5 +4,15 @@ const cellHeight = 49;
 const currentEventTileId = "current-event-tile";
 const defaultEventLength = 1; //hours
 const emptyEventTitle = "(no title)";
+const minutesIncrement = [];
+for (let i = 0; i < 4; i++) minutesIncrement.push(i * 15);
 
-export { weekDaysNumber, hoursNumber, cellHeight, currentEventTileId, defaultEventLength, emptyEventTitle };
+export {
+    weekDaysNumber,
+    hoursNumber,
+    cellHeight,
+    currentEventTileId,
+    defaultEventLength,
+    emptyEventTitle,
+    minutesIncrement,
+};

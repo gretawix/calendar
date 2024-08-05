@@ -1,27 +1,42 @@
+import { createDomElement, formatMinutes, formatHours, displayTime } from "./utils.js";
+import { hoursNumber, minutesIncrement } from "./calendarVars.js";
+
 const setInputLabel = (dropdownItem, selectedOption) => {
     const inputLabelText = selectedOption.innerText.trim();
-    dropdownItem.querySelector("button.dropdown .dropdown-label").innerText = inputLabelText;
+    const button = dropdownItem.querySelector("button.dropdown .dropdown-label");
+    const input = dropdownItem.querySelector("input");
+
+    if (input) input.value = inputLabelText;
+    if (button) button.innerText = inputLabelText;
 };
 
-const selectDropdownItem = (dropdownItem) => {
+const initDropdownItemSelect = (dropdownItem) => {
     const allOptions = dropdownItem.querySelectorAll(".select-options li");
     allOptions.forEach((option) => {
         option.addEventListener("click", () => {
             allOptions.forEach((item) => item.classList.remove("selected"));
             option.classList.add("selected");
             setInputLabel(dropdownItem, option);
+            if (dropdownItem.classList.contains("time-select")) dropdownItem.classList.remove("open");
         });
     });
 };
 
-const initDropdownSelect = (modal) => {
-    const dropdowns = modal.querySelectorAll(".select-input");
+const openDropdownClick = (dropdownItem) => {
+    dropdownItem.classList.toggle("open");
 
+    const dropdownWrapper = dropdownItem.querySelector("ul");
+    const dropdownWarpTop = dropdownWrapper.getBoundingClientRect().top;
+    const selected = dropdownItem.querySelector("li.selected");
+
+    if (selected) dropdownWrapper.scrollBy(0, selected.getBoundingClientRect().top - dropdownWarpTop - 80);
+};
+
+const initDropdownSelect = (modal) => {
+    const dropdowns = modal.querySelectorAll(".select-input, .time-select");
     dropdowns.forEach((dropdownItem) => {
-        dropdownItem.addEventListener("click", () => {
-            dropdownItem.classList.toggle("open");
-        });
-        selectDropdownItem(dropdownItem);
+        dropdownItem.addEventListener("click", () => openDropdownClick(dropdownItem));
+        initDropdownItemSelect(dropdownItem);
     });
 };
 
@@ -35,4 +50,20 @@ const resetDropdownItem = (dropdownItem) => {
     });
 };
 
-export { initDropdownSelect, setInputLabel, resetDropdownItem };
+const generateTimeDropdown = (input) => {
+    const parent = input.parentElement;
+    const dropdownList = createDomElement("ul", "repeat-options select-options");
+    dropdownList.style.minWidth = "188px";
+    dropdownList.style.height = "200px";
+
+    for (let i = 0; i < hoursNumber; i++) {
+        minutesIncrement.forEach(() => {
+            const listItem = createDomElement("li");
+            dropdownList.appendChild(listItem);
+        });
+    }
+
+    parent.appendChild(dropdownList);
+};
+
+export { initDropdownSelect, setInputLabel, resetDropdownItem, generateTimeDropdown };

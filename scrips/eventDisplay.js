@@ -1,4 +1,4 @@
-import { createDomElement, formatHours } from "./utils.js";
+import { createDomElement, formatHours, displayTime } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 
 const getEventInfo = (title, clickPosition) => {
@@ -8,8 +8,8 @@ const getEventInfo = (title, clickPosition) => {
 
     return {
         eventTitle: title,
-        eventStartTime: `${hour}:${minutes}`,
-        eventEndTime: `${formatHours(parseInt(hour, 10) + 1)}:${minutes}`,
+        eventStartTime: displayTime(hour, minutes),
+        eventEndTime: displayTime(formatHours(parseInt(hour, 10) + 1), minutes),
     };
 };
 

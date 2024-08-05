@@ -53,6 +53,10 @@ const appendChildren = (parent, childrenToAppedn) => {
     return parent;
 };
 
+const displayTime = (hour, minutes) => {
+    return `${hour}:${minutes}`;
+};
+
 const formatHours = (hour) => (parseInt(hour, 10) < 10 ? `0${parseInt(hour, 10)}` : hour);
 
 const formatMinutes = (minutes) => (parseInt(minutes, 10) < 10 ? `0${parseInt(minutes, 10)}` : minutes);
@@ -65,4 +69,5 @@ export {
     getLongMonthName,
     appendChildren,
     formatMinutes,
+    displayTime,
 };
