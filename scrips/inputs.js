@@ -31,13 +31,9 @@ const initDropdownItemSelect = (dropdownItem) => {
 };
 
 const openDropdownClick = (dropdownItem) => {
-    const textInput = dropdownItem.querySelector("input");
     dropdownItem.classList.toggle("open");
 
-    if (!dropdownItem.classList.contains("open") && textInput) {
-        textInput.blur();
-    }
-
+    const textInput = dropdownItem.querySelector("input");
     const dropdownWrapper = dropdownItem.querySelector("ul");
     const dropdownWarpTop = dropdownWrapper.getBoundingClientRect().top;
     const selected = dropdownItem.querySelector("li.selected");

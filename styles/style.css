@@ -547,6 +547,14 @@ select.standard-input {
   height: 36px;
   border-bottom: 2px solid transparent;
 }
+input.standard-input.error,
+select.standard-input.error {
+  border-bottom: 2px solid red;
+}
+input.standard-input.error:focus,
+select.standard-input.error:focus {
+  border-bottom: 2px solid red;
+}
 input.standard-input:hover,
 select.standard-input:hover {
   background-color: var(--grey-light-2);

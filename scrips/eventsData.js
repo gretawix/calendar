@@ -96,14 +96,19 @@ const updateEventData = (eventData, title, dateInput, startTime, endTime) => {
 const saveEvent = () => {
     const [title, dateInput, startTime, endTime] = getModalInputs();
     let eventData = getDataFromLocalStorage(currentEventDataKey);
+    let eventLength = getEventLength(eventData);
 
-    if (title.value) {
+    if (!title.value) {
+        title.classList.add("error");
+        title.focus();
+    } else if (eventLength <= 0) {
+        endTime.classList.add("error");
+        endTime.focus();
+    }
+    if (title.value && eventLength > 0) {
         eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
         recordNewEvent(eventData);
         closeModal();
-    } else {
-        title.classList.add("error");
-        title.focus();
     }
 };
 

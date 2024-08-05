@@ -17,6 +17,12 @@ select {
         border-radius: 4px;
         height: 36px;
         border-bottom: 2px solid transparent;
+        &.error {
+            border-bottom: 2px solid red;
+            &:focus {
+                border-bottom: 2px solid red;
+            }
+        }
         &:hover {
             background-color: var(--grey-light-2);
         }

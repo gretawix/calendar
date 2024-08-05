@@ -118,20 +118,29 @@ const handleDateChange = (event) => {
     console.log(event.target.value);
 };
 
-const handleTimeChange = (event, timeKey, modal) => {
+const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     const timeText = currentEventTile.querySelector(".event-tile-time");
     const eventData = getDataFromLocalStorage(currentEventDataKey);
-    const eventLength = getEventLength(eventData);
+    const initalEndTime = eventData.endTime;
+    let eventLength = getEventLength(eventData);
 
     eventData[timeKey] = setTime(...event.target.value.split(":"));
     if (timeKey === "startTime") {
         eventData.endTime = setDefaultEndTime(...event.target.value.split(":"), eventLength);
         setTimeDateInputs(modal, eventData);
     }
-    styleEventTile(currentEventTile, eventData);
-    updateTileTime(timeText, eventData);
-    storeDataInLocalStorage(currentEventDataKey, eventData);
+    eventLength = getEventLength(eventData);
+    if (eventLength <= 0) {
+        endTimeInput.classList.add("error");
+        storeDataInLocalStorage(currentEventDataKey, eventData);
+        throw new Error("end time cannot be earlier than start time");
+    } else {
+        endTimeInput.classList.remove("error");
+        styleEventTile(currentEventTile, eventData);
+        updateTileTime(timeText, eventData);
+        storeDataInLocalStorage(currentEventDataKey, eventData);
+    }
 };
 
 const closeModal = () => {
@@ -165,7 +174,7 @@ const initModal = () => {
     title.addEventListener("input", handleTitleChange);
     title.addEventListener("blur", handleTitleChange);
     startTime.addEventListener("blur", (event) => handleTimeChange(event, "startTime", modal));
-    endTime.addEventListener("blur", (event) => handleTimeChange(event, "endTime", modal));
+    endTime.addEventListener("blur", (event) => handleTimeChange(event, "endTime", modal, endTime));
     modal.addEventListener("keydown", (event) => {
         if (event.key === "Enter") saveEvent();
         if (event.key === "Escape") closeModal();
