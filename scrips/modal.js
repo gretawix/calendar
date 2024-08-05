@@ -1,5 +1,5 @@
 import { setSameWidth, displayTime } from "./utils.js";
-import { resetDropdownItem, initDropdownSelect, generateTimeDropdown } from "./inputs.js";
+import { resetDropdownItem, initDropdownSelect, generateTimeDropdown, populateTimeDropdowns } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
 import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
 import { saveEvent, setTime, getEventLength, setDefaultEndTime } from "./eventsData.js";
@@ -101,6 +101,8 @@ const setTimeDateInputs = (modal, newEventData) => {
     modal.querySelector("#date").value = dateText;
     modal.querySelector("#time-start").value = start;
     modal.querySelector("#time-end").value = end;
+
+    populateTimeDropdowns(newEventData);
 };
 
 const handleTitleChange = (event) => {
