@@ -132,11 +132,11 @@ const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
     }
     eventLength = getEventLength(eventData);
     if (eventLength <= 0) {
-        endTimeInput.classList.add("error");
+        if (endTimeInput) endTimeInput.classList.add("error");
         storeDataInLocalStorage(currentEventDataKey, eventData);
         throw new Error("end time cannot be earlier than start time");
     } else {
-        endTimeInput.classList.remove("error");
+        if (endTimeInput) endTimeInput.classList.remove("error");
         styleEventTile(currentEventTile, eventData);
         updateTileTime(timeText, eventData);
         storeDataInLocalStorage(currentEventDataKey, eventData);

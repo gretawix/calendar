@@ -1,5 +1,6 @@
 import { createDomElement, formatHours, displayTime } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
+import { emptyEventTitle } from "./calendarVars.js";
 
 const getEventInfo = (title, clickPosition) => {
     const hour = formatHours(Math.floor(clickPosition / cellHeight));
@@ -37,7 +38,7 @@ const populateEventTile = (eventInfo) => {
 
 const createNewEventTile = (event) => {
     const tileTopPosition = getEventTileTopPosition(event);
-    const eventInfo = getEventInfo("(no title)", tileTopPosition);
+    const eventInfo = getEventInfo(emptyEventTitle, tileTopPosition);
     const eventTile = populateEventTile(eventInfo);
 
     eventTile.style.top = `${tileTopPosition}px`;

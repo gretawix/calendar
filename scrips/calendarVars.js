@@ -4,8 +4,9 @@ const cellHeight = 49;
 const currentEventTileId = "current-event-tile";
 const defaultEventLength = 1; //hours
 const emptyEventTitle = "(no title)";
+const minutesGap = 15;
 const minutesIncrement = [];
-for (let i = 0; i < 4; i++) minutesIncrement.push(i * 15);
+for (let i = 0; i < 60 / minutesGap; i++) minutesIncrement.push(i * minutesGap);
 
 export {
     weekDaysNumber,
