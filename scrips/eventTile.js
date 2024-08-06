@@ -1,5 +1,5 @@
 import { createDomElement, appendChildren } from "./utils.js";
-import { cellHeight, currentEventTileId } from "./calendarVars.js";
+import { cellHeightInPx, currentEventTileId } from "./constants.js";
 import { openModal } from "./modal.js";
 import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
@@ -9,14 +9,14 @@ const calculateTopPosition = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
     const startMin = minutesToHour(eventData.startTime.minutes);
 
-    return (startHour + startMin) * cellHeight;
+    return (startHour + startMin) * cellHeightInPx;
 };
 
 const styleEventTile = (eventTile, eventData) => {
     const eventLength = getEventLength(eventData);
 
     eventTile.style.top = `${calculateTopPosition(eventData)}px`;
-    eventTile.style.height = `${eventLength * cellHeight - 4}px`;
+    eventTile.style.height = `${eventLength * cellHeightInPx - 4}px`;
     eventTile.classList.remove("short", "long", "regular");
 
     if (eventLength < 0.7) {

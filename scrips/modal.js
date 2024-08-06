@@ -2,14 +2,19 @@ import { setSameWidth, setElementDisplay } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, generateTimeDropdown, populateTimeDropdowns } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
 import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
-import { saveEvent, setTime, getEventLength, setDefaultEndTime } from "./eventsData.js";
-import { currentEventTileId, emptyEventTitle, modalInputsIds } from "./calendarVars.js";
+import { saveEvent, setTime, getEventLength, setEndTime } from "./eventsData.js";
+import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants.js";
 import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
 import { displayTime } from "./timeCalculations.js";
 
 const setTimeDateInputWidths = (modal) => {
-    modalInputsIds.forEach((inputId) => (modal.querySelector(`#${inputId}-btn`).style.width = "fit-content"));
-    modalInputsIds.forEach((inputId) => setSameWidth(`#${inputId}-btn`, `#${inputId}`));
+    Object.entries(modalInputsIds).forEach(([key, inputId]) => {
+        const btn = modal.querySelector(`#${inputId}-btn`);
+        if (btn) {
+            btn.style.width = "fit-content";
+            setSameWidth(`#${inputId}-btn`, `#${inputId}`);
+        }
+    });
 };
 
 const removeSeparators = (modal) => {
@@ -31,14 +36,16 @@ const addSeparators = (parent) => {
     const parentClasses = parent.classList;
     const [prevDiv, nextDiv] = [parent.previousElementSibling, parent.nextElementSibling];
     const [separatorTop, separatorBottom] = ["separated-top", "separated-bottom"];
+    const prevHasBottom = prevDiv?.classList.contains(separatorBottom);
+    const nextHasTop = nextDiv?.classList.contains(separatorTop);
 
     if (parentClasses.contains("with-separator")) {
-        if (prevDiv?.classList.contains(separatorBottom) && nextDiv?.classList.contains(separatorTop)) {
+        if (prevHasBottom && nextHasTop) {
             prevDiv.classList.remove(separatorBottom);
             parentClasses.add(separatorTop);
-        } else if (nextDiv?.classList.contains(separatorTop)) {
+        } else if (nextHasTop) {
             parentClasses.add(separatorTop);
-        } else if (prevDiv?.classList.contains(separatorBottom)) {
+        } else if (prevHasBottom) {
             parentClasses.add(separatorBottom);
         } else {
             parentClasses.add(separatorTop, separatorBottom);
@@ -74,26 +81,23 @@ const positionModalY = (modal, event) => {
 
     modal.style.bottom = "unset";
     modal.style.top = "unset";
+
     if (distanceFromClickToTop < 130) {
         modal.style.top = `${distanceFromClickToTop}px`;
+    } else if (modalHeight + bottomSpacing > distanceFromClickToBottom) {
+        modal.style.bottom = `${bottomSpacing}px`;
     } else {
-        if (modalHeight + bottomSpacing > distanceFromClickToBottom) {
-            modal.style.top = "unset";
-            modal.style.bottom = `${bottomSpacing}px`;
-        } else {
-            modal.style.top = `${distanceFromClickToTop - bottomSpacing}px`;
-        }
+        modal.style.top = `${distanceFromClickToTop - bottomSpacing}px`;
     }
 };
 
 const setTimeDateInputs = (modal, newEventData) => {
     const values = {
-        date: `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`,
-        "time-start": displayTime(newEventData.startTime.hour, newEventData.startTime.minutes),
-        "time-end": displayTime(newEventData.endTime.hour, newEventData.endTime.minutes),
+        [modalInputsIds.date]: `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`,
+        [modalInputsIds.timeStart]: displayTime(newEventData.startTime.hour, newEventData.startTime.minutes),
+        [modalInputsIds.timeEnd]: displayTime(newEventData.endTime.hour, newEventData.endTime.minutes),
     };
-
-    modalInputsIds.forEach((inputId) => {
+    Object.entries(modalInputsIds).forEach(([key, inputId]) => {
         modal.querySelector(`#${inputId}-btn span`).innerText = values[inputId];
         modal.querySelector(`#${inputId}`).value = values[inputId];
     });
@@ -117,15 +121,16 @@ const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     const timeText = currentEventTile.querySelector(".event-tile-time");
     const eventData = getDataFromLocalStorage(currentEventDataKey);
+    const [hours, minutes] = event.target.value.split(":");
     let eventLength = getEventLength(eventData);
 
-    eventData[timeKey] = setTime(...event.target.value.split(":"));
+    eventData[timeKey] = setTime(hours, minutes);
     if (timeKey === "startTime") {
-        eventData.endTime = setDefaultEndTime(...event.target.value.split(":"), eventLength);
+        eventData.endTime = setEndTime(hours, minutes, eventLength);
         setTimeDateInputs(modal, eventData);
     }
-    eventLength = getEventLength(eventData);
-    if (eventLength <= 0) {
+
+    if (getEventLength(eventData) <= 0) {
         if (endTimeInput) endTimeInput.classList.add("error");
         storeDataInLocalStorage(currentEventDataKey, eventData);
         throw new Error("end time cannot be earlier than start time");
@@ -140,7 +145,7 @@ const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
 const closeModal = () => {
     const modal = getModal();
 
-    getModalInputById("title").value = "";
+    getModalInputById(modalTitleId).value = "";
     removeUnsavedEventTile();
     setElementDisplay(modal, "none");
 };
@@ -153,20 +158,22 @@ const openModal = (event, newEventData) => {
     resetModal(modal);
     positionModalX(modal, event);
     positionModalY(modal, event);
-    document.querySelector("#title").focus();
+    getModalInputById(modalTitleId).focus();
 };
 
 const initModal = () => {
     const modal = getModal();
     const [title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings] = getModalInputs();
 
-    generateTimeDropdown(startTime);
-    generateTimeDropdown(endTime);
+    [startTime, endTime].forEach(generateTimeDropdown);
     initDropdownSelect(modal);
+
     closeBtn.addEventListener("click", closeModal);
     saveBtn.addEventListener("click", saveEvent);
+
     title.addEventListener("input", handleTitleChange);
     title.addEventListener("blur", handleTitleChange);
+
     startTime.addEventListener("blur", (event) => handleTimeChange(event, "startTime", modal));
     endTime.addEventListener("blur", (event) => handleTimeChange(event, "endTime", modal, endTime));
     modal.addEventListener("keydown", (event) => {

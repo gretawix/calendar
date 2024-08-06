@@ -1,5 +1,5 @@
 import { getStartOfWeek, getTimeZone, formatHours } from "./timeCalculations.js";
-import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
+import { hoursInDay, daysNumberOnTimeGrid, cellHeightInPx } from "./constants.js";
 import { createDomElement, appendChildren } from "./utils.js";
 import { handleEventCreationClick } from "./eventTile.js";
 import { getGrid, getGridDays } from "./selectors.js";
@@ -38,7 +38,7 @@ const createWeekDaysRow = (week, today) => {
 const createHoursColumn = () => {
     const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
 
-    for (let i = 0; i < hoursNumber; i++) {
+    for (let i = 0; i < hoursInDay; i++) {
         const hourDiv = createDomElement("div", "hour-label-cell cell-height");
         const hour = formatHours(i);
 
@@ -60,7 +60,7 @@ const createWeekDaysWrapper = (week, timeZone, today) => {
 const createDividerColumn = () => {
     const dividerColumn = createDomElement("div", "divider-column");
 
-    for (let i = 0; i < hoursNumber - 2; i++) {
+    for (let i = 0; i < hoursInDay - 2; i++) {
         const divider = createDomElement("div", "divider cell-height");
         dividerColumn.appendChild(divider);
     }
@@ -94,7 +94,7 @@ const createWeek = (today) => {
     const week = [];
     const baseDay = getStartOfWeek(today);
 
-    for (let i = 0; i < weekDaysNumber; i++) {
+    for (let i = 0; i < daysNumberOnTimeGrid; i++) {
         const day = new Date(baseDay);
         day.setDate(baseDay.getDate() + i);
         const [weekDay, month, dayNum, year] = day.toString().split(" ");
@@ -117,8 +117,8 @@ const drawWeekView = () => {
     const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
     const timeGridWrapper = createTimeGridWrapper(week);
 
-    document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
-    document.documentElement.style.setProperty("--week-grid", weekDaysNumber);
+    document.documentElement.style.setProperty("--cell-height", `${cellHeightInPx}px`);
+    document.documentElement.style.setProperty("--week-grid", daysNumberOnTimeGrid);
     appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
 };
 
@@ -130,7 +130,7 @@ const initTimeGridScroll = (grid) => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
     });
-    grid.scrollBy(0, cellHeight * 7);
+    grid.scrollBy(0, cellHeightInPx * 7);
 };
 
 const initWeekView = () => {

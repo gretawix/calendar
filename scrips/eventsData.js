@@ -1,5 +1,5 @@
 import { getLongWeekDayName, getLongMonthName } from "./utils.js";
-import { cellHeight, currentEventTileId, defaultEventLength, emptyEventTitle } from "./calendarVars.js";
+import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle } from "./constants.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
@@ -14,7 +14,7 @@ import {
 const adjustEventTopPosition = (event) => {
     const distanceFromTop = event.target.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
-    const increment = cellHeight / 2;
+    const increment = cellHeightInPx / 2;
 
     return Math.floor(clickPosition / increment) * increment;
 };
@@ -35,31 +35,28 @@ const setTime = (hour, minutes) => {
     };
 };
 
-const setDefaultEndTime = (startHour, minutes, eventLength = defaultEventLength) => {
+const setEndTime = (startHour, minutes, eventLength = defaultEventLengthInHours) => {
     const endTime = parseInt(startHour, 10) + minutesToHour(parseInt(minutes, 10)) + eventLength;
     const endHour = Math.floor(endTime);
     const endMinutes = hoursToMinutes(endTime - endHour);
 
-    return {
-        hour: `${formatHours(endHour)}`,
-        minutes: `${formatMinutes(endMinutes)}`,
-    };
+    return setTime(endHour, endMinutes);
 };
 
 const constructNewEvent = (event) => {
     const clickedColumn = event.target;
     const clickPosition = adjustEventTopPosition(event);
-    const startHour = Math.floor(clickPosition / cellHeight);
+    const startHour = Math.floor(clickPosition / cellHeightInPx);
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
     const monthNameShort = clickedColumn.getAttribute("data-month");
 
     let minutes = 0;
-    if (clickPosition % cellHeight === cellHeight / 2) minutes = 30;
+    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
 
     return {
         title: emptyEventTitle,
         startTime: setTime(startHour, minutes),
-        endTime: setDefaultEndTime(startHour, minutes),
+        endTime: setEndTime(startHour, minutes),
         weekday: weekdayShort,
         weekdayLong: getLongWeekDayName(weekdayShort),
         day: clickedColumn.getAttribute("data-day"),
@@ -129,4 +126,4 @@ const displayAllSavedEvents = () => {
     });
 };
 
-export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, setTime, setDefaultEndTime };
+export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, setTime, setEndTime };

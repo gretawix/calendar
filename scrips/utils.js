@@ -1,3 +1,5 @@
+import { timeStepInMinutes, minutesInHour } from "./constants.js";
+
 const setSameWidth = (baseElementId, targetElementId) => {
     const baseElement = document.querySelector(baseElementId);
     const targetElement = document.querySelector(targetElementId);
@@ -57,4 +59,19 @@ const setElementDisplay = (element, displayStyle) => {
     element.style.display = displayStyle;
 };
 
-export { setSameWidth, createDomElement, getLongWeekDayName, getLongMonthName, appendChildren, setElementDisplay };
+const getMinutesIncrements = () => {
+    const minutesIncrements = [];
+    for (let i = 0; i < minutesInHour / timeStepInMinutes; i++) minutesIncrements.push(i * timeStepInMinutes);
+
+    return minutesIncrements;
+};
+
+export {
+    setSameWidth,
+    createDomElement,
+    getLongWeekDayName,
+    getLongMonthName,
+    appendChildren,
+    setElementDisplay,
+    getMinutesIncrements,
+};

@@ -1,3 +1,5 @@
+import { modalInputsIds, modalTitleId } from "./constants.js";
+
 const getModal = () => document.querySelector("#event-modal");
 
 const getSaveBtn = (modal) => modal.querySelector("#save-event-btn");
@@ -14,10 +16,10 @@ const getGridDays = () => getGrid().querySelectorAll(".hours-cells-column");
 
 const getModalInputs = () => {
     const modal = getModal();
-    const title = getModalInputById("title");
-    const dateInput = getModalInputById("date");
-    const startTime = getModalInputById("time-start");
-    const endTime = getModalInputById("time-end");
+    const title = getModalInputById(modalTitleId);
+    const [dateInput, startTime, endTime] = Object.entries(modalInputsIds).map(([key, inputId]) =>
+        getModalInputById(inputId)
+    );
     const saveBtn = getSaveBtn(modal);
     const closeBtn = getCloseBtn(modal);
     const modalSettings = getSettingsToggleElements(modal);

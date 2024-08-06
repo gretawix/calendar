@@ -1,4 +1,4 @@
-import { weekDaysNumber, hoursNumber } from "./calendarVars.js";
+import { daysNumberOnTimeGrid, hoursInDay } from "./constants.js";
 
 const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
@@ -8,7 +8,7 @@ const getStartOfWeek = (date) => {
 
     monday.setDate(monday.getDate() + difference);
 
-    return weekDaysNumber === 7 ? monday : currentDate;
+    return daysNumberOnTimeGrid === 7 ? monday : currentDate;
 };
 
 const getTimeZone = (today) => {
@@ -40,7 +40,7 @@ const formatTime = (hourFraction) => {
     let hour = Math.floor(hourFraction);
     let minutes = hourFraction - hour;
 
-    if (hour >= hoursNumber) hour = hour - hoursNumber;
+    if (hour >= hoursInDay) hour = hour - hoursInDay;
 
     return displayTime(hour, hoursToMinutes(minutes));
 };

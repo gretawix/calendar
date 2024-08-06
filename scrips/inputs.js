@@ -1,5 +1,5 @@
-import { createDomElement, setElementDisplay } from "./utils.js";
-import { hoursNumber, minutesIncrement } from "./calendarVars.js";
+import { createDomElement, setElementDisplay, getMinutesIncrements } from "./utils.js";
+import { hoursInDay, modalInputsIds } from "./constants.js";
 import { getModalInputById } from "./selectors.js";
 import { minutesToHour, displayTime, formatTime } from "./timeCalculations.js";
 
@@ -65,7 +65,7 @@ const generateTimeDropdown = (input) => {
     dropdownList.style.minWidth = "188px";
     dropdownList.style.height = "200px";
 
-    for (let i = 0; i < hoursNumber * minutesIncrement.length; i++) {
+    for (let i = 0; i < hoursInDay * getMinutesIncrements().length; i++) {
         const listItem = createDomElement("li");
         dropdownList.appendChild(listItem);
     }
@@ -76,9 +76,10 @@ const generateTimeDropdown = (input) => {
 const populateTimeDropdowns = (eventData) => {
     const populateDropdown = (dropdownItems, time, startTime) => {
         Array.from(dropdownItems).forEach((item, index) => {
+            const minutesIncrementLength = getMinutesIncrements().length;
             const hourFraction = startTime
-                ? index / minutesIncrement.length
-                : index / minutesIncrement.length +
+                ? index / minutesIncrementLength
+                : index / minutesIncrementLength +
                   parseInt(eventData.startTime.hour) +
                   minutesToHour(eventData.startTime.minutes);
 
@@ -90,8 +91,8 @@ const populateTimeDropdowns = (eventData) => {
         });
     };
 
-    const startDropdownItems = getModalInputById("time-start").parentElement.querySelectorAll("ul li");
-    const endDropdownItems = getModalInputById("time-end").parentElement.querySelectorAll("ul li");
+    const startDropdownItems = getModalInputById(modalInputsIds.timeStart).parentElement.querySelectorAll("ul li");
+    const endDropdownItems = getModalInputById(modalInputsIds.timeEnd).parentElement.querySelectorAll("ul li");
 
     populateDropdown(startDropdownItems, eventData.startTime, true);
     populateDropdown(endDropdownItems, eventData.endTime, false);
