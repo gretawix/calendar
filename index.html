@@ -14,6 +14,7 @@
     <body>
         <section class="calendar">
             <div class="week-view" id="week-view"></div>
+            <div class="week-view" id="week-view"></div>
             <div class="event-modal" id="event-modal">
                 <div class="top-controls">
                     <button type="button">
@@ -50,11 +51,11 @@
                                                     </span>
                                                 </span>
                                                 <span id="time-start-btn" class="clickable-wrapper">
-                                                    <span class="clickable" data-clickable-id="time-start">9:00am</span>
+                                                    <span class="clickable" data-clickable-id="time-start"></span>
                                                 </span>
                                                 –
                                                 <span id="time-end-btn" class="clickable-wrapper">
-                                                    <span class="clickable" data-clickable-id="time-end">9:30am</span>
+                                                    <span class="clickable" data-clickable-id="time-end"></span>
                                                 </span>
                                             </p>
                                             <ul class="action-description">
@@ -82,22 +83,20 @@
                                                                 data-clickable-input="date"
                                                             />
                                                         </label>
-                                                        <label for="time-start">
+                                                        <label for="time-start" class="time-select">
                                                             <input
                                                                 type="text"
                                                                 id="time-start"
                                                                 class="standard-input time-input"
-                                                                value="9:00am"
                                                                 data-clickable-input="time-start"
                                                             />
                                                         </label>
                                                         <p>–</p>
-                                                        <label for="time-end">
+                                                        <label for="time-end" class="time-select">
                                                             <input
                                                                 type="text"
                                                                 id="time-end"
                                                                 class="standard-input time-input"
-                                                                value="9:30am"
                                                                 data-clickable-input="time-end"
                                                             />
                                                         </label>
@@ -385,7 +384,7 @@
                     </div>
                     <div class="event-control-buttons modal-event-side-margins">
                         <button type="button">More options</button>
-                        <button type="button" class="cta" id="save-event">Save</button>
+                        <button type="button" class="cta" id="save-event-btn">Save</button>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,12 @@ select {
         border-radius: 4px;
         height: 36px;
         border-bottom: 2px solid transparent;
+        &.error {
+            border-bottom: 2px solid red;
+            &:focus {
+                border-bottom: 2px solid red;
+            }
+        }
         &:hover {
             background-color: var(--grey-light-2);
         }
@@ -46,6 +52,11 @@ select {
             border-bottom: 1px solid var(--grey-light);
             &:focus {
                 border-bottom: 2px solid var(--blue);
+            }
+            &.error {
+                &:focus {
+                    border-bottom: 2px solid red;
+                }
             }
         }
     }
@@ -113,7 +124,8 @@ select {
     }
 }
 
-.select-input {
+.select-input,
+.time-select {
     position: relative;
     width: fit-content;
     button.dropdown {
@@ -139,6 +151,7 @@ select {
         white-space: nowrap;
         left: 0;
         top: 100%;
+        overflow: auto;
         z-index: 3;
         background-color: var(--white);
         box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14),

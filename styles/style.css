@@ -155,7 +155,7 @@ img {
 .week-days,
 .hours-cells-all {
   display: grid;
-  grid-template-columns: var(--divider-width) repeat(7, 1fr);
+  grid-template-columns: var(--divider-width) repeat(var(--week-grid), 1fr);
 }
 
 .week-days {
@@ -547,6 +547,14 @@ select.standard-input {
   height: 36px;
   border-bottom: 2px solid transparent;
 }
+input.standard-input.error,
+select.standard-input.error {
+  border-bottom: 2px solid red;
+}
+input.standard-input.error:focus,
+select.standard-input.error:focus {
+  border-bottom: 2px solid red;
+}
 input.standard-input:hover,
 select.standard-input:hover {
   background-color: var(--grey-light-2);
@@ -580,6 +588,9 @@ select.standard-input:focus:hover {
 }
 .text-input-label.large .text-input:focus {
   border-bottom: 2px solid var(--blue);
+}
+.text-input-label.large .text-input.error:focus {
+  border-bottom: 2px solid red;
 }
 
 .checkbox-input {
@@ -639,12 +650,14 @@ select.standard-input:focus:hover {
   background-color: var(--blue-shaded);
 }
 
-.select-input {
+.select-input,
+.time-select {
   position: relative;
   width: -moz-fit-content;
   width: fit-content;
 }
-.select-input button.dropdown {
+.select-input button.dropdown,
+.time-select button.dropdown {
   color: var(--grey-dark);
   font-weight: 400;
   display: flex;
@@ -652,26 +665,31 @@ select.standard-input:focus:hover {
   align-items: center;
   padding-right: 4px;
 }
-.select-input button.dropdown .dropdown-label {
+.select-input button.dropdown .dropdown-label,
+.time-select button.dropdown .dropdown-label {
   display: flex;
 }
-.select-input button.dropdown .dropdown-arrow {
+.select-input button.dropdown .dropdown-arrow,
+.time-select button.dropdown .dropdown-arrow {
   display: flex;
   margin-left: 12px;
   width: 20px;
 }
-.select-input .select-options {
+.select-input .select-options,
+.time-select .select-options {
   display: none;
   position: absolute;
   white-space: nowrap;
   left: 0;
   top: 100%;
+  overflow: auto;
   z-index: 3;
   background-color: var(--white);
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
   padding: 8px 0;
 }
-.select-input .select-options li {
+.select-input .select-options li,
+.time-select .select-options li {
   height: 36px;
   padding: 0 8px;
   font-size: 0.875rem;
@@ -681,25 +699,32 @@ select.standard-input:focus:hover {
   transition: background-color 0.5s ease;
   cursor: pointer;
 }
-.select-input .select-options li:hover {
+.select-input .select-options li:hover,
+.time-select .select-options li:hover {
   background-color: var(--grey-super-light);
 }
-.select-input .select-options li.selected {
+.select-input .select-options li.selected,
+.time-select .select-options li.selected {
   background-color: var(--blue-medium);
 }
-.select-input .select-options li.selected:hover {
+.select-input .select-options li.selected:hover,
+.time-select .select-options li.selected:hover {
   background-color: var(--blue-medium-shaded);
 }
-.select-input.open button.dropdown {
+.select-input.open button.dropdown,
+.time-select.open button.dropdown {
   background-color: var(--grey-light-2);
 }
-.select-input.open button.dropdown .dropdown-arrow {
+.select-input.open button.dropdown .dropdown-arrow,
+.time-select.open button.dropdown .dropdown-arrow {
   transform: rotate(180deg);
 }
-.select-input.open .select-options {
+.select-input.open .select-options,
+.time-select.open .select-options {
   display: block;
 }
-.select-input.dropdown-above .select-options {
+.select-input.dropdown-above .select-options,
+.time-select.dropdown-above .select-options {
   top: unset;
   bottom: 100%;
 }

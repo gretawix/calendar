@@ -1,8 +1,8 @@
-import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
-import { openModal } from "./modal.js";
-import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
-import { createDomElement, formatHours } from "./utils.js";
-import { createNewEventTile } from "./eventDisplay.js";
+import { getFirstDayInTimeGrid, getTimeZone, formatHours } from "./timeCalculations.js";
+import { hoursInDay, daysNumberOnTimeGrid, cellHeightInPx } from "./constants.js";
+import { createDomElement, appendChildren } from "./utils.js";
+import { handleEventCreationClick } from "./eventTile.js";
+import { getGrid, getGridDays } from "./selectors.js";
 
 const createTimeZoneCell = (timeZone) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
@@ -13,15 +13,16 @@ const createTimeZoneCell = (timeZone) => {
 
 const createSingleWeekDay = (day, today) => {
     const dayDiv = createDomElement("div", "one-day cell-width");
-    Object.entries(day).forEach(([key, value]) => {
-        dayDiv.setAttribute(`data-${key}`, value);
-    });
-    if (day.day == today.getDate()) dayDiv.classList.add("active");
-    dayDiv.innerHTML = `<div class="divider-vertical"></div>
-                        <p class="day-name">${day.weekDay}</p>
-                        <p class="day-number">${day.day}</p>`;
+    const divider = createDomElement("div", "divider-vertical");
+    const dayName = createDomElement("p", "day-name");
+    const dayNumber = createDomElement("p", "day-number");
 
-    return dayDiv;
+    Object.entries(day).forEach(([key, value]) => dayDiv.setAttribute(`data-${key}`, value));
+    if (day.day == today.getDate()) dayDiv.classList.add("active");
+    dayName.innerText = day.weekDay;
+    dayNumber.innerText = day.day;
+
+    return appendChildren(dayDiv, [divider, dayName, dayNumber]);
 };
 
 const createWeekDaysRow = (week, today) => {
@@ -37,7 +38,7 @@ const createWeekDaysRow = (week, today) => {
 const createHoursColumn = () => {
     const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
 
-    for (let i = 0; i < hoursNumber; i++) {
+    for (let i = 0; i < hoursInDay; i++) {
         const hourDiv = createDomElement("div", "hour-label-cell cell-height");
         const hour = formatHours(i);
 
@@ -53,16 +54,13 @@ const createWeekDaysWrapper = (week, timeZone, today) => {
     const timeZoneCell = createTimeZoneCell(timeZone);
     const weekDaysRow = createWeekDaysRow(week, today);
 
-    weekDaysWrapper.appendChild(timeZoneCell);
-    weekDaysWrapper.appendChild(weekDaysRow);
-
-    return weekDaysWrapper;
+    return appendChildren(weekDaysWrapper, [timeZoneCell, weekDaysRow]);
 };
 
 const createDividerColumn = () => {
     const dividerColumn = createDomElement("div", "divider-column");
 
-    for (let i = 0; i < hoursNumber - 2; i++) {
+    for (let i = 0; i < hoursInDay - 2; i++) {
         const divider = createDomElement("div", "divider cell-height");
         dividerColumn.appendChild(divider);
     }
@@ -77,9 +75,7 @@ const createTimeGrid = (week) => {
     timeGrid.appendChild(dividerColumn);
     week.forEach((day) => {
         const dayColumn = createDomElement("div", "hours-cells-column");
-        Object.entries(day).forEach(([key, value]) => {
-            dayColumn.setAttribute(`data-${key}`, value);
-        });
+        Object.entries(day).forEach(([key, value]) => dayColumn.setAttribute(`data-${key}`, value));
         timeGrid.appendChild(dayColumn);
     });
 
@@ -91,19 +87,16 @@ const createTimeGridWrapper = (week) => {
     const hoursColumn = createHoursColumn();
     const timeGrid = createTimeGrid(week);
 
-    timeGridWrapper.appendChild(hoursColumn);
-    timeGridWrapper.appendChild(timeGrid);
-
-    return timeGridWrapper;
+    return appendChildren(timeGridWrapper, [hoursColumn, timeGrid]);
 };
 
 const createWeek = (today) => {
     const week = [];
-    const monday = getStartOfWeek(today);
+    const baseDay = getFirstDayInTimeGrid(today);
 
-    for (let i = 0; i < weekDaysNumber; i++) {
-        const day = new Date();
-        day.setDate(monday.getDate() + i);
+    for (let i = 0; i < daysNumberOnTimeGrid; i++) {
+        const day = new Date(baseDay);
+        day.setDate(baseDay.getDate() + i);
         const [weekDay, month, dayNum, year] = day.toString().split(" ");
         week.push({
             weekDay: weekDay,
@@ -120,35 +113,34 @@ const drawWeekView = () => {
     const today = new Date();
     const week = createWeek(today);
     const timeZone = getTimeZone(today);
-    const weekViewDiv = document.querySelector("#week-view");
+    const weekView = document.querySelector("#week-view");
     const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
     const timeGridWrapper = createTimeGridWrapper(week);
 
-    weekViewDiv.appendChild(weekDaysWrapper);
-    weekViewDiv.appendChild(timeGridWrapper);
+    document.documentElement.style.setProperty("--cell-height", `${cellHeightInPx}px`);
+    document.documentElement.style.setProperty("--week-grid", daysNumberOnTimeGrid);
+    appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
 };
 
-const initWeekView = () => {
-    document.documentElement.style.setProperty("--cell-height", `${cellHeight}px`);
-    drawWeekView();
-
-    const grid = document.querySelector("#days-hours-grid");
+const initTimeGridScroll = (grid) => {
     const daysRow = document.querySelector("#days-row");
     const hoursCol = document.querySelector("#hours-col");
-    const daysGridColumns = grid.querySelectorAll(".hours-cells-column");
 
     grid.addEventListener("scroll", () => {
         hoursCol.scrollTop = grid.scrollTop;
         daysRow.scrollLeft = grid.scrollLeft;
     });
-    daysGridColumns.forEach((col) => {
-        col.addEventListener("click", (event) => {
-            const clickedWeekDayCol = event.target;
-            openModal(event);
-            const eventTile = createNewEventTile(event);
-            if (clickedWeekDayCol.hasAttribute("data-weekday")) clickedWeekDayCol.appendChild(eventTile);
-        });
-    });
+    grid.scrollBy(0, cellHeightInPx * 7);
+};
+
+const initWeekView = () => {
+    drawWeekView();
+
+    const grid = getGrid();
+    const gridDays = getGridDays();
+
+    initTimeGridScroll(grid);
+    gridDays.forEach((col) => col.addEventListener("click", handleEventCreationClick));
 };
 
 export default initWeekView;
