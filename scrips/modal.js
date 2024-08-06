@@ -122,7 +122,6 @@ const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
     const timeText = currentEventTile.querySelector(".event-tile-time");
     const eventData = getDataFromLocalStorage(currentEventDataKey);
-    const initalEndTime = eventData.endTime;
     let eventLength = getEventLength(eventData);
 
     eventData[timeKey] = setTime(...event.target.value.split(":"));
