@@ -5,7 +5,7 @@ import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventT
 import { saveEvent, getTime, getEventLength, getEndTime } from "./eventsData.js";
 import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants.js";
 import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
-import { displayTime, hourIsValid, minutesAreValid } from "./timeCalculations.js";
+import { getDisplayableTime, hourIsValid, minutesAreValid } from "./timeCalculations.js";
 
 const setTimeDateInputWidths = (modal) => {
     Object.entries(modalInputsIds).forEach(([key, inputId]) => {
@@ -94,8 +94,8 @@ const positionModalY = (modal, event) => {
 const setTimeDateInputs = (modal, newEventData) => {
     const values = {
         [modalInputsIds.date]: `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`,
-        [modalInputsIds.timeStart]: displayTime(newEventData.startTime.hour, newEventData.startTime.minutes),
-        [modalInputsIds.timeEnd]: displayTime(newEventData.endTime.hour, newEventData.endTime.minutes),
+        [modalInputsIds.timeStart]: getDisplayableTime(newEventData.startTime.hour, newEventData.startTime.minutes),
+        [modalInputsIds.timeEnd]: getDisplayableTime(newEventData.endTime.hour, newEventData.endTime.minutes),
     };
     Object.entries(modalInputsIds).forEach(([key, inputId]) => {
         modal.querySelector(`#${inputId}-btn span`).innerText = values[inputId];

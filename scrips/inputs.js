@@ -1,7 +1,7 @@
 import { createDomElement, setElementDisplay, getMinutesIncrements } from "./utils.js";
 import { hoursInDay, modalInputsIds } from "./constants.js";
 import { getModalInputById } from "./selectors.js";
-import { minutesToHour, displayTime, formatTime } from "./timeCalculations.js";
+import { minutesToHour, getDisplayableTime, formatTime } from "./timeCalculations.js";
 
 const setInputLabel = (dropdownItem, selectedOption) => {
     const inputLabelText = selectedOption.innerText.trim();
@@ -84,7 +84,7 @@ const populateTimeDropdowns = (eventData) => {
                   minutesToHour(parseInt(eventData.startTime.minutes, 10));
 
             item.innerText = formatTime(hourFraction);
-            if (item.innerText === displayTime(time.hour, time.minutes)) {
+            if (item.innerText === getDisplayableTime(time.hour, time.minutes)) {
                 item.classList.add("selected");
             }
             if (!startTime && index === 0) setElementDisplay(item, "none");

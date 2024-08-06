@@ -36,7 +36,7 @@ const formatHours = (hour) => (hour < 10 ? `0${hour}` : hour);
 
 const formatMinutes = (minutes) => (minutes < 10 ? `0${minutes}` : minutes);
 
-const displayTime = (hour, minutes) => {
+const getDisplayableTime = (hour, minutes) => {
     return `${formatHours(parseInt(hour, 10))}:${formatMinutes(parseInt(minutes, 10))}`;
 };
 
@@ -46,7 +46,7 @@ const formatTime = (hourFraction) => {
 
     if (hour >= hoursInDay) hour = hour - hoursInDay;
 
-    return displayTime(hour, hoursToMinutes(minutes));
+    return getDisplayableTime(hour, hoursToMinutes(minutes));
 };
 
 export {
@@ -56,7 +56,7 @@ export {
     hoursToMinutes,
     formatHours,
     formatMinutes,
-    displayTime,
+    getDisplayableTime,
     formatTime,
     hourIsValid,
     minutesAreValid,

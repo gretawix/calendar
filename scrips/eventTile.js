@@ -3,7 +3,7 @@ import { cellHeightInPx, currentEventTileId } from "./constants.js";
 import { openModal } from "./modal.js";
 import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
-import { minutesToHour, displayTime } from "./timeCalculations.js";
+import { minutesToHour, getDisplayableTime } from "./timeCalculations.js";
 
 const calculateTopPosition = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
@@ -30,10 +30,10 @@ const styleEventTile = (eventTile, eventData) => {
 };
 
 const updateTileTime = (timeText, eventData) => {
-    timeText.innerText = `${displayTime(eventData.startTime.hour, eventData.startTime.minutes)} - ${displayTime(
-        eventData.endTime.hour,
-        eventData.endTime.minutes
-    )}`;
+    timeText.innerText = `${getDisplayableTime(
+        eventData.startTime.hour,
+        eventData.startTime.minutes
+    )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
 };
 
 const createEventTile = (eventData) => {
