@@ -1,6 +1,6 @@
-import { getStartOfWeek, getTimeZone } from "./timeCalculations.js";
+import { getStartOfWeek, getTimeZone, formatHours } from "./timeCalculations.js";
 import { hoursNumber, weekDaysNumber, cellHeight } from "./calendarVars.js";
-import { createDomElement, formatHours, appendChildren } from "./utils.js";
+import { createDomElement, appendChildren } from "./utils.js";
 import { handleEventCreationClick } from "./eventTile.js";
 import { getGrid, getGridDays } from "./selectors.js";
 

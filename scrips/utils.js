@@ -1,6 +1,3 @@
-import { hoursToMinutes } from "./timeCalculations.js";
-import { hoursNumber } from "./calendarVars.js";
-
 const setSameWidth = (baseElementId, targetElementId) => {
     const baseElement = document.querySelector(baseElementId);
     const targetElement = document.querySelector(targetElementId);
@@ -56,31 +53,8 @@ const appendChildren = (parent, childrenToAppedn) => {
     return parent;
 };
 
-const formatHours = (hour) => (parseInt(hour, 10) < 10 ? `0${parseInt(hour, 10)}` : hour);
-
-const formatMinutes = (minutes) => (parseInt(minutes, 10) < 10 ? `0${parseInt(minutes, 10)}` : minutes);
-
-const displayTime = (hour, minutes) => {
-    return `${formatHours(hour)}:${formatMinutes(minutes)}`;
+const setElementDisplay = (element, displayStyle) => {
+    element.style.display = displayStyle;
 };
 
-const formatTime = (hourFraction) => {
-    let hour = Math.floor(hourFraction);
-    let minutes = hourFraction - hour;
-
-    if (hour >= hoursNumber) hour = hour - hoursNumber;
-
-    return displayTime(hour, hoursToMinutes(minutes));
-};
-
-export {
-    setSameWidth,
-    createDomElement,
-    formatHours,
-    getLongWeekDayName,
-    getLongMonthName,
-    appendChildren,
-    formatMinutes,
-    displayTime,
-    formatTime,
-};
+export { setSameWidth, createDomElement, getLongWeekDayName, getLongMonthName, appendChildren, setElementDisplay };

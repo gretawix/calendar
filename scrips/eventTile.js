@@ -1,9 +1,9 @@
-import { createDomElement, appendChildren, displayTime } from "./utils.js";
+import { createDomElement, appendChildren } from "./utils.js";
 import { cellHeight, currentEventTileId } from "./calendarVars.js";
 import { openModal } from "./modal.js";
 import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
-import { minutesToHour } from "./timeCalculations.js";
+import { minutesToHour, displayTime } from "./timeCalculations.js";
 
 const calculateTopPosition = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);

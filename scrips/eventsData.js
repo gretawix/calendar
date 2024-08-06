@@ -1,9 +1,9 @@
-import { formatHours, getLongWeekDayName, getLongMonthName, formatMinutes } from "./utils.js";
+import { getLongWeekDayName, getLongMonthName } from "./utils.js";
 import { cellHeight, currentEventTileId, defaultEventLength, emptyEventTitle } from "./calendarVars.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { minutesToHour, hoursToMinutes } from "./timeCalculations.js";
+import { minutesToHour, hoursToMinutes, formatMinutes, formatHours } from "./timeCalculations.js";
 import {
     currentEventDataKey,
     getDataFromLocalStorage,

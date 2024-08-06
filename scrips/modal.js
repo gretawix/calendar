@@ -1,29 +1,25 @@
-import { setSameWidth, displayTime } from "./utils.js";
+import { setSameWidth, setElementDisplay } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, generateTimeDropdown, populateTimeDropdowns } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
 import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
 import { saveEvent, setTime, getEventLength, setDefaultEndTime } from "./eventsData.js";
-import { currentEventTileId, emptyEventTitle } from "./calendarVars.js";
+import { currentEventTileId, emptyEventTitle, modalInputsIds } from "./calendarVars.js";
 import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
+import { displayTime } from "./timeCalculations.js";
 
 const setTimeDateInputWidths = (modal) => {
-    modal.querySelector("#date-btn").style.width = "fit-content";
-    modal.querySelector("#time-start-btn").style.width = "fit-content";
-    modal.querySelector("#time-end-btn").style.width = "fit-content";
-
-    setSameWidth("#date-btn", "#date");
-    setSameWidth("#time-start-btn", "#time-start");
-    setSameWidth("#time-end-btn", "#time-end");
+    modalInputsIds.forEach((inputId) => (modal.querySelector(`#${inputId}-btn`).style.width = "fit-content"));
+    modalInputsIds.forEach((inputId) => setSameWidth(`#${inputId}-btn`, `#${inputId}`));
 };
 
 const removeSeparators = (modal) => {
-    modal.querySelectorAll(".with-separator").forEach((item) => {
-        item.classList.remove("separated-top", "separated-bottom");
-    });
+    modal
+        .querySelectorAll(".with-separator")
+        .forEach((item) => item.classList.remove("separated-top", "separated-bottom"));
 };
 
 const resetModal = (modal) => {
-    modal.querySelectorAll(".preview-settings").forEach((item) => (item.style.display = "flex"));
+    modal.querySelectorAll(".preview-settings").forEach((item) => setElementDisplay(item, "flex"));
     modal.querySelectorAll(".full-settings").forEach((item) => item.classList.remove("active"));
     modal.querySelectorAll(".select-input").forEach((dropdownItem) => resetDropdownItem(dropdownItem));
     removeUnsavedEventTile();
@@ -53,8 +49,9 @@ const addSeparators = (parent) => {
 const handleSettingsClick = (item) => {
     const parent = item.closest(".single-setting-section");
     const settingsDiv = parent.querySelector(".full-settings");
+
     settingsDiv.classList.add("active");
-    parent.querySelector(".preview-settings").style.display = "none";
+    setElementDisplay(parent.querySelector(".preview-settings"), "none");
     addSeparators(parent);
 };
 
@@ -90,18 +87,16 @@ const positionModalY = (modal, event) => {
 };
 
 const setTimeDateInputs = (modal, newEventData) => {
-    const dateText = `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`;
-    const start = displayTime(newEventData.startTime.hour, newEventData.startTime.minutes);
-    const end = displayTime(newEventData.endTime.hour, newEventData.endTime.minutes);
+    const values = {
+        date: `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`,
+        "time-start": displayTime(newEventData.startTime.hour, newEventData.startTime.minutes),
+        "time-end": displayTime(newEventData.endTime.hour, newEventData.endTime.minutes),
+    };
 
-    modal.querySelector("#date-btn span").innerText = dateText;
-    modal.querySelector("#time-start-btn span").innerText = start;
-    modal.querySelector("#time-end-btn span").innerText = end;
-
-    modal.querySelector("#date").value = dateText;
-    modal.querySelector("#time-start").value = start;
-    modal.querySelector("#time-end").value = end;
-
+    modalInputsIds.forEach((inputId) => {
+        modal.querySelector(`#${inputId}-btn span`).innerText = values[inputId];
+        modal.querySelector(`#${inputId}`).value = values[inputId];
+    });
     populateTimeDropdowns(newEventData);
 };
 
@@ -147,13 +142,13 @@ const closeModal = () => {
 
     getModalInputById("title").value = "";
     removeUnsavedEventTile();
-    modal.style.display = "none";
+    setElementDisplay(modal, "none");
 };
 
 const openModal = (event, newEventData) => {
     const modal = getModal();
 
-    modal.style.display = "block";
+    setElementDisplay(modal, "block");
     setTimeDateInputs(modal, newEventData);
     resetModal(modal);
     positionModalX(modal, event);

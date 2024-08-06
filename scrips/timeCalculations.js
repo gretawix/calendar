@@ -1,4 +1,4 @@
-import { weekDaysNumber } from "./calendarVars.js";
+import { weekDaysNumber, hoursNumber } from "./calendarVars.js";
 
 const getStartOfWeek = (date) => {
     let currentDate = new Date(date);
@@ -28,4 +28,30 @@ const hoursToMinutes = (hours) => {
     return Math.round(hours * 60);
 };
 
-export { getStartOfWeek, getTimeZone, minutesToHour, hoursToMinutes };
+const formatHours = (hour) => (parseInt(hour, 10) < 10 ? `0${parseInt(hour, 10)}` : hour);
+
+const formatMinutes = (minutes) => (parseInt(minutes, 10) < 10 ? `0${parseInt(minutes, 10)}` : minutes);
+
+const displayTime = (hour, minutes) => {
+    return `${formatHours(hour)}:${formatMinutes(minutes)}`;
+};
+
+const formatTime = (hourFraction) => {
+    let hour = Math.floor(hourFraction);
+    let minutes = hourFraction - hour;
+
+    if (hour >= hoursNumber) hour = hour - hoursNumber;
+
+    return displayTime(hour, hoursToMinutes(minutes));
+};
+
+export {
+    getStartOfWeek,
+    getTimeZone,
+    minutesToHour,
+    hoursToMinutes,
+    formatHours,
+    formatMinutes,
+    displayTime,
+    formatTime,
+};
