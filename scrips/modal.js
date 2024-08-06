@@ -2,10 +2,10 @@ import { setSameWidth, setElementDisplay } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, generateTimeDropdown, populateTimeDropdowns } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
 import { removeUnsavedEventTile, styleEventTile, updateTileTime } from "./eventTile.js";
-import { saveEvent, setTime, getEventLength, setEndTime } from "./eventsData.js";
+import { saveEvent, getTime, getEventLength, getEndTime } from "./eventsData.js";
 import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants.js";
 import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
-import { displayTime } from "./timeCalculations.js";
+import { displayTime, hourIsValid, minutesAreValid } from "./timeCalculations.js";
 
 const setTimeDateInputWidths = (modal) => {
     Object.entries(modalInputsIds).forEach(([key, inputId]) => {
@@ -124,13 +124,13 @@ const handleTimeChange = (event, timeKey, modal, endTimeInput) => {
     const [hours, minutes] = event.target.value.split(":");
     let eventLength = getEventLength(eventData);
 
-    eventData[timeKey] = setTime(hours, minutes);
+    eventData[timeKey] = getTime(hours, minutes);
     if (timeKey === "startTime") {
-        eventData.endTime = setEndTime(hours, minutes, eventLength);
+        eventData.endTime = getEndTime(hours, minutes, eventLength);
         setTimeDateInputs(modal, eventData);
     }
 
-    if (getEventLength(eventData) <= 0) {
+    if (getEventLength(eventData) <= 0 || !hourIsValid(hours) || !minutesAreValid(minutes)) {
         if (endTimeInput) endTimeInput.classList.add("error");
         storeDataInLocalStorage(currentEventDataKey, eventData);
         throw new Error("end time cannot be earlier than start time");

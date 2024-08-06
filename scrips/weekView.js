@@ -1,4 +1,4 @@
-import { getStartOfWeek, getTimeZone, formatHours } from "./timeCalculations.js";
+import { getFirstDayInTimeGrid, getTimeZone, formatHours } from "./timeCalculations.js";
 import { hoursInDay, daysNumberOnTimeGrid, cellHeightInPx } from "./constants.js";
 import { createDomElement, appendChildren } from "./utils.js";
 import { handleEventCreationClick } from "./eventTile.js";
@@ -92,7 +92,7 @@ const createTimeGridWrapper = (week) => {
 
 const createWeek = (today) => {
     const week = [];
-    const baseDay = getStartOfWeek(today);
+    const baseDay = getFirstDayInTimeGrid(today);
 
     for (let i = 0; i < daysNumberOnTimeGrid; i++) {
         const day = new Date(baseDay);

@@ -3,13 +3,21 @@ import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEve
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { minutesToHour, hoursToMinutes, formatMinutes, formatHours } from "./timeCalculations.js";
+import {
+    minutesToHour,
+    hoursToMinutes,
+    formatMinutes,
+    formatHours,
+    hourIsValid,
+    minutesAreValid,
+} from "./timeCalculations.js";
 import {
     currentEventDataKey,
     getDataFromLocalStorage,
     savedEventsKey,
     storeDataInLocalStorage,
 } from "./handleLocalStorage.js";
+import { hoursInDay, minutesInHour } from "./constants.js";
 
 const adjustEventTopPosition = (event) => {
     const distanceFromTop = event.target.getBoundingClientRect().top;
@@ -21,26 +29,28 @@ const adjustEventTopPosition = (event) => {
 
 const getEventLength = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
-    const startMin = minutesToHour(eventData.startTime.minutes);
+    const startMin = minutesToHour(parseInt(eventData.startTime.minutes, 10));
     const endHour = parseInt(eventData.endTime.hour, 10);
-    const endMin = minutesToHour(eventData.endTime.minutes);
+    const endMin = minutesToHour(parseInt(eventData.endTime.minutes, 10));
 
     return endHour + endMin - startHour - startMin;
 };
 
-const setTime = (hour, minutes) => {
+const getTime = (hour, minutes) => {
+    if (!hourIsValid(hour) || !minutesAreValid(minutes)) throw new Error("invalid time");
+
     return {
-        hour: `${formatHours(hour)}`,
-        minutes: `${formatMinutes(minutes)}`,
+        hour: `${formatHours(parseInt(hour, 10))}`,
+        minutes: `${formatMinutes(parseInt(minutes, 10))}`,
     };
 };
 
-const setEndTime = (startHour, minutes, eventLength = defaultEventLengthInHours) => {
+const getEndTime = (startHour, minutes, eventLength = defaultEventLengthInHours) => {
     const endTime = parseInt(startHour, 10) + minutesToHour(parseInt(minutes, 10)) + eventLength;
     const endHour = Math.floor(endTime);
     const endMinutes = hoursToMinutes(endTime - endHour);
 
-    return setTime(endHour, endMinutes);
+    return getTime(endHour, endMinutes);
 };
 
 const constructNewEvent = (event) => {
@@ -55,8 +65,8 @@ const constructNewEvent = (event) => {
 
     return {
         title: emptyEventTitle,
-        startTime: setTime(startHour, minutes),
-        endTime: setEndTime(startHour, minutes),
+        startTime: getTime(startHour, minutes),
+        endTime: getEndTime(startHour, minutes),
         weekday: weekdayShort,
         weekdayLong: getLongWeekDayName(weekdayShort),
         day: clickedColumn.getAttribute("data-day"),
@@ -66,7 +76,7 @@ const constructNewEvent = (event) => {
     };
 };
 
-const recordNewEvent = (eventData) => {
+const saveEventToStorage = (eventData) => {
     const allSavedEvents = getDataFromLocalStorage(savedEventsKey) || [];
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
 
@@ -84,8 +94,8 @@ const updateEventData = (eventData, title, dateInput, startTime, endTime) => {
     eventData.month = eventData.monthLong.slice(0, 3);
 
     eventData.title = title;
-    eventData.startTime = setTime(...startTime.split(":"));
-    eventData.endTime = setTime(...endTime.split(":"));
+    eventData.startTime = getTime(...startTime.split(":"));
+    eventData.endTime = getTime(...endTime.split(":"));
 
     return eventData;
 };
@@ -103,9 +113,13 @@ const saveEvent = () => {
         endTime.focus();
     }
     if (title.value && eventLength > 0) {
-        eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
-        recordNewEvent(eventData);
-        closeModal();
+        try {
+            eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
+            saveEventToStorage(eventData);
+            closeModal();
+        } catch {
+            console.log(eventData);
+        }
     }
 };
 
@@ -126,4 +140,4 @@ const displayAllSavedEvents = () => {
     });
 };
 
-export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, setTime, setEndTime };
+export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, getTime, getEndTime };

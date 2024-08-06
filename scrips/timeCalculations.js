@@ -1,6 +1,6 @@
-import { daysNumberOnTimeGrid, hoursInDay } from "./constants.js";
+import { daysNumberOnTimeGrid, hoursInDay, daysInWeek, minutesInHour } from "./constants.js";
 
-const getStartOfWeek = (date) => {
+const getFirstDayInTimeGrid = (date) => {
     let currentDate = new Date(date);
     let currentWeekDay = currentDate.getDay();
     let difference = (currentWeekDay === 0 ? -6 : 1) - currentWeekDay;
@@ -8,7 +8,7 @@ const getStartOfWeek = (date) => {
 
     monday.setDate(monday.getDate() + difference);
 
-    return daysNumberOnTimeGrid === 7 ? monday : currentDate;
+    return daysNumberOnTimeGrid === daysInWeek ? monday : currentDate;
 };
 
 const getTimeZone = (today) => {
@@ -20,20 +20,24 @@ const getTimeZone = (today) => {
     return `GMT${sign}${formattedTimeZone}`;
 };
 
+const hourIsValid = (hour) => parseInt(hour) < hoursInDay;
+
+const minutesAreValid = (minutes) => parseInt(minutes) < minutesInHour;
+
 const minutesToHour = (minutes) => {
-    return Math.round((parseInt(minutes, 10) / 60) * 100) / 100;
+    return Math.round((minutes / minutesInHour) * 100) / 100;
 };
 
 const hoursToMinutes = (hours) => {
     return Math.round(hours * 60);
 };
 
-const formatHours = (hour) => (parseInt(hour, 10) < 10 ? `0${parseInt(hour, 10)}` : hour);
+const formatHours = (hour) => (hour < 10 ? `0${hour}` : hour);
 
-const formatMinutes = (minutes) => (parseInt(minutes, 10) < 10 ? `0${parseInt(minutes, 10)}` : minutes);
+const formatMinutes = (minutes) => (minutes < 10 ? `0${minutes}` : minutes);
 
 const displayTime = (hour, minutes) => {
-    return `${formatHours(hour)}:${formatMinutes(minutes)}`;
+    return `${formatHours(parseInt(hour, 10))}:${formatMinutes(parseInt(minutes, 10))}`;
 };
 
 const formatTime = (hourFraction) => {
@@ -46,7 +50,7 @@ const formatTime = (hourFraction) => {
 };
 
 export {
-    getStartOfWeek,
+    getFirstDayInTimeGrid,
     getTimeZone,
     minutesToHour,
     hoursToMinutes,
@@ -54,4 +58,6 @@ export {
     formatMinutes,
     displayTime,
     formatTime,
+    hourIsValid,
+    minutesAreValid,
 };

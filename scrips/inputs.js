@@ -81,7 +81,7 @@ const populateTimeDropdowns = (eventData) => {
                 ? index / minutesIncrementLength
                 : index / minutesIncrementLength +
                   parseInt(eventData.startTime.hour) +
-                  minutesToHour(eventData.startTime.minutes);
+                  minutesToHour(parseInt(eventData.startTime.minutes, 10));
 
             item.innerText = formatTime(hourFraction);
             if (item.innerText === displayTime(time.hour, time.minutes)) {

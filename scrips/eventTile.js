@@ -7,16 +7,17 @@ import { minutesToHour, displayTime } from "./timeCalculations.js";
 
 const calculateTopPosition = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
-    const startMin = minutesToHour(eventData.startTime.minutes);
+    const startMin = minutesToHour(parseInt(eventData.startTime.minutes, 10));
 
     return (startHour + startMin) * cellHeightInPx;
 };
 
 const styleEventTile = (eventTile, eventData) => {
     const eventLength = getEventLength(eventData);
+    const tileMargin = 4;
 
     eventTile.style.top = `${calculateTopPosition(eventData)}px`;
-    eventTile.style.height = `${eventLength * cellHeightInPx - 4}px`;
+    eventTile.style.height = `${eventLength * cellHeightInPx - tileMargin}px`;
     eventTile.classList.remove("short", "long", "regular");
 
     if (eventLength < 0.7) {
