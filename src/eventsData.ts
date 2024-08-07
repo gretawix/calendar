@@ -1,4 +1,4 @@
-import { getLongWeekDayName, getLongMonthName } from "./utils.js";
+import { getLongWeekDayName, getLongMonthName, parseTime } from "./utils.js";
 import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle } from "./constants.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
@@ -17,7 +17,7 @@ import {
     savedEventsKey,
     storeDataInLocalStorage,
 } from "./handleLocalStorage.js";
-import { EventData, Time } from "./types/main.js";
+import { EventData, MonthNamesShort, MonthNamesLong, Time, WeekDayNamesLong, WeekDayNamesShort } from "./types/main.js";
 
 const adjustEventTopPosition = (event: MouseEvent): number => {
     const clickedElement = event.target as HTMLElement;
@@ -30,19 +30,21 @@ const adjustEventTopPosition = (event: MouseEvent): number => {
 
 const getEventLength = (eventData: EventData): number => {
     const startHour = parseInt(eventData.startTime.hour, 10);
-    const startMin = minutesToHour(parseInt(eventData.startTime.minutes, 10));
+    const startMin = minutesToHour(eventData.startTime.minutes);
     const endHour = parseInt(eventData.endTime.hour, 10);
-    const endMin = minutesToHour(parseInt(eventData.endTime.minutes, 10));
+    const endMin = minutesToHour(eventData.endTime.minutes);
 
     return endHour + endMin - startHour - startMin;
 };
 
-const getTime = (hour: number, minutes: number): Time => {
-    if (!hourIsValid(hour) || !minutesAreValid(minutes)) throw new Error("invalid time");
+const getTime = (hour: number | string, minutes: number | string): Time => {
+    const time = parseTime(hour, minutes);
+
+    if (!hourIsValid(time.hour) || !minutesAreValid(time.minutes)) throw new Error("invalid time");
 
     return {
-        hour: `${formatHours(hour)}`,
-        minutes: `${formatMinutes(minutes)}`,
+        hour: `${formatHours(time.hour)}`,
+        minutes: `${formatMinutes(time.minutes)}`,
     };
 };
 
@@ -58,8 +60,8 @@ const constructNewEvent = (event: MouseEvent): EventData => {
     const clickedColumn = event.target as HTMLElement;
     const clickPosition = adjustEventTopPosition(event);
     const startHour = Math.floor(clickPosition / cellHeightInPx);
-    const weekdayShort = clickedColumn.getAttribute("data-weekday");
-    const monthNameShort = clickedColumn.getAttribute("data-month");
+    const weekdayShort = clickedColumn.getAttribute("data-weekday") as WeekDayNamesShort;
+    const monthNameShort = clickedColumn.getAttribute("data-month") as MonthNamesShort;
 
     let minutes = 0;
     if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
@@ -97,14 +99,14 @@ const updateEventData = (
     const [starHour, startMinutes] = startTime.split(":");
     const [endHour, sendMinutes] = endTime.split(":");
 
-    eventData.weekday = weekDayLong.slice(0, 3);
-    eventData.weekdayLong = weekDayLong;
-    [eventData.monthLong, eventData.day] = date.split(" ");
-    eventData.month = eventData.monthLong.slice(0, 3);
+    eventData.weekday = weekDayLong.slice(0, 3) as WeekDayNamesShort;
+    eventData.weekdayLong = weekDayLong as WeekDayNamesLong;
+    [eventData.monthLong, eventData.day] = date.split(" ") as [MonthNamesLong, string];
+    eventData.month = eventData.monthLong.slice(0, 3) as MonthNamesShort;
 
     eventData.title = title;
-    eventData.startTime = getTime(parseInt(starHour, 10), parseInt(startMinutes, 10));
-    eventData.endTime = getTime(parseInt(endHour, 10), parseInt(sendMinutes, 10));
+    eventData.startTime = getTime(starHour, startMinutes);
+    eventData.endTime = getTime(endHour, sendMinutes);
 
     return eventData;
 };

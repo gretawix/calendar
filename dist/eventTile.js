@@ -6,7 +6,7 @@ import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
 const calculateTopPosition = (eventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
-    const startMin = minutesToHour(parseInt(eventData.startTime.minutes, 10));
+    const startMin = minutesToHour(eventData.startTime.minutes);
     return (startHour + startMin) * cellHeightInPx;
 };
 const styleEventTile = (eventTile, eventData) => {
@@ -17,17 +17,16 @@ const styleEventTile = (eventTile, eventData) => {
     eventTile.classList.remove("short", "long", "regular");
     if (eventLength < 0.7) {
         eventTile.classList.add("short");
-    } else if (eventLength > 1) {
+    }
+    else if (eventLength > 1) {
         eventTile.classList.add("long");
-    } else {
+    }
+    else {
         eventTile.classList.add("regular");
     }
 };
 const updateTileTime = (timeText, eventData) => {
-    timeText.innerText = `${getDisplayableTime(
-        parseInt(eventData.startTime.hour, 10),
-        parseInt(eventData.startTime.minutes, 10)
-    )} - ${getDisplayableTime(parseInt(eventData.endTime.hour, 10), parseInt(eventData.endTime.minutes, 10))}`;
+    timeText.innerText = `${getDisplayableTime(parseInt(eventData.startTime.hour, 10), parseInt(eventData.startTime.minutes, 10))} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
 };
 const createEventTile = (eventData) => {
     const eventTile = createDomElement("div", "event-tile");
@@ -40,7 +39,8 @@ const createEventTile = (eventData) => {
 };
 const removeUnsavedEventTile = () => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`);
-    if (currentEventTile) currentEventTile.parentElement.removeChild(currentEventTile);
+    if (currentEventTile)
+        currentEventTile.parentElement.removeChild(currentEventTile);
 };
 const handleEventCreationClick = (event) => {
     const clickedWeekDayCol = event.target;
@@ -60,12 +60,5 @@ const placeNewEventTile = (currentEventTile, eventData) => {
     currentEventTile.classList.remove("placeholder");
     currentEventTile.removeAttribute("id");
 };
-export {
-    removeUnsavedEventTile,
-    handleEventCreationClick,
-    placeNewEventTile,
-    createEventTile,
-    styleEventTile,
-    updateTileTime,
-};
+export { removeUnsavedEventTile, handleEventCreationClick, placeNewEventTile, createEventTile, styleEventTile, updateTileTime, };
 //# sourceMappingURL=eventTile.js.map

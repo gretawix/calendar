@@ -1,28 +1,64 @@
+declare enum WeekdayNamesLong {
+    MONDAY = "Monday",
+    TUESDAY = "Tuesday",
+    WEDNESDAY = "Wednesday",
+    THURSDAY = "Thursday",
+    FRIDAY = "Friday",
+    SATURDAY = "Saturday",
+    SUNDAY = "Sunday",
+}
+
+declare enum WeekdayNamesShort {
+    MON = "Mon",
+    TUE = "Tue",
+    WED = "Wed",
+    THU = "Thu",
+    FRI = "Fri",
+    SAT = "Sat",
+    SUN = "Sun",
+}
+
+declare enum AllMonthNamesLong {
+    JANUARY = "January",
+    FEBRUARY = "February",
+    MARCH = "March",
+    APRIL = "April",
+    MAY = "May",
+    JUNE = "June",
+    JULY = "July",
+    AUGUST = "August",
+    SEPTEMBER = "September",
+    OCTOBER = "October",
+    NOVEMBER = "November",
+    DECEMBER = "December",
+}
+
+declare enum AllMonthNamesShort {
+    JAN = "Jan",
+    FEB = "Feb",
+    MAR = "Mar",
+    APR = "Apr",
+    MAY = "May",
+    JUN = "Jun",
+    JUL = "Jul",
+    AUG = "Aug",
+    SEP = "Sep",
+    OCT = "Oct",
+    NOV = "Nov",
+    DEC = "Dec",
+}
+
+type WeekDayNamesLong = `${WeekdayNamesLong}`;
+type WeekDayNamesShort = `${WeekdayNamesShort}`;
+type MonthNamesLong = `${AllMonthNamesLong}`;
+type MonthNamesShort = `${AllMonthNamesShort}`;
+
 type WeekDay = {
     weekDay: string;
     month: string;
     day: number;
     year: number;
 };
-
-type WeekDayNamesLong = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
-type WeekDayNamesShort = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
-
-type MonthNamesLong =
-    | "January"
-    | "February"
-    | "March"
-    | "April"
-    | "May"
-    | "June"
-    | "July"
-    | "August"
-    | "September"
-    | "October"
-    | "November"
-    | "December";
-
-type MonthNamesShort = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug" | "Sep" | "Oct" | "Nov" | "Dec";
 
 type ModalInputs = [
     HTMLInputElement,
@@ -43,11 +79,11 @@ type EventData = {
     title: string;
     startTime: Time;
     endTime: Time;
-    weekday: string;
-    weekdayLong: string;
+    weekday: WeekDayNamesShort;
+    weekdayLong: WeekDayNamesLong;
     day: string;
-    month: string;
-    monthLong: string;
+    month: MonthNamesShort;
+    monthLong: MonthNamesLong;
     year: string;
 };
 

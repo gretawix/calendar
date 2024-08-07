@@ -1,4 +1,5 @@
 import { daysNumberOnTimeGrid, hoursInDay, daysInWeek, minutesInHour } from "./constants.js";
+import { parseTime } from "./utils.js";
 const getFirstDayInTimeGrid = (date) => {
     let currentDate = new Date(date);
     let currentWeekDay = currentDate.getDay();
@@ -17,15 +18,28 @@ const getTimeZone = (today) => {
 const hourIsValid = (hour) => hour < hoursInDay;
 const minutesAreValid = (minutes) => minutes < minutesInHour;
 const minutesToHour = (minutes) => {
-    return Math.round((minutes / minutesInHour) * 100) / 100;
+    let minutesInt;
+    if (typeof minutes === "string") {
+        minutesInt = parseInt(minutes, 10);
+    }
+    else
+        minutesInt = minutes;
+    return Math.round((minutesInt / minutesInHour) * 100) / 100;
 };
 const hoursToMinutes = (hours) => {
-    return Math.round(hours * 60);
+    let hoursInt;
+    if (typeof hours === "string") {
+        hoursInt = parseInt(hours, 10);
+    }
+    else
+        hoursInt = hours;
+    return Math.round(hoursInt * 60);
 };
 const formatHours = (hour) => (hour < 10 ? `0${hour}` : `${hour}`);
 const formatMinutes = (minutes) => (minutes < 10 ? `0${minutes}` : `${minutes}`);
 const getDisplayableTime = (hour, minutes) => {
-    return `${formatHours(hour)}:${formatMinutes(minutes)}`;
+    const time = parseTime(hour, minutes);
+    return `${formatHours(time.hour)}:${formatMinutes(time.minutes)}`;
 };
 const formatTime = (hourFraction) => {
     let hour = Math.floor(hourFraction);

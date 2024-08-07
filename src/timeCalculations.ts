@@ -1,4 +1,5 @@
 import { daysNumberOnTimeGrid, hoursInDay, daysInWeek, minutesInHour } from "./constants.js";
+import { parseTime } from "./utils.js";
 
 const getFirstDayInTimeGrid = (date: Date): Date => {
     let currentDate = new Date(date);
@@ -24,20 +25,32 @@ const hourIsValid = (hour: number): boolean => hour < hoursInDay;
 
 const minutesAreValid = (minutes: number): boolean => minutes < minutesInHour;
 
-const minutesToHour = (minutes: number): number => {
-    return Math.round((minutes / minutesInHour) * 100) / 100;
+const minutesToHour = (minutes: number | string): number => {
+    let minutesInt: number;
+    if (typeof minutes === "string") {
+        minutesInt = parseInt(minutes, 10);
+    } else minutesInt = minutes;
+
+    return Math.round((minutesInt / minutesInHour) * 100) / 100;
 };
 
-const hoursToMinutes = (hours: number): number => {
-    return Math.round(hours * 60);
+const hoursToMinutes = (hours: number | string): number => {
+    let hoursInt: number;
+    if (typeof hours === "string") {
+        hoursInt = parseInt(hours, 10);
+    } else hoursInt = hours;
+
+    return Math.round(hoursInt * 60);
 };
 
 const formatHours = (hour: number): string => (hour < 10 ? `0${hour}` : `${hour}`);
 
 const formatMinutes = (minutes: number): string => (minutes < 10 ? `0${minutes}` : `${minutes}`);
 
-const getDisplayableTime = (hour: number, minutes: number): string => {
-    return `${formatHours(hour)}:${formatMinutes(minutes)}`;
+const getDisplayableTime = (hour: number | string, minutes: number | string): string => {
+    const time = parseTime(hour, minutes);
+
+    return `${formatHours(time.hour)}:${formatMinutes(time.minutes)}`;
 };
 
 const formatTime = (hourFraction: number): string => {

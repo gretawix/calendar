@@ -85,10 +85,10 @@ const populateTimeDropdowns = (eventData: EventData): void => {
                 ? index / minutesIncrementLength
                 : index / minutesIncrementLength +
                   parseInt(eventData.startTime.hour) +
-                  minutesToHour(parseInt(eventData.startTime.minutes, 10));
+                  minutesToHour(eventData.startTime.minutes);
 
             item.innerText = formatTime(hourFraction);
-            if (item.innerText === getDisplayableTime(parseInt(time.hour, 10), parseInt(time.minutes, 10))) {
+            if (item.innerText === getDisplayableTime(time.hour, time.minutes)) {
                 item.classList.add("selected");
             }
             if (!startTime && index === 0) setElementDisplay(item, "none");

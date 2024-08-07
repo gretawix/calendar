@@ -1,4 +1,5 @@
 import { timeStepInMinutes, minutesInHour } from "./constants.js";
+import { MonthNamesLong, MonthNamesShort, WeekDayNamesLong, WeekDayNamesShort } from "./types/main.js";
 
 const setSameWidth = (baseElementId: string, targetElementId: string): void => {
     const baseElement: HTMLElement = document.querySelector(baseElementId);
@@ -16,8 +17,8 @@ const createDomElement = (domEl: string = "div", classToAssign: string = "", idT
     return div;
 };
 
-const getLongWeekDayName = (shortName: string): string => {
-    const weekDaysNames: { [key: string]: string } = {
+const getLongWeekDayName = (shortName: WeekDayNamesShort): WeekDayNamesLong => {
+    const weekDaysNames: Record<WeekDayNamesShort, WeekDayNamesLong> = {
         Mon: "Monday",
         Tue: "Tuesday",
         Wed: "Wednesday",
@@ -30,8 +31,8 @@ const getLongWeekDayName = (shortName: string): string => {
     return weekDaysNames[shortName];
 };
 
-const getLongMonthName = (shortName: string): string => {
-    const monthNames: { [key: string]: string } = {
+const getLongMonthName = (shortName: MonthNamesShort): MonthNamesLong => {
+    const monthNames: Record<MonthNamesShort, MonthNamesLong> = {
         Jan: "January",
         Feb: "February",
         Mar: "March",
@@ -65,6 +66,24 @@ const getMinutesIncrements = (): number[] => {
     return minutesIncrements;
 };
 
+const parseTime = (hours: string | number, minutes: string | number): { hour: number; minutes: number } => {
+    let hourInt: number;
+    let minutesInt: number;
+    if (typeof hours === "string" && typeof minutes === "string") {
+        hourInt = parseInt(hours, 10);
+        minutesInt = parseInt(minutes, 10);
+    } else if (typeof hours === "string") {
+        hourInt = parseInt(hours, 10);
+    } else if (typeof minutes === "string") {
+        minutesInt = parseInt(minutes, 10);
+    } else {
+        hourInt = hours;
+        minutesInt = minutes;
+    }
+
+    return { hour: hourInt, minutes: minutesInt };
+};
+
 export {
     setSameWidth,
     createDomElement,
@@ -73,4 +92,5 @@ export {
     appendChildren,
     setElementDisplay,
     getMinutesIncrements,
+    parseTime,
 };

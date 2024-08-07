@@ -96,14 +96,8 @@ const positionModalY = (modal: HTMLElement, event: MouseEvent): void => {
 const setTimeDateInputs = (modal: HTMLElement, newEventData: EventData): void => {
     const values = {
         [modalInputsIds.date]: `${newEventData.weekdayLong}, ${newEventData.monthLong} ${newEventData.day}`,
-        [modalInputsIds.timeStart]: getDisplayableTime(
-            parseInt(newEventData.startTime.hour, 10),
-            parseInt(newEventData.startTime.minutes, 10)
-        ),
-        [modalInputsIds.timeEnd]: getDisplayableTime(
-            parseInt(newEventData.endTime.hour, 10),
-            parseInt(newEventData.endTime.minutes, 10)
-        ),
+        [modalInputsIds.timeStart]: getDisplayableTime(newEventData.startTime.hour, newEventData.startTime.minutes),
+        [modalInputsIds.timeEnd]: getDisplayableTime(newEventData.endTime.hour, newEventData.endTime.minutes),
     };
     Object.entries(modalInputsIds).forEach(([key, inputId]): void => {
         const btn: HTMLElement = modal.querySelector(`#${inputId}-btn span`);

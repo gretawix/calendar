@@ -8,7 +8,7 @@ import { EventData } from "./types/main.js";
 
 const calculateTopPosition = (eventData: EventData): number => {
     const startHour = parseInt(eventData.startTime.hour, 10);
-    const startMin = minutesToHour(parseInt(eventData.startTime.minutes, 10));
+    const startMin = minutesToHour(eventData.startTime.minutes);
 
     return (startHour + startMin) * cellHeightInPx;
 };
@@ -34,7 +34,7 @@ const updateTileTime = (timeText: HTMLElement, eventData: EventData): void => {
     timeText.innerText = `${getDisplayableTime(
         parseInt(eventData.startTime.hour, 10),
         parseInt(eventData.startTime.minutes, 10)
-    )} - ${getDisplayableTime(parseInt(eventData.endTime.hour, 10), parseInt(eventData.endTime.minutes, 10))}`;
+    )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
 };
 
 const createEventTile = (eventData: EventData): HTMLElement => {

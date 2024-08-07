@@ -56,5 +56,24 @@ const getMinutesIncrements = () => {
         minutesIncrements.push(i * timeStepInMinutes);
     return minutesIncrements;
 };
-export { setSameWidth, createDomElement, getLongWeekDayName, getLongMonthName, appendChildren, setElementDisplay, getMinutesIncrements, };
+const parseTime = (hours, minutes) => {
+    let hourInt;
+    let minutesInt;
+    if (typeof hours === "string" && typeof minutes === "string") {
+        hourInt = parseInt(hours, 10);
+        minutesInt = parseInt(minutes, 10);
+    }
+    else if (typeof hours === "string") {
+        hourInt = parseInt(hours, 10);
+    }
+    else if (typeof minutes === "string") {
+        minutesInt = parseInt(minutes, 10);
+    }
+    else {
+        hourInt = hours;
+        minutesInt = minutes;
+    }
+    return { hour: hourInt, minutes: minutesInt };
+};
+export { setSameWidth, createDomElement, getLongWeekDayName, getLongMonthName, appendChildren, setElementDisplay, getMinutesIncrements, parseTime, };
 //# sourceMappingURL=utils.js.map
