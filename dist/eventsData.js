@@ -3,8 +3,20 @@ import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEve
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
 import { closeModal } from "./modal.js";
-import { minutesToHour, hoursToMinutes, formatMinutes, formatHours, hourIsValid, minutesAreValid, } from "./timeCalculations.js";
-import { currentEventDataKey, getDataFromLocalStorage, savedEventsKey, storeDataInLocalStorage, } from "./handleLocalStorage.js";
+import {
+    minutesToHour,
+    hoursToMinutes,
+    formatMinutes,
+    formatHours,
+    hourIsValid,
+    minutesAreValid,
+} from "./timeCalculations.js";
+import {
+    currentEventDataKey,
+    getDataFromLocalStorage,
+    savedEventsKey,
+    storeDataInLocalStorage,
+} from "./handleLocalStorage.js";
 const adjustEventTopPosition = (event) => {
     const clickedElement = event.target;
     const distanceFromTop = clickedElement.getBoundingClientRect().top;
@@ -20,8 +32,7 @@ const getEventLength = (eventData) => {
     return endHour + endMin - startHour - startMin;
 };
 const getTime = (hour, minutes) => {
-    if (!hourIsValid(hour) || !minutesAreValid(minutes))
-        throw new Error("invalid time");
+    if (!hourIsValid(hour) || !minutesAreValid(minutes)) throw new Error("invalid time");
     return {
         hour: `${formatHours(hour)}`,
         minutes: `${formatMinutes(minutes)}`,
@@ -40,8 +51,7 @@ const constructNewEvent = (event) => {
     const weekdayShort = clickedColumn.getAttribute("data-weekday");
     const monthNameShort = clickedColumn.getAttribute("data-month");
     let minutes = 0;
-    if (clickPosition % cellHeightInPx === cellHeightInPx / 2)
-        minutes = 30;
+    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
     return {
         title: emptyEventTitle,
         startTime: getTime(startHour, minutes),
@@ -81,8 +91,7 @@ const saveEvent = () => {
     if (!title.value) {
         title.classList.add("error");
         title.focus();
-    }
-    else if (eventLength <= 0) {
+    } else if (eventLength <= 0) {
         endTime.classList.add("error");
         endTime.focus();
     }
@@ -91,8 +100,7 @@ const saveEvent = () => {
             eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
             saveEventToStorage(eventData);
             closeModal();
-        }
-        catch {
+        } catch {
             console.log(eventData);
         }
     }
@@ -102,11 +110,13 @@ const displayAllSavedEvents = () => {
     const gridDays = getGridDays();
     allSavedEvents.forEach((oneEvent) => {
         const eventTile = createEventTile(oneEvent);
-        const eventParentDiv = Array.from(gridDays).find((day) => day.dataset.day === oneEvent.day &&
-            day.dataset.month === oneEvent.month &&
-            day.dataset.year === oneEvent.year);
-        if (eventParentDiv)
-            eventParentDiv.appendChild(eventTile);
+        const eventParentDiv = Array.from(gridDays).find(
+            (day) =>
+                day.dataset.day === oneEvent.day &&
+                day.dataset.month === oneEvent.month &&
+                day.dataset.year === oneEvent.year
+        );
+        if (eventParentDiv) eventParentDiv.appendChild(eventTile);
     });
 };
 export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, getTime, getEndTime };

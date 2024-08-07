@@ -13,9 +13,10 @@ const createSingleWeekDay = (day, today) => {
     const divider = createDomElement("div", "divider-vertical");
     const dayName = createDomElement("p", "day-name");
     const dayNumber = createDomElement("p", "day-number");
-    Object.entries(day).forEach(([key, value]) => dayDiv.setAttribute(`data-${key}`, typeof value === "number" ? value.toString() : value));
-    if (day.day == today.getDate())
-        dayDiv.classList.add("active");
+    Object.entries(day).forEach(([key, value]) =>
+        dayDiv.setAttribute(`data-${key}`, typeof value === "number" ? value.toString() : value)
+    );
+    if (day.day == today.getDate()) dayDiv.classList.add("active");
     dayName.innerText = day.weekDay;
     dayNumber.innerText = day.day.toString();
     return appendChildren(dayDiv, [divider, dayName, dayNumber]);
@@ -57,7 +58,9 @@ const createTimeGrid = (week) => {
     timeGrid.appendChild(dividerColumn);
     week.forEach((day) => {
         const dayColumn = createDomElement("div", "hours-cells-column");
-        Object.entries(day).forEach(([key, value]) => dayColumn.setAttribute(`data-${key}`, typeof value === "number" ? value.toString() : value));
+        Object.entries(day).forEach(([key, value]) =>
+            dayColumn.setAttribute(`data-${key}`, typeof value === "number" ? value.toString() : value)
+        );
         timeGrid.appendChild(dayColumn);
     });
     return timeGrid;
@@ -88,6 +91,7 @@ const drawWeekView = () => {
     const today = new Date();
     const week = createWeek(today);
     const timeZone = getTimeZone(today);
+    const weekView = document.querySelector("#week-view");
     const weekView = document.querySelector("#week-view");
     const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
     const timeGridWrapper = createTimeGridWrapper(week);

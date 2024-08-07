@@ -6,8 +6,7 @@ const storeDataInLocalStorage = (key, data) => {
             localStorage.setItem(key, JSON.stringify(data));
             return true;
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error);
         return false;
     }
@@ -17,8 +16,7 @@ const getDataFromLocalStorage = (key) => {
     try {
         const storedData = localStorage.getItem(key);
         return storedData ? JSON.parse(storedData) : null;
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error);
         return null;
     }

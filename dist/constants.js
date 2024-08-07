@@ -9,5 +9,17 @@ const emptyEventTitle = "(no title)";
 const timeStepInMinutes = 15;
 const modalInputsIds = { date: "date", timeStart: "time-start", timeEnd: "time-end" };
 const modalTitleId = "title";
-export { daysNumberOnTimeGrid, hoursInDay, cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle, modalInputsIds, modalTitleId, minutesInHour, daysInWeek, timeStepInMinutes, };
+export {
+    daysNumberOnTimeGrid,
+    hoursInDay,
+    cellHeightInPx,
+    currentEventTileId,
+    defaultEventLengthInHours,
+    emptyEventTitle,
+    modalInputsIds,
+    modalTitleId,
+    minutesInHour,
+    daysInWeek,
+    timeStepInMinutes,
+};
 //# sourceMappingURL=constants.js.map
