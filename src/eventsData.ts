@@ -19,7 +19,7 @@ import {
 } from "./handleLocalStorage.js";
 import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants.js";
 import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking.js";
-import type { DateInfo, EventData, MonthNamesShort, Time, WeekDayNamesShort } from "./types/main.js";
+import type { DateInfo, EventData, Time } from "./types/main.js";
 
 const adjustEventTopPosition = (event: MouseEvent) => {
     const clickedElement = event.target as HTMLElement | null;
@@ -81,7 +81,7 @@ const getDefaultEvent = (): EventData => {
 
 const constructNewEvent = (event: MouseEvent): EventData => {
     const data = getDefaultEvent();
-    const clickedColumn = event.target as HTMLElement | null;
+    const clickedColumn = event.target as HTMLElement;
     const clickPosition = adjustEventTopPosition(event);
     const startHour = Math.floor(clickPosition / cellHeightInPx);
 
@@ -90,22 +90,28 @@ const constructNewEvent = (event: MouseEvent): EventData => {
     data.startTime = getTime(startHour, minutes);
     data.endTime = getEndTime(startHour, minutes);
 
-    if (clickedColumn) {
-        const weekDayAttr = clickedColumn.getAttribute("data-weekday");
-        const monthAttr = clickedColumn.getAttribute("data-month");
-        const dayAttr = clickedColumn.getAttribute("data-day");
-        const yearAttr = clickedColumn.getAttribute("data-year");
-        if (isWeekDayShort(weekDayAttr)) {
-            data.weekday = WEEK_DAYS_SHORT[weekDayAttr];
-            data.weekdayLong = weekDaysMap[data.weekday];
-        }
-        if (isMonthShort(monthAttr)) {
-            data.month = MONTHS_SHORT[monthAttr];
-            data.monthLong = monthsMap[data.month];
-        }
-        if (dayAttr) data.day = dayAttr;
-        if (yearAttr) data.year = yearAttr;
-    }
+    const weekDayAttr = clickedColumn.getAttribute("data-weekday");
+    const monthAttr = clickedColumn.getAttribute("data-month");
+    const dayAttr = clickedColumn.getAttribute("data-day");
+    const yearAttr = clickedColumn.getAttribute("data-year");
+
+    if (isWeekDayShort(weekDayAttr)) {
+        data.weekday = WEEK_DAYS_SHORT[weekDayAttr];
+        data.weekdayLong = weekDaysMap[data.weekday];
+    } else throw new Error("failed to get weekday");
+
+    if (isMonthShort(monthAttr)) {
+        data.month = MONTHS_SHORT[monthAttr];
+        data.monthLong = monthsMap[data.month];
+    } else throw new Error("failed to get month");
+
+    if (dayAttr) {
+        data.day = dayAttr;
+    } else throw new Error("failed to get day");
+
+    if (yearAttr) {
+        data.year = yearAttr;
+    } else throw new Error("failed to get year");
 
     return data;
 };
@@ -114,7 +120,9 @@ const saveEventToStorage = (eventData: EventData) => {
     const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
     const currentEventTile = document.querySelector(`#${currentEventTileId}`) as HTMLElement | null;
 
-    if (currentEventTile) placeNewEventTile(currentEventTile, eventData);
+    if (currentEventTile) {
+        placeNewEventTile(currentEventTile, eventData);
+    } else throw new Error("failed to save new event tile");
     allSavedEvents.push(eventData);
     storeDataInLocalStorage(savedEventsKey, allSavedEvents);
 };
@@ -198,23 +206,20 @@ const saveEvent = () => {
         endTime?.classList.add("error");
         endTime?.focus();
     }
-    if (title?.value && eventLength > 0) {
-        try {
-            if (dateInput && startTime && endTime)
-                eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
+    if (title?.value) {
+        if (eventLength > 0 && dateInput && startTime && endTime) {
+            eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
             saveEventToStorage(eventData);
             closeModal();
-        } catch (error) {
-            console.log(error);
-        }
-    }
+        } else throw new Error("Failed to save event");
+    } else throw new Error("No event title provided");
 };
 
 const displayAllSavedEvents = () => {
     const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
     const gridDays = getGridDays();
 
-    if (gridDays)
+    if (gridDays) {
         allSavedEvents.forEach((oneEvent) => {
             const eventTile = createEventTile(oneEvent);
             const eventParentDiv = Array.from(gridDays).find(
@@ -223,9 +228,9 @@ const displayAllSavedEvents = () => {
                     day.dataset.month === oneEvent.month &&
                     day.dataset.year === oneEvent.year
             );
-
             if (eventParentDiv) eventParentDiv.appendChild(eventTile);
         });
+    } else throw new Error("No time grid to display events");
 };
 
 export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, getTime, getEndTime };

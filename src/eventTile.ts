@@ -30,14 +30,13 @@ const styleEventTile = (eventTile: HTMLElement, eventData: EventData) => {
     }
 };
 
-const updateTileTime = (currentEventTile: HTMLElement, eventData: EventData) => {
-    const timeText: HTMLElement | null = currentEventTile.querySelector(".event-tile-time");
+const updateTileTime = (timeText: HTMLElement, eventData: EventData) => {
+    const timeTodisplay = `${getDisplayableTime(
+        eventData.startTime.hour,
+        eventData.startTime.minutes
+    )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
 
-    if (timeText)
-        timeText.innerText = `${getDisplayableTime(
-            parseInt(eventData.startTime.hour, 10),
-            parseInt(eventData.startTime.minutes, 10)
-        )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
+    timeText.innerText = timeTodisplay;
 };
 
 const createEventTile = (eventData: EventData): HTMLElement => {
@@ -82,10 +81,11 @@ const placeNewEventTile = (currentEventTile: HTMLElement, eventData: EventData) 
 };
 
 const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, endTimeInput?: HTMLInputElement) => {
+    const timeText: HTMLElement | null = currentEventTile.querySelector(".event-tile-time");
     if (getEventLength(eventData) > 0) {
         if (endTimeInput) endTimeInput.classList.remove("error");
         styleEventTile(currentEventTile, eventData);
-        updateTileTime(currentEventTile, eventData);
+        if (timeText) updateTileTime(timeText, eventData);
         storeDataInLocalStorage(currentEventDataKey, eventData);
     } else {
         if (endTimeInput) endTimeInput.classList.add("error");

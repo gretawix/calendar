@@ -1,7 +1,7 @@
 import { setSameWidth, setElementDisplay } from "./utils.js";
 import { resetDropdownItem, initDropdownSelect, generateTimeDropdown, populateTimeDropdowns } from "./inputs.js";
 import { getModal, getModalInputById, getModalInputs } from "./selectors.js";
-import { removeUnsavedEventTile, styleEventTile, updateTileTime, updateEventTile } from "./eventTile.js";
+import { removeUnsavedEventTile, updateEventTile } from "./eventTile.js";
 import { saveEvent, getTime, getEventLength, getEndTime } from "./eventsData.js";
 import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants.js";
 import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage.js";
