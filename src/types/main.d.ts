@@ -1,81 +1,37 @@
-declare enum WeekdayNamesLong {
-    MONDAY = "Monday",
-    TUESDAY = "Tuesday",
-    WEDNESDAY = "Wednesday",
-    THURSDAY = "Thursday",
-    FRIDAY = "Friday",
-    SATURDAY = "Saturday",
-    SUNDAY = "Sunday",
-}
+import { WEEK_DAYS_SHORT, WEEK_DAYS_LONG, MONTHS_SHORT, MONTHS_LONG } from "./constants.ts";
 
-declare enum WeekdayNamesShort {
-    MON = "Mon",
-    TUE = "Tue",
-    WED = "Wed",
-    THU = "Thu",
-    FRI = "Fri",
-    SAT = "Sat",
-    SUN = "Sun",
-}
+export type ObjectValues<T> = T[keyof T];
 
-declare enum AllMonthNamesLong {
-    JANUARY = "January",
-    FEBRUARY = "February",
-    MARCH = "March",
-    APRIL = "April",
-    MAY = "May",
-    JUNE = "June",
-    JULY = "July",
-    AUGUST = "August",
-    SEPTEMBER = "September",
-    OCTOBER = "October",
-    NOVEMBER = "November",
-    DECEMBER = "December",
-}
+export type WeekDayNamesLong = ObjectValues<typeof WEEK_DAYS_LONG>;
+export type WeekDayNamesShort = ObjectValues<typeof WEEK_DAYS_SHORT>;
+export type MonthNamesLong = ObjectValues<typeof MONTHS_LONG>;
+export type MonthNamesShort = ObjectValues<typeof MONTHS_SHORT>;
 
-declare enum AllMonthNamesShort {
-    JAN = "Jan",
-    FEB = "Feb",
-    MAR = "Mar",
-    APR = "Apr",
-    MAY = "May",
-    JUN = "Jun",
-    JUL = "Jul",
-    AUG = "Aug",
-    SEP = "Sep",
-    OCT = "Oct",
-    NOV = "Nov",
-    DEC = "Dec",
-}
-
-type WeekDayNamesLong = `${WeekdayNamesLong}`;
-type WeekDayNamesShort = `${WeekdayNamesShort}`;
-type MonthNamesLong = `${AllMonthNamesLong}`;
-type MonthNamesShort = `${AllMonthNamesShort}`;
-
-type WeekDay = {
-    weekDay: string;
-    month: string;
+export type WeekDay = {
+    weekDay: WeekDayNamesShort;
+    month: MonthNamesShort;
     day: number;
     year: number;
 };
 
-type ModalInputs = [
-    HTMLInputElement,
-    HTMLInputElement,
-    HTMLInputElement,
-    HTMLInputElement,
-    HTMLElement,
-    HTMLElement,
-    NodeListOf<HTMLElement>
+export type DateInfo = [WeekDayNamesShort, MonthNamesShort, string, string];
+
+export type ModalInputs = [
+    HTMLInputElement | null | undefined,
+    HTMLInputElement | null | undefined,
+    HTMLInputElement | null | undefined,
+    HTMLInputElement | null | undefined,
+    HTMLElement | null | undefined,
+    HTMLElement | null | undefined,
+    NodeListOf<HTMLElement> | undefined
 ];
 
-type Time = {
+export type Time = {
     hour: string;
     minutes: string;
 };
 
-type EventData = {
+export type EventData = {
     title: string;
     startTime: Time;
     endTime: Time;
@@ -86,5 +42,3 @@ type EventData = {
     monthLong: MonthNamesLong;
     year: string;
 };
-
-export { WeekDay, WeekDayNamesLong, WeekDayNamesShort, MonthNamesLong, MonthNamesShort, ModalInputs, EventData, Time };

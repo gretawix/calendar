@@ -1,14 +1,14 @@
-const daysNumberOnTimeGrid: number = 7;
-const hoursInDay: number = 24;
-const minutesInHour: number = 60;
-const daysInWeek: number = 7;
-const cellHeightInPx: number = 49;
-const currentEventTileId: string = "current-event-tile";
-const defaultEventLengthInHours: number = 1;
-const emptyEventTitle: string = "(no title)";
-const timeStepInMinutes: number = 15;
-const modalInputsIds: { [key: string]: string } = { date: "date", timeStart: "time-start", timeEnd: "time-end" };
-const modalTitleId: string = "title";
+const daysNumberOnTimeGrid = 7;
+const hoursInDay = 24;
+const minutesInHour = 60;
+const daysInWeek = 7;
+const cellHeightInPx = 49;
+const currentEventTileId = "current-event-tile";
+const defaultEventLengthInHours = 1;
+const emptyEventTitle = "(no title)";
+const timeStepInMinutes = 15;
+const modalInputsIds = { date: "date", timeStart: "time-start", timeEnd: "time-end" } as const;
+const modalTitleId = "title";
 
 export {
     daysNumberOnTimeGrid,

@@ -1,19 +1,22 @@
 import { modalInputsIds, modalTitleId } from "./constants.js";
-import { ModalInputs } from "./types/main.js";
+import type { ModalInputs } from "./types/main.js";
 
-const getModal = (): HTMLElement => document.querySelector("#event-modal");
+const getModal = (): HTMLElement | null => document.querySelector("#event-modal");
 
-const getSaveBtn = (modal: HTMLElement): HTMLElement => modal.querySelector("#save-event-btn");
+const getSaveBtn = (modal: HTMLElement | null): HTMLElement | null | undefined =>
+    modal?.querySelector("#save-event-btn");
 
-const getCloseBtn = (modal: HTMLElement): HTMLElement => modal.querySelector("#close-modal");
+const getCloseBtn = (modal: HTMLElement | null): HTMLElement | null | undefined => modal?.querySelector("#close-modal");
 
-const getSettingsToggleElements = (modal: HTMLElement): NodeListOf<HTMLElement> => modal.querySelectorAll(".to-select");
+const getSettingsToggleElements = (modal: HTMLElement | null): NodeListOf<HTMLElement> | undefined =>
+    modal?.querySelectorAll(".to-select");
 
-const getModalInputById = (inputId: string): HTMLInputElement => getModal().querySelector(`#${inputId}`);
+const getModalInputById = (inputId: string): HTMLInputElement | null | undefined =>
+    getModal()?.querySelector(`#${inputId}`);
 
-const getGrid = (): HTMLElement => document.querySelector("#days-hours-grid");
+const getGrid = (): HTMLElement | null => document.querySelector("#days-hours-grid");
 
-const getGridDays = (): NodeListOf<HTMLElement> => getGrid().querySelectorAll(".hours-cells-column");
+const getGridDays = (): NodeListOf<HTMLElement> | undefined => getGrid()?.querySelectorAll(".hours-cells-column");
 
 const getModalInputs = (): ModalInputs => {
     const modal = getModal();

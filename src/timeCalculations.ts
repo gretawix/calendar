@@ -21,9 +21,19 @@ const getTimeZone = (today: Date): string => {
     return `GMT${sign}${formattedTimeZone}`;
 };
 
-const hourIsValid = (hour: number): boolean => hour < hoursInDay;
+const hourIsValid = (hour: number | string): boolean => {
+    if (typeof hour === "string") {
+        return parseInt(hour, 10) < hoursInDay;
+    }
+    return hour < hoursInDay;
+};
 
-const minutesAreValid = (minutes: number): boolean => minutes < minutesInHour;
+const minutesAreValid = (minutes: number | string): boolean => {
+    if (typeof minutes === "string") {
+        return parseInt(minutes, 10) < minutesInHour;
+    }
+    return minutes < minutesInHour;
+};
 
 const minutesToHour = (minutes: number | string): number => {
     let minutesInt: number;

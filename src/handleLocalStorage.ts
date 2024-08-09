@@ -1,9 +1,7 @@
-import { EventData } from "./types/main.js";
-
 const currentEventDataKey: string = "currentEventData";
 const savedEventsKey: string = "allSavedEvents";
 
-const storeDataInLocalStorage = (key: string, data: EventData | EventData[]) => {
+const storeDataInLocalStorage = (key: string, data: any) => {
     try {
         if (key && data !== undefined) {
             localStorage.setItem(key, JSON.stringify(data));

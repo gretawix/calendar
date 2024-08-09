@@ -1,4 +1,4 @@
-import { getLongWeekDayName, getLongMonthName, parseTime } from "./utils.js";
+import { parseTime } from "./utils.js";
 import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle } from "./constants.js";
 import { placeNewEventTile, createEventTile } from "./eventTile.js";
 import { getModalInputs, getGridDays } from "./selectors.js";
@@ -17,9 +17,11 @@ import {
     savedEventsKey,
     storeDataInLocalStorage,
 } from "./handleLocalStorage.js";
-import { EventData, MonthNamesShort, MonthNamesLong, Time, WeekDayNamesLong, WeekDayNamesShort } from "./types/main.js";
+import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants.js";
+import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking.js";
+import type { DateInfo, EventData, MonthNamesShort, Time, WeekDayNamesShort } from "./types/main.js";
 
-const adjustEventTopPosition = (event: MouseEvent): number => {
+const adjustEventTopPosition = (event: MouseEvent) => {
     const clickedElement = event.target as HTMLElement;
     const distanceFromTop = clickedElement.getBoundingClientRect().top;
     const clickPosition = event.clientY - distanceFromTop;
@@ -28,7 +30,7 @@ const adjustEventTopPosition = (event: MouseEvent): number => {
     return Math.floor(clickPosition / increment) * increment;
 };
 
-const getEventLength = (eventData: EventData): number => {
+const getEventLength = (eventData: EventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
     const startMin = minutesToHour(eventData.startTime.minutes);
     const endHour = parseInt(eventData.endTime.hour, 10);
@@ -48,44 +50,116 @@ const getTime = (hour: number | string, minutes: number | string): Time => {
     };
 };
 
-const getEndTime = (startHour: number, minutes: number, eventLength = defaultEventLengthInHours): Time => {
-    const endTime = startHour + minutesToHour(minutes) + eventLength;
+const getEndTime = (
+    startHour: number | string,
+    minutes: number | string,
+    eventLength = defaultEventLengthInHours
+): Time => {
+    const time = parseTime(startHour, minutes);
+    const endTime = time.hour + minutesToHour(time.minutes) + eventLength;
     const endHour = Math.floor(endTime);
     const endMinutes = hoursToMinutes(endTime - endHour);
 
     return getTime(endHour, endMinutes);
 };
-
-const constructNewEvent = (event: MouseEvent): EventData => {
-    const clickedColumn = event.target as HTMLElement;
-    const clickPosition = adjustEventTopPosition(event);
-    const startHour = Math.floor(clickPosition / cellHeightInPx);
-    const weekdayShort = clickedColumn.getAttribute("data-weekday") as WeekDayNamesShort;
-    const monthNameShort = clickedColumn.getAttribute("data-month") as MonthNamesShort;
-
-    let minutes = 0;
-    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
+const getDefaultEvent = (): EventData => {
+    const today = new Date();
+    const [weekDayShort, monthShort, dayNum, year] = today.toString().split(" ") as DateInfo;
 
     return {
         title: emptyEventTitle,
-        startTime: getTime(startHour, minutes),
-        endTime: getEndTime(startHour, minutes),
-        weekday: weekdayShort,
-        weekdayLong: getLongWeekDayName(weekdayShort),
-        day: clickedColumn.getAttribute("data-day"),
-        month: monthNameShort,
-        monthLong: getLongMonthName(monthNameShort),
-        year: clickedColumn.getAttribute("data-year"),
+        startTime: getTime(9, 0),
+        endTime: getEndTime(9, 0),
+        weekday: weekDayShort,
+        weekdayLong: weekDaysMap[weekDayShort],
+        day: dayNum,
+        month: monthShort,
+        monthLong: monthsMap[monthShort],
+        year: year,
     };
 };
 
-const saveEventToStorage = (eventData: EventData): void => {
-    const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
-    const currentEventTile: HTMLElement = document.querySelector(`#${currentEventTileId}`);
+const constructNewEvent = (event: MouseEvent): EventData => {
+    const data = getDefaultEvent();
+    const clickedColumn = event.target as HTMLElement | null;
+    const clickPosition = adjustEventTopPosition(event);
+    const startHour = Math.floor(clickPosition / cellHeightInPx);
 
-    placeNewEventTile(currentEventTile, eventData);
+    let minutes = 0;
+    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
+    data.startTime = getTime(startHour, minutes);
+    data.endTime = getEndTime(startHour, minutes);
+
+    if (clickedColumn) {
+        const weekDayAttr = clickedColumn.getAttribute("data-weekday");
+        const monthAttr = clickedColumn.getAttribute("data-month");
+        const dayAttr = clickedColumn.getAttribute("data-day");
+        const yearAttr = clickedColumn.getAttribute("data-year");
+        if (isWeekDayShort(weekDayAttr)) {
+            data.weekday = WEEK_DAYS_SHORT[weekDayAttr];
+            data.weekdayLong = weekDaysMap[data.weekday];
+        }
+        if (isMonthShort(monthAttr)) {
+            data.month = MONTHS_SHORT[monthAttr];
+            data.monthLong = monthsMap[data.month];
+        }
+        if (dayAttr) data.day = dayAttr;
+        if (yearAttr) data.year = yearAttr;
+    }
+
+    return data;
+};
+
+const saveEventToStorage = (eventData: EventData) => {
+    const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
+    const currentEventTile = document.querySelector(`#${currentEventTileId}`) as HTMLElement | null;
+
+    if (currentEventTile) placeNewEventTile(currentEventTile, eventData);
     allSavedEvents.push(eventData);
     storeDataInLocalStorage(savedEventsKey, allSavedEvents);
+};
+
+const updateWeekday = (eventData: EventData, weekDayLong: string): EventData => {
+    const weekDayShort = weekDayLong.slice(0, 3);
+    if (isWeekDayLong(weekDayLong) && isWeekDayShort(weekDayShort)) {
+        eventData.weekday = weekDayShort;
+        eventData.weekdayLong = weekDayLong;
+    } else {
+        throw new Error("incorrect week day");
+    }
+
+    return eventData;
+};
+
+const updateMonth = (eventData: EventData, monthLong: string): EventData => {
+    const monthShort = monthLong.slice(0, 3);
+    if (isMonthLong(monthLong) && isMonthShort(monthShort)) {
+        eventData.monthLong = monthLong;
+        eventData.month = monthShort;
+    } else {
+        throw new Error("incorrect month name");
+    }
+
+    return eventData;
+};
+
+const updateDay = (eventData: EventData, day: string): EventData => {
+    if (parseInt(day, 10) <= 31 && parseInt(day, 10) > 0) {
+        eventData.day = day;
+    } else {
+        throw new Error("Incorect month day");
+    }
+    return eventData;
+};
+
+const updateEventTime = (eventData: EventData, hour: string, minutes: string, timeType: "start" | "end"): EventData => {
+    if (hourIsValid(hour) && minutesAreValid(minutes)) {
+        eventData[`${timeType}Time`] = getTime(hour, minutes);
+    } else {
+        throw new Error(`incorrect ${timeType} time`);
+    }
+
+    return eventData;
 };
 
 const updateEventData = (
@@ -96,59 +170,62 @@ const updateEventData = (
     endTime: string
 ): EventData => {
     const [weekDayLong, date] = dateInput.split(", ");
-    const [starHour, startMinutes] = startTime.split(":");
-    const [endHour, sendMinutes] = endTime.split(":");
-
-    eventData.weekday = weekDayLong.slice(0, 3) as WeekDayNamesShort;
-    eventData.weekdayLong = weekDayLong as WeekDayNamesLong;
-    [eventData.monthLong, eventData.day] = date.split(" ") as [MonthNamesLong, string];
-    eventData.month = eventData.monthLong.slice(0, 3) as MonthNamesShort;
+    const [startHour, startMinutes] = startTime.split(":");
+    const [endHour, endMinutes] = endTime.split(":");
 
     eventData.title = title;
-    eventData.startTime = getTime(starHour, startMinutes);
-    eventData.endTime = getTime(endHour, sendMinutes);
+    if (weekDayLong) eventData = updateWeekday(eventData, weekDayLong);
+    if (date) {
+        const [monthLong, day] = date.split(" ");
+        if (monthLong) eventData = updateMonth(eventData, monthLong);
+        if (day) eventData = updateDay(eventData, day);
+    }
+    if (startHour && startMinutes) eventData = updateEventTime(eventData, startHour, startMinutes, "start");
+    if (endHour && endMinutes) eventData = updateEventTime(eventData, endHour, endMinutes, "end");
 
     return eventData;
 };
 
-const saveEvent = (): void => {
+const saveEvent = () => {
     const [title, dateInput, startTime, endTime] = getModalInputs();
     let eventData: EventData = getDataFromLocalStorage(currentEventDataKey);
     let eventLength = getEventLength(eventData);
 
-    if (!title.value) {
-        title.classList.add("error");
-        title.focus();
+    if (!title?.value) {
+        title?.classList.add("error");
+        title?.focus();
     } else if (eventLength <= 0) {
-        endTime.classList.add("error");
-        endTime.focus();
+        endTime?.classList.add("error");
+        endTime?.focus();
     }
-    if (title.value && eventLength > 0) {
+    if (title?.value && eventLength > 0) {
         try {
-            eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
+            if (dateInput && startTime && endTime)
+                eventData = updateEventData(eventData, title.value, dateInput.value, startTime.value, endTime.value);
             saveEventToStorage(eventData);
             closeModal();
-        } catch {
-            console.log(eventData);
+        } catch (error) {
+            console.log(error);
         }
     }
 };
 
-const displayAllSavedEvents = (): void => {
+const displayAllSavedEvents = () => {
     const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
     const gridDays = getGridDays();
 
-    allSavedEvents.forEach((oneEvent) => {
-        const eventTile = createEventTile(oneEvent);
-        const eventParentDiv = Array.from(gridDays).find(
-            (day) =>
-                day.dataset.day === oneEvent.day &&
-                day.dataset.month === oneEvent.month &&
-                day.dataset.year === oneEvent.year
-        );
+    if (gridDays)
+        allSavedEvents.forEach((oneEvent) => {
+            const eventTile = createEventTile(oneEvent);
+            const eventParentDiv = Array.from(gridDays).find(
+                (day) =>
+                    day.dataset.day === oneEvent.day &&
+                    day.dataset.month === oneEvent.month &&
+                    day.dataset.year === oneEvent.year
+            );
 
-        if (eventParentDiv) eventParentDiv.appendChild(eventTile);
-    });
+            if (eventParentDiv) eventParentDiv.appendChild(eventTile);
+        });
 };
 
 export { saveEvent, constructNewEvent, getEventLength, displayAllSavedEvents, getTime, getEndTime };

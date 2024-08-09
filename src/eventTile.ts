@@ -4,16 +4,16 @@ import { minutesToHour, getDisplayableTime } from "./timeCalculations.js";
 import { openModal } from "./modal.js";
 import { constructNewEvent, getEventLength } from "./eventsData.js";
 import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
-import { EventData } from "./types/main.js";
+import type { EventData } from "./types/main.js";
 
-const calculateTopPosition = (eventData: EventData): number => {
+const calculateTopPosition = (eventData: EventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
     const startMin = minutesToHour(eventData.startTime.minutes);
 
     return (startHour + startMin) * cellHeightInPx;
 };
 
-const styleEventTile = (eventTile: HTMLElement, eventData: EventData): void => {
+const styleEventTile = (eventTile: HTMLElement, eventData: EventData) => {
     const eventLength = getEventLength(eventData);
     const tileMargin: number = 4;
 
@@ -30,11 +30,14 @@ const styleEventTile = (eventTile: HTMLElement, eventData: EventData): void => {
     }
 };
 
-const updateTileTime = (timeText: HTMLElement, eventData: EventData): void => {
-    timeText.innerText = `${getDisplayableTime(
-        parseInt(eventData.startTime.hour, 10),
-        parseInt(eventData.startTime.minutes, 10)
-    )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
+const updateTileTime = (currentEventTile: HTMLElement, eventData: EventData) => {
+    const timeText: HTMLElement | null = currentEventTile.querySelector(".event-tile-time");
+
+    if (timeText)
+        timeText.innerText = `${getDisplayableTime(
+            parseInt(eventData.startTime.hour, 10),
+            parseInt(eventData.startTime.minutes, 10)
+        )} - ${getDisplayableTime(eventData.endTime.hour, eventData.endTime.minutes)}`;
 };
 
 const createEventTile = (eventData: EventData): HTMLElement => {
@@ -49,15 +52,16 @@ const createEventTile = (eventData: EventData): HTMLElement => {
     return appendChildren(eventTile, [title, timeText]);
 };
 
-const removeUnsavedEventTile = (): void => {
-    const currentEventTile: HTMLElement = document.querySelector(`#${currentEventTileId}`);
-    if (currentEventTile) currentEventTile.parentElement.removeChild(currentEventTile);
+const removeUnsavedEventTile = () => {
+    const currentEventTile: HTMLElement | null = document.querySelector(`#${currentEventTileId}`);
+    if (currentEventTile && currentEventTile.parentElement)
+        currentEventTile.parentElement.removeChild(currentEventTile);
 };
 
-const handleEventCreationClick = (event: MouseEvent): void => {
-    const clickedWeekDayCol = event.target as HTMLElement;
+const handleEventCreationClick = (event: MouseEvent) => {
+    const clickedWeekDayCol = event.target as HTMLElement | null;
 
-    if (clickedWeekDayCol.hasAttribute("data-year")) {
+    if (clickedWeekDayCol && clickedWeekDayCol.hasAttribute("data-year")) {
         const newEventData: EventData = constructNewEvent(event);
         const eventTile = createEventTile(newEventData);
 
@@ -69,12 +73,25 @@ const handleEventCreationClick = (event: MouseEvent): void => {
     }
 };
 
-const placeNewEventTile = (currentEventTile: HTMLElement, eventData: EventData): void => {
-    const eventTileTitle: HTMLElement = currentEventTile.querySelector(".event-tile-title");
+const placeNewEventTile = (currentEventTile: HTMLElement, eventData: EventData) => {
+    const eventTileTitle: HTMLElement | null = currentEventTile.querySelector(".event-tile-title");
 
-    eventTileTitle.innerText = eventData.title;
+    if (eventTileTitle) eventTileTitle.innerText = eventData.title;
     currentEventTile.classList.remove("placeholder");
     currentEventTile.removeAttribute("id");
+};
+
+const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, endTimeInput?: HTMLInputElement) => {
+    if (getEventLength(eventData) > 0) {
+        if (endTimeInput) endTimeInput.classList.remove("error");
+        styleEventTile(currentEventTile, eventData);
+        updateTileTime(currentEventTile, eventData);
+        storeDataInLocalStorage(currentEventDataKey, eventData);
+    } else {
+        if (endTimeInput) endTimeInput.classList.add("error");
+        storeDataInLocalStorage(currentEventDataKey, eventData);
+        throw new Error("end time cannot be earlier than start time");
+    }
 };
 
 export {
@@ -84,4 +101,5 @@ export {
     createEventTile,
     styleEventTile,
     updateTileTime,
+    updateEventTile,
 };

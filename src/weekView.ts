@@ -3,16 +3,16 @@ import { getFirstDayInTimeGrid, getTimeZone, formatHours } from "./timeCalculati
 import { createDomElement, appendChildren } from "./utils.js";
 import { handleEventCreationClick } from "./eventTile.js";
 import { getGrid, getGridDays } from "./selectors.js";
-import { WeekDay } from "./types/main.js";
+import type { DateInfo, WeekDay } from "./types/main.js";
 
-const createTimeZoneCell = (timeZone: string): HTMLElement => {
+const createTimeZoneCell = (timeZone: string) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");
     timeZoneCell.innerHTML = `<p class="time-zone">${timeZone}</p>`;
 
     return timeZoneCell;
 };
 
-const createSingleWeekDay = (day: WeekDay, today: Date): HTMLElement => {
+const createSingleWeekDay = (day: WeekDay, today: Date) => {
     const dayDiv: HTMLElement = createDomElement("div", "one-day cell-width");
     const divider: HTMLElement = createDomElement("div", "divider-vertical");
     const dayName: HTMLElement = createDomElement("p", "day-name");
@@ -28,7 +28,7 @@ const createSingleWeekDay = (day: WeekDay, today: Date): HTMLElement => {
     return appendChildren(dayDiv, [divider, dayName, dayNumber]);
 };
 
-const createWeekDaysRow = (week: WeekDay[], today: Date): HTMLElement => {
+const createWeekDaysRow = (week: WeekDay[], today: Date) => {
     const weekDaysRow = createDomElement("div", "week-days", "days-row");
     const divider = createDomElement("div", "divider-no-border");
 
@@ -38,7 +38,7 @@ const createWeekDaysRow = (week: WeekDay[], today: Date): HTMLElement => {
     return weekDaysRow;
 };
 
-const createHoursColumn = (): HTMLElement => {
+const createHoursColumn = () => {
     const hoursColumn = createDomElement("div", "hours-labels-column", "hours-col");
 
     for (let i = 0; i < hoursInDay; i++) {
@@ -52,7 +52,7 @@ const createHoursColumn = (): HTMLElement => {
     return hoursColumn;
 };
 
-const createWeekDaysWrapper = (week: WeekDay[], timeZone: string, today: Date): HTMLElement => {
+const createWeekDaysWrapper = (week: WeekDay[], timeZone: string, today: Date) => {
     const weekDaysWrapper = createDomElement("div", "week-days-part");
     const timeZoneCell = createTimeZoneCell(timeZone);
     const weekDaysRow = createWeekDaysRow(week, today);
@@ -60,7 +60,7 @@ const createWeekDaysWrapper = (week: WeekDay[], timeZone: string, today: Date): 
     return appendChildren(weekDaysWrapper, [timeZoneCell, weekDaysRow]);
 };
 
-const createDividerColumn = (): HTMLElement => {
+const createDividerColumn = () => {
     const dividerColumn = createDomElement("div", "divider-column");
 
     for (let i = 0; i < hoursInDay - 2; i++) {
@@ -71,7 +71,7 @@ const createDividerColumn = (): HTMLElement => {
     return dividerColumn;
 };
 
-const createTimeGrid = (week: WeekDay[]): HTMLElement => {
+const createTimeGrid = (week: WeekDay[]) => {
     const timeGrid = createDomElement("div", "hours-cells-all", "days-hours-grid");
     const dividerColumn = createDividerColumn();
 
@@ -87,7 +87,7 @@ const createTimeGrid = (week: WeekDay[]): HTMLElement => {
     return timeGrid;
 };
 
-const createTimeGridWrapper = (week: WeekDay[]): HTMLElement => {
+const createTimeGridWrapper = (week: WeekDay[]) => {
     const timeGridWrapper = createDomElement("div", "time-grid");
     const hoursColumn = createHoursColumn();
     const timeGrid = createTimeGrid(week);
@@ -102,7 +102,7 @@ const createWeek = (today: Date): WeekDay[] => {
     for (let i = 0; i < daysNumberOnTimeGrid; i++) {
         const day = new Date(baseDay);
         day.setDate(baseDay.getDate() + i);
-        const [weekDay, month, dayNum, year] = day.toString().split(" ");
+        const [weekDay, month, dayNum, year] = day.toString().split(" ") as DateInfo;
         week.push({
             weekDay: weekDay,
             month: month,
@@ -114,38 +114,38 @@ const createWeek = (today: Date): WeekDay[] => {
     return week;
 };
 
-const drawWeekView = (): void => {
+const drawWeekView = () => {
     const today = new Date();
     const week = createWeek(today);
     const timeZone = getTimeZone(today);
-    const weekView: HTMLElement = document.querySelector("#week-view");
+    const weekView: HTMLElement | null = document.querySelector("#week-view");
     const weekDaysWrapper = createWeekDaysWrapper(week, timeZone, today);
     const timeGridWrapper = createTimeGridWrapper(week);
 
     document.documentElement.style.setProperty("--cell-height", `${cellHeightInPx}px`);
     document.documentElement.style.setProperty("--week-grid", `${daysNumberOnTimeGrid}`);
-    appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
+    if (weekView) appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
 };
 
-const initTimeGridScroll = (grid: HTMLElement): void => {
-    const daysRow: HTMLElement = document.querySelector("#days-row");
-    const hoursCol: HTMLElement = document.querySelector("#hours-col");
-
-    grid.addEventListener("scroll", () => {
-        hoursCol.scrollTop = grid.scrollTop;
-        daysRow.scrollLeft = grid.scrollLeft;
-    });
+const initTimeGridScroll = (grid: HTMLElement) => {
+    const daysRow: HTMLElement | null = document.querySelector("#days-row");
+    const hoursCol: HTMLElement | null = document.querySelector("#hours-col");
+    if (hoursCol && daysRow)
+        grid.addEventListener("scroll", () => {
+            hoursCol.scrollTop = grid.scrollTop;
+            daysRow.scrollLeft = grid.scrollLeft;
+        });
     grid.scrollBy(0, cellHeightInPx * 7);
 };
 
-const initWeekView = (): void => {
+const initWeekView = () => {
     drawWeekView();
 
     const grid = getGrid();
     const gridDays = getGridDays();
 
-    initTimeGridScroll(grid);
-    gridDays.forEach((col) => col.addEventListener("click", handleEventCreationClick));
+    if (grid) initTimeGridScroll(grid);
+    gridDays?.forEach((col) => col.addEventListener("click", handleEventCreationClick));
 };
 
 export default initWeekView;
