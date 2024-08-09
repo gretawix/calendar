@@ -3,10 +3,8 @@ const savedEventsKey: string = "allSavedEvents";
 
 const storeDataInLocalStorage = (key: string, data: any) => {
     try {
-        if (key && data !== undefined) {
-            localStorage.setItem(key, JSON.stringify(data));
-            return true;
-        }
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
     } catch (error) {
         console.log(error);
         return false;
