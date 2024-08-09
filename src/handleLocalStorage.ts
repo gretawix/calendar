@@ -1,12 +1,10 @@
-const currentEventDataKey = "currentEventData";
-const savedEventsKey = "allSavedEvents";
+const currentEventDataKey: string = "currentEventData";
+const savedEventsKey: string = "allSavedEvents";
 
-const storeDataInLocalStorage = (key, data) => {
+const storeDataInLocalStorage = (key: string, data: any) => {
     try {
-        if (key && data !== undefined) {
-            localStorage.setItem(key, JSON.stringify(data));
-            return true;
-        }
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
     } catch (error) {
         console.log(error);
         return false;
@@ -14,7 +12,7 @@ const storeDataInLocalStorage = (key, data) => {
     return false;
 };
 
-const getDataFromLocalStorage = (key) => {
+const getDataFromLocalStorage = (key: string) => {
     try {
         const storedData = localStorage.getItem(key);
         return storedData ? JSON.parse(storedData) : null;

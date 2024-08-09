@@ -2,17 +2,22 @@ import { createDomElement, setElementDisplay, getMinutesIncrements } from "./uti
 import { hoursInDay, modalInputsIds } from "./constants.js";
 import { getModalInputById } from "./selectors.js";
 import { minutesToHour, getDisplayableTime, formatTime } from "./timeCalculations.js";
+import type { EventData, Time } from "./types/main.js";
 
-const setInputLabel = (dropdownItem, selectedOption) => {
+const setInputLabel = (dropdownItem: HTMLElement, selectedOption: HTMLElement) => {
     const inputLabelText = selectedOption.innerText.trim();
-    const button = dropdownItem.querySelector("button.dropdown .dropdown-label");
-    const input = dropdownItem.querySelector("input");
+    const button: HTMLElement | null = dropdownItem.querySelector("button.dropdown .dropdown-label");
+    const input: HTMLInputElement | null = dropdownItem.querySelector("input");
 
     if (input) input.value = inputLabelText;
     if (button) button.innerText = inputLabelText;
 };
 
-const handleDropdownItemSelect = (allOptions, option, dropdownItem) => {
+const handleDropdownItemSelect = (
+    allOptions: NodeListOf<HTMLElement>,
+    option: HTMLElement,
+    dropdownItem: HTMLElement
+) => {
     allOptions.forEach((item) => item.classList.remove("selected"));
     option.classList.add("selected");
     setInputLabel(dropdownItem, option);
@@ -21,8 +26,8 @@ const handleDropdownItemSelect = (allOptions, option, dropdownItem) => {
     }
 };
 
-const initDropdownItemSelect = (dropdownItem) => {
-    const allOptions = dropdownItem.querySelectorAll(".select-options li");
+const initDropdownItemSelect = (dropdownItem: HTMLElement) => {
+    const allOptions: NodeListOf<HTMLElement> = dropdownItem.querySelectorAll(".select-options li");
     allOptions.forEach((option) => {
         option.addEventListener("click", () => {
             handleDropdownItemSelect(allOptions, option, dropdownItem);
@@ -30,36 +35,39 @@ const initDropdownItemSelect = (dropdownItem) => {
     });
 };
 
-const openDropdownClick = (dropdownItem) => {
+const openDropdownClick = (dropdownItem: HTMLElement) => {
     dropdownItem.classList.toggle("open");
 
-    const textInput = dropdownItem.querySelector("input");
     const dropdownWrapper = dropdownItem.querySelector("ul");
-    const dropdownWarpTop = dropdownWrapper.getBoundingClientRect().top;
+    const dropdownWarpTop = dropdownWrapper?.getBoundingClientRect().top;
     const selected = dropdownItem.querySelector("li.selected");
 
-    if (selected) dropdownWrapper.scrollBy(0, selected.getBoundingClientRect().top - dropdownWarpTop - 80);
+    if (selected && dropdownWarpTop)
+        dropdownWrapper.scrollBy(0, selected.getBoundingClientRect().top - dropdownWarpTop - 80);
 };
 
-const initDropdownSelect = (modal) => {
-    const dropdowns = modal.querySelectorAll(".select-input, .time-select");
+const initDropdownSelect = (modal: HTMLElement) => {
+    const dropdowns: NodeListOf<HTMLElement> = modal.querySelectorAll(".select-input, .time-select");
     dropdowns.forEach((dropdownItem) => {
         dropdownItem.addEventListener("click", () => openDropdownClick(dropdownItem));
         initDropdownItemSelect(dropdownItem);
     });
 };
 
-const resetDropdownItem = (dropdownItem) => {
-    dropdownItem.querySelectorAll(".select-options li").forEach((item, index) => {
-        item.classList.remove("selected");
-        if (index === 0) {
-            item.classList.add("selected");
-            setInputLabel(dropdownItem, item);
-        }
-    });
+const resetDropdownItem = (dropdownItem: HTMLElement) => {
+    const selectOptions: NodeListOf<HTMLElement> = dropdownItem.querySelectorAll(".select-options li");
+
+    if (selectOptions)
+        selectOptions.forEach((item, index) => {
+            item.classList.remove("selected");
+            if (index === 0) {
+                item.classList.add("selected");
+                setInputLabel(dropdownItem, item);
+            }
+        });
 };
 
-const generateTimeDropdown = (input) => {
+const generateTimeDropdown = (input: HTMLInputElement) => {
     const parent = input.parentElement;
     const dropdownList = createDomElement("ul", "repeat-options select-options");
     dropdownList.style.minWidth = "188px";
@@ -70,18 +78,18 @@ const generateTimeDropdown = (input) => {
         dropdownList.appendChild(listItem);
     }
 
-    parent.appendChild(dropdownList);
+    if (parent) parent.appendChild(dropdownList);
 };
 
-const populateTimeDropdowns = (eventData) => {
-    const populateDropdown = (dropdownItems, time, startTime) => {
+const populateTimeDropdowns = (eventData: EventData) => {
+    const populateDropdown = (dropdownItems: NodeListOf<HTMLElement>, time: Time, startTime: boolean) => {
         Array.from(dropdownItems).forEach((item, index) => {
             const minutesIncrementLength = getMinutesIncrements().length;
             const hourFraction = startTime
                 ? index / minutesIncrementLength
                 : index / minutesIncrementLength +
                   parseInt(eventData.startTime.hour) +
-                  minutesToHour(parseInt(eventData.startTime.minutes, 10));
+                  minutesToHour(eventData.startTime.minutes);
 
             item.innerText = formatTime(hourFraction);
             if (item.innerText === getDisplayableTime(time.hour, time.minutes)) {
@@ -91,11 +99,15 @@ const populateTimeDropdowns = (eventData) => {
         });
     };
 
-    const startDropdownItems = getModalInputById(modalInputsIds.timeStart).parentElement.querySelectorAll("ul li");
-    const endDropdownItems = getModalInputById(modalInputsIds.timeEnd).parentElement.querySelectorAll("ul li");
+    const startDropdownItems: NodeListOf<HTMLElement> | undefined = getModalInputById(
+        modalInputsIds.timeStart
+    )?.parentElement?.querySelectorAll("ul li");
+    const endDropdownItems: NodeListOf<HTMLElement> | undefined = getModalInputById(
+        modalInputsIds.timeEnd
+    )?.parentElement?.querySelectorAll("ul li");
 
-    populateDropdown(startDropdownItems, eventData.startTime, true);
-    populateDropdown(endDropdownItems, eventData.endTime, false);
+    if (startDropdownItems) populateDropdown(startDropdownItems, eventData.startTime, true);
+    if (endDropdownItems) populateDropdown(endDropdownItems, eventData.endTime, false);
 };
 
 export { initDropdownSelect, setInputLabel, resetDropdownItem, generateTimeDropdown, populateTimeDropdowns };
