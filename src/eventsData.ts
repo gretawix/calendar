@@ -22,9 +22,9 @@ import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./type
 import type { DateInfo, EventData, MonthNamesShort, Time, WeekDayNamesShort } from "./types/main.js";
 
 const adjustEventTopPosition = (event: MouseEvent) => {
-    const clickedElement = event.target as HTMLElement;
-    const distanceFromTop = clickedElement.getBoundingClientRect().top;
-    const clickPosition = event.clientY - distanceFromTop;
+    const clickedElement = event.target as HTMLElement | null;
+    const distanceFromTop = clickedElement?.getBoundingClientRect().top;
+    const clickPosition = event.clientY - (distanceFromTop ? distanceFromTop : 0);
     const increment = cellHeightInPx / 2;
 
     return Math.floor(clickPosition / increment) * increment;

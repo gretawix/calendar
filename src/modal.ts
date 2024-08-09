@@ -69,15 +69,16 @@ const handleSettingsClick = (item: HTMLElement) => {
 };
 
 const positionModalX = (modal: HTMLElement, event: MouseEvent) => {
-    const clickedElement = event.target as HTMLElement;
-    const clickedElementBox = clickedElement.getBoundingClientRect();
+    const clickedElement = event.target as HTMLElement | null;
+    const clickedElementBox = clickedElement?.getBoundingClientRect();
     const modalWidth = modal.getBoundingClientRect().width;
 
-    modal.style.left = `${
-        clickedElementBox.left < modalWidth
-            ? clickedElementBox.left + clickedElementBox.width + 8
-            : clickedElementBox.left - modalWidth - 12
-    }px`;
+    if (clickedElementBox)
+        modal.style.left = `${
+            clickedElementBox.left < modalWidth
+                ? clickedElementBox.left + clickedElementBox.width + 8
+                : clickedElementBox.left - modalWidth - 12
+        }px`;
 };
 
 const positionModalY = (modal: HTMLElement, event: MouseEvent) => {
@@ -132,8 +133,8 @@ const handleTimeChange = (
 ) => {
     const currentEventTile: HTMLElement | null = document.querySelector(`#${currentEventTileId}`);
     const eventData: EventData = getDataFromLocalStorage(currentEventDataKey);
-    const clickedInput = event.target as HTMLInputElement;
-    let [hours, minutes] = clickedInput.value.split(":");
+    const clickedInput = event.target as HTMLInputElement | null;
+    let [hours, minutes] = clickedInput?.value.split(":") as (string | undefined)[];
     let eventLength = getEventLength(eventData);
 
     if (hours && minutes && currentEventTile && hourIsValid(hours) && minutesAreValid(minutes)) {
