@@ -5,8 +5,8 @@ import { removeUnsavedEventTile, updateEventTile } from "./eventTile";
 import { saveEvent, getTime, getEventLength, getEndTime } from "./eventsData";
 import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants";
 import { getDisplayableTime, hourIsValid, minutesAreValid } from "./timeCalculations";
+import { globalAppState } from "./dataService/appState";
 import type { EventData } from "./types/main";
-import eventsServiceFactory from "./dataService";
 
 const setTimeDateInputWidths = (modal: HTMLElement) => {
     Object.entries(modalInputsIds).forEach(([key, inputId]) => {
@@ -145,20 +145,19 @@ const handleTimeChange = async (
     endTimeInput?: HTMLInputElement
 ) => {
     const currentEventTile: HTMLElement | null = document.querySelector(`#${currentEventTileId}`);
-    const eventsService = eventsServiceFactory();
+    const eventsService = globalAppState.getEventsService();
     const events = await eventsService.getAll();
-    const eventData = events.current;
     const clickedInput = event.target as HTMLInputElement | null;
     let [hours, minutes] = clickedInput?.value.split(":") as (string | undefined)[];
-    let eventLength = getEventLength(eventData);
+    let eventLength = getEventLength(events.current);
 
     if (hours && minutes && currentEventTile && hourIsValid(hours) && minutesAreValid(minutes)) {
-        eventData[timeKey] = getTime(hours, minutes);
+        events.current[timeKey] = getTime(hours, minutes);
         if (timeKey === "startTime") {
-            eventData.endTime = getEndTime(hours, minutes, eventLength);
+            events.current.endTime = getEndTime(hours, minutes, eventLength);
         }
-        setTimeDateInputs(modal, eventData);
-        updateEventTile(eventData, currentEventTile, endTimeInput);
+        setTimeDateInputs(modal, events.current);
+        updateEventTile(events.current, currentEventTile, endTimeInput);
     }
 };
 

@@ -11,7 +11,7 @@ import {
     hourIsValid,
     minutesAreValid,
 } from "./timeCalculations";
-import eventsServiceFactory from "./dataService";
+import { globalAppState } from "./dataService/appState";
 import { WEEK_DAYS_SHORT, MONTHS_SHORT, MONTHS_LONG, WEEK_DAYS_LONG } from "./types/constants";
 import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking";
 import type {
@@ -31,8 +31,6 @@ const weekDaysMap = Object.fromEntries(
 const monthsMap = Object.fromEntries(
     Object.entries(MONTHS_LONG).map(([longName, fullName]) => [longName.slice(0, 3) as MonthNamesShort, fullName])
 ) as Record<MonthNamesShort, MonthNamesLong>;
-
-const eventsService = eventsServiceFactory();
 
 const adjustEventTopPosition = (event: MouseEvent) => {
     const clickedElement = event.target as HTMLElement | null;
@@ -134,7 +132,9 @@ const constructNewEvent = (event: MouseEvent): EventData => {
 };
 
 const saveEventToStorage = async (eventData: EventData) => {
+    const eventsService = globalAppState.getEventsService();
     const currentEventTile = document.querySelector(`#${currentEventTileId}`) as HTMLElement | null;
+
     if (currentEventTile) {
         placeNewEventTile(currentEventTile, eventData);
     } else {
@@ -219,6 +219,7 @@ const updateEventData = (
 
 const saveEvent = async () => {
     const { title, dateInput, startTime, endTime } = getModalInputs();
+    const eventsService = globalAppState.getEventsService();
     const events = await eventsService.getAll();
 
     let eventData = events.current;
@@ -241,12 +242,12 @@ const saveEvent = async () => {
 };
 
 const displayAllSavedEvents = async () => {
+    const eventsService = globalAppState.getEventsService();
     const events = await eventsService.getAll();
-    const allSavedEvents = events.all;
     const gridDays = getGridDays();
 
     if (gridDays) {
-        allSavedEvents.forEach((oneEvent) => {
+        events.all.forEach((oneEvent) => {
             const eventTile = createEventTile(oneEvent);
             const eventParentDiv = Array.from(gridDays).find(
                 (day) =>

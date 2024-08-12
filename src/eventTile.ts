@@ -3,10 +3,8 @@ import { cellHeightInPx, currentEventTileId } from "./constants";
 import { minutesToHour, getDisplayableTime } from "./timeCalculations";
 import { openModal } from "./modal";
 import { constructNewEvent, getEventLength } from "./eventsData";
+import { globalAppState } from "./dataService/appState";
 import type { EventData } from "./types/main";
-import eventsServiceFactory from "./dataService";
-
-const eventsService = eventsServiceFactory();
 
 const calculateTopPosition = (eventData: EventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
@@ -62,6 +60,7 @@ const removeUnsavedEventTile = () => {
 
 const handleEventCreationClick = async (event: MouseEvent) => {
     const clickedWeekDayCol = event.target as HTMLElement | null;
+    const eventsService = globalAppState.getEventsService();
 
     if (clickedWeekDayCol && clickedWeekDayCol.hasAttribute("data-year")) {
         const newEventData: EventData = constructNewEvent(event);
@@ -83,7 +82,13 @@ const placeNewEventTile = (currentEventTile: HTMLElement, eventData: EventData) 
     currentEventTile.removeAttribute("id");
 };
 
-const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, endTimeInput?: HTMLInputElement) => {
+const updateEventTile = async (
+    eventData: EventData,
+    currentEventTile: HTMLElement,
+    endTimeInput?: HTMLInputElement
+) => {
+    const eventsService = globalAppState.getEventsService();
+
     const timeText: HTMLElement | null = currentEventTile.querySelector(".event-tile-time");
     if (getEventLength(eventData) > 0) {
         if (endTimeInput) {
@@ -93,12 +98,12 @@ const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, en
         if (timeText) {
             updateTileTime(timeText, eventData);
         }
-        eventsService.create(eventData, "current");
+        await eventsService.create(eventData, "current");
     } else {
         if (endTimeInput) {
             endTimeInput.classList.add("error");
         }
-        eventsService.create(eventData, "current");
+        await eventsService.create(eventData, "current");
         throw new Error("end time cannot be earlier than start time");
     }
 };

@@ -1,12 +1,6 @@
 import type { EventData, Events } from "../types/main";
 import { storeDataInLocalStorage, getDataFromLocalStorage, LOCAL_STORAGE_KEY } from "./handleLocalStorage";
-
-type DataSource = "local-storage" | "json-server";
-
-interface EventsService {
-    getAll(): Promise<Events>;
-    create(event: EventData, eventType?: keyof Events): Promise<void>;
-}
+import type { DataSource, EventsService } from "./types";
 
 class EventsLocalStorageService implements EventsService {
     async getAll(): Promise<Events> {

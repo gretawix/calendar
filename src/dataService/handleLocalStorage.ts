@@ -1,14 +1,8 @@
-import type { Events, ObjectValues } from "../types/main";
+import type { LocalStorageKey, LocalStorageData } from "./types";
 
 const LOCAL_STORAGE_KEY = {
     SAVED_EVENTS: "savedEvents",
 } as const;
-
-type LocalStorageKey = ObjectValues<typeof LOCAL_STORAGE_KEY>;
-
-type LocalStorageData<T extends LocalStorageKey> = {
-    [LOCAL_STORAGE_KEY.SAVED_EVENTS]: Events;
-}[T];
 
 const storeDataInLocalStorage = <T extends LocalStorageKey>(key: T, data: LocalStorageData<T>) => {
     try {
