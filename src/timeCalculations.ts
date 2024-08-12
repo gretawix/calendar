@@ -1,5 +1,5 @@
-import { daysNumberOnTimeGrid, hoursInDay, daysInWeek, minutesInHour } from "./constants.js";
-import { parseTime } from "./utils.js";
+import { daysNumberOnTimeGrid, hoursInDay, daysInWeek, minutesInHour } from "./constants";
+import { parseTime } from "./utils";
 
 const getFirstDayInTimeGrid = (date: Date): Date => {
     let currentDate = new Date(date);

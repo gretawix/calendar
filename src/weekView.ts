@@ -1,9 +1,9 @@
-import { hoursInDay, daysNumberOnTimeGrid, cellHeightInPx } from "./constants.js";
-import { getFirstDayInTimeGrid, getTimeZone, formatHours } from "./timeCalculations.js";
-import { createDomElement, appendChildren } from "./utils.js";
-import { handleEventCreationClick } from "./eventTile.js";
-import { getGrid, getGridDays } from "./selectors.js";
-import type { DateInfo, WeekDay } from "./types/main.js";
+import { hoursInDay, daysNumberOnTimeGrid, cellHeightInPx } from "./constants";
+import { getFirstDayInTimeGrid, getTimeZone, formatHours } from "./timeCalculations";
+import { createDomElement, appendChildren } from "./utils";
+import { handleEventCreationClick } from "./eventTile";
+import { getGrid, getGridDays } from "./selectors";
+import type { DateInfo, WeekDay } from "./types/main";
 
 const createTimeZoneCell = (timeZone: string) => {
     const timeZoneCell = createDomElement("div", "time-zone-cell");

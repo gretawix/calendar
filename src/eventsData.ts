@@ -1,8 +1,8 @@
-import { parseTime } from "./utils.js";
-import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle } from "./constants.js";
-import { placeNewEventTile, createEventTile } from "./eventTile.js";
-import { getModalInputs, getGridDays } from "./selectors.js";
-import { closeModal } from "./modal.js";
+import { parseTime } from "./utils";
+import { cellHeightInPx, currentEventTileId, defaultEventLengthInHours, emptyEventTitle } from "./constants";
+import { placeNewEventTile, createEventTile } from "./eventTile";
+import { getModalInputs, getGridDays } from "./selectors";
+import { closeModal } from "./modal";
 import {
     minutesToHour,
     hoursToMinutes,
@@ -10,16 +10,16 @@ import {
     formatHours,
     hourIsValid,
     minutesAreValid,
-} from "./timeCalculations.js";
+} from "./timeCalculations";
 import {
     currentEventDataKey,
     getDataFromLocalStorage,
     savedEventsKey,
     storeDataInLocalStorage,
-} from "./handleLocalStorage.js";
-import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants.js";
-import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking.js";
-import type { DateInfo, EventData, Time } from "./types/main.js";
+} from "./handleLocalStorage";
+import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants";
+import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking";
+import type { DateInfo, EventData, Time } from "./types/main";
 
 const adjustEventTopPosition = (event: MouseEvent) => {
     const clickedElement = event.target as HTMLElement | null;

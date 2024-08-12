@@ -1,6 +1,6 @@
-import initWeekView from "./weekView.js";
-import { initModal } from "./modal.js";
-import { displayAllSavedEvents } from "./eventsData.js";
+import initWeekView from "./weekView";
+import { initModal } from "./modal";
+import { displayAllSavedEvents } from "./eventsData";
 
 document.addEventListener("DOMContentLoaded", () => {
     initWeekView();

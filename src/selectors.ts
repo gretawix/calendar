@@ -1,5 +1,5 @@
-import { modalInputsIds, modalTitleId } from "./constants.js";
-import type { ModalInputs } from "./types/main.js";
+import { modalInputsIds, modalTitleId } from "./constants";
+import type { ModalInputs } from "./types/main";
 
 const getModal = (): HTMLElement | null => document.querySelector("#event-modal");
 

@@ -1,10 +1,10 @@
-import { createDomElement, appendChildren } from "./utils.js";
-import { cellHeightInPx, currentEventTileId } from "./constants.js";
-import { minutesToHour, getDisplayableTime } from "./timeCalculations.js";
-import { openModal } from "./modal.js";
-import { constructNewEvent, getEventLength } from "./eventsData.js";
-import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage.js";
-import type { EventData } from "./types/main.js";
+import { createDomElement, appendChildren } from "./utils";
+import { cellHeightInPx, currentEventTileId } from "./constants";
+import { minutesToHour, getDisplayableTime } from "./timeCalculations";
+import { openModal } from "./modal";
+import { constructNewEvent, getEventLength } from "./eventsData";
+import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage";
+import type { EventData } from "./types/main";
 
 const calculateTopPosition = (eventData: EventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);

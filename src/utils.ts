@@ -1,4 +1,4 @@
-import { timeStepInMinutes, minutesInHour } from "./constants.js";
+import { timeStepInMinutes, minutesInHour } from "./constants";
 
 const setSameWidth = (baseElementId: string, targetElementId: string) => {
     let width: string = "";

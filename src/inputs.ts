@@ -1,8 +1,8 @@
-import { createDomElement, setElementDisplay, getMinutesIncrements } from "./utils.js";
-import { hoursInDay, modalInputsIds } from "./constants.js";
-import { getModalInputById } from "./selectors.js";
-import { minutesToHour, getDisplayableTime, formatTime } from "./timeCalculations.js";
-import type { EventData, Time } from "./types/main.js";
+import { createDomElement, setElementDisplay, getMinutesIncrements } from "./utils";
+import { hoursInDay, modalInputsIds } from "./constants";
+import { getModalInputById } from "./selectors";
+import { minutesToHour, getDisplayableTime, formatTime } from "./timeCalculations";
+import type { EventData, Time } from "./types/main";
 
 const setInputLabel = (dropdownItem: HTMLElement, selectedOption: HTMLElement) => {
     const inputLabelText = selectedOption.innerText.trim();

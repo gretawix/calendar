@@ -1,4 +1,4 @@
-import type { WeekDayNamesLong, WeekDayNamesShort, MonthNamesLong, MonthNamesShort } from "./main.js";
+import type { WeekDayNamesLong, WeekDayNamesShort, MonthNamesLong, MonthNamesShort } from "./main";
 
 const WEEK_DAYS_LONG = {
     Monday: "Monday",
