@@ -11,15 +11,12 @@ import {
     hourIsValid,
     minutesAreValid,
 } from "./timeCalculations";
-import {
-    currentEventDataKey,
-    getDataFromLocalStorage,
-    savedEventsKey,
-    storeDataInLocalStorage,
-} from "./handleLocalStorage";
+import eventsServiceFactory from "./dataService";
 import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants";
 import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking";
 import type { DateInfo, EventData, Time } from "./types/main";
+
+const eventsService = eventsServiceFactory();
 
 const adjustEventTopPosition = (event: MouseEvent) => {
     const clickedElement = event.target as HTMLElement | null;
@@ -116,15 +113,13 @@ const constructNewEvent = (event: MouseEvent): EventData => {
     return data;
 };
 
-const saveEventToStorage = (eventData: EventData) => {
-    const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
+const saveEventToStorage = async (eventData: EventData) => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`) as HTMLElement | null;
-
     if (currentEventTile) {
         placeNewEventTile(currentEventTile, eventData);
     } else throw new Error("failed to save new event tile");
-    allSavedEvents.push(eventData);
-    storeDataInLocalStorage(savedEventsKey, allSavedEvents);
+
+    await eventsService.create(eventData);
 };
 
 const updateWeekday = (eventData: EventData, weekDayLong: string): EventData => {
@@ -194,9 +189,11 @@ const updateEventData = (
     return eventData;
 };
 
-const saveEvent = () => {
+const saveEvent = async () => {
     const [title, dateInput, startTime, endTime] = getModalInputs();
-    let eventData: EventData = getDataFromLocalStorage(currentEventDataKey);
+    const events = await eventsService.getAll();
+
+    let eventData = events.current;
     let eventLength = getEventLength(eventData);
 
     if (!title?.value) {
@@ -215,8 +212,9 @@ const saveEvent = () => {
     } else throw new Error("No event title provided");
 };
 
-const displayAllSavedEvents = () => {
-    const allSavedEvents: EventData[] = getDataFromLocalStorage(savedEventsKey) || [];
+const displayAllSavedEvents = async () => {
+    const events = await eventsService.getAll();
+    const allSavedEvents = events.all;
     const gridDays = getGridDays();
 
     if (gridDays) {

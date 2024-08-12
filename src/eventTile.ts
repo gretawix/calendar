@@ -3,8 +3,10 @@ import { cellHeightInPx, currentEventTileId } from "./constants";
 import { minutesToHour, getDisplayableTime } from "./timeCalculations";
 import { openModal } from "./modal";
 import { constructNewEvent, getEventLength } from "./eventsData";
-import { currentEventDataKey, storeDataInLocalStorage } from "./handleLocalStorage";
 import type { EventData } from "./types/main";
+import eventsServiceFactory from "./dataService";
+
+const eventsService = eventsServiceFactory();
 
 const calculateTopPosition = (eventData: EventData) => {
     const startHour = parseInt(eventData.startTime.hour, 10);
@@ -57,7 +59,7 @@ const removeUnsavedEventTile = () => {
         currentEventTile.parentElement.removeChild(currentEventTile);
 };
 
-const handleEventCreationClick = (event: MouseEvent) => {
+const handleEventCreationClick = async (event: MouseEvent) => {
     const clickedWeekDayCol = event.target as HTMLElement | null;
 
     if (clickedWeekDayCol && clickedWeekDayCol.hasAttribute("data-year")) {
@@ -66,7 +68,7 @@ const handleEventCreationClick = (event: MouseEvent) => {
 
         eventTile.classList.add("placeholder");
         eventTile.id = currentEventTileId;
-        storeDataInLocalStorage(currentEventDataKey, newEventData);
+        await eventsService.create(newEventData, "current");
         openModal(event, newEventData);
         clickedWeekDayCol.appendChild(eventTile);
     }
@@ -86,10 +88,10 @@ const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, en
         if (endTimeInput) endTimeInput.classList.remove("error");
         styleEventTile(currentEventTile, eventData);
         if (timeText) updateTileTime(timeText, eventData);
-        storeDataInLocalStorage(currentEventDataKey, eventData);
+        eventsService.create(eventData, "current");
     } else {
         if (endTimeInput) endTimeInput.classList.add("error");
-        storeDataInLocalStorage(currentEventDataKey, eventData);
+        eventsService.create(eventData, "current");
         throw new Error("end time cannot be earlier than start time");
     }
 };

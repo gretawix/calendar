@@ -42,3 +42,8 @@ export type EventData = {
     monthLong: MonthNamesLong;
     year: string;
 };
+
+export type Events = {
+    all: EventData[];
+    current: EventData;
+};

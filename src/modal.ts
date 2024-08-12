@@ -4,9 +4,9 @@ import { getModal, getModalInputById, getModalInputs } from "./selectors";
 import { removeUnsavedEventTile, updateEventTile } from "./eventTile";
 import { saveEvent, getTime, getEventLength, getEndTime } from "./eventsData";
 import { currentEventTileId, emptyEventTitle, modalInputsIds, modalTitleId } from "./constants";
-import { currentEventDataKey, storeDataInLocalStorage, getDataFromLocalStorage } from "./handleLocalStorage";
 import { getDisplayableTime, hourIsValid, minutesAreValid } from "./timeCalculations";
 import type { EventData } from "./types/main";
+import eventsServiceFactory from "./dataService";
 
 const setTimeDateInputWidths = (modal: HTMLElement) => {
     Object.entries(modalInputsIds).forEach(([key, inputId]) => {
@@ -125,14 +125,16 @@ const handleTitleChange = (event: Event) => {
     } catch {}
 };
 
-const handleTimeChange = (
+const handleTimeChange = async (
     event: FocusEvent,
     timeKey: "startTime" | "endTime",
     modal: HTMLElement,
     endTimeInput?: HTMLInputElement
 ) => {
     const currentEventTile: HTMLElement | null = document.querySelector(`#${currentEventTileId}`);
-    const eventData: EventData = getDataFromLocalStorage(currentEventDataKey);
+    const eventsService = eventsServiceFactory();
+    const events = await eventsService.getAll();
+    const eventData = events.current;
     const clickedInput = event.target as HTMLInputElement | null;
     let [hours, minutes] = clickedInput?.value.split(":") as (string | undefined)[];
     let eventLength = getEventLength(eventData);
