@@ -1,4 +1,5 @@
 import type { EventData, Events } from "../types/main";
+import { storeDataInLocalStorage, getDataFromLocalStorage, LOCAL_STORAGE_KEY } from "./handleLocalStorage";
 
 type DataSource = "local-storage" | "json-server";
 
@@ -8,11 +9,8 @@ interface EventsService {
 }
 
 class EventsLocalStorageService implements EventsService {
-    private localStorageKey: string = "savedEvents";
-
     async getAll(): Promise<Events> {
-        const events = localStorage.getItem(this.localStorageKey);
-        return events ? JSON.parse(events) : { all: [], current: {} };
+        return getDataFromLocalStorage(LOCAL_STORAGE_KEY.SAVED_EVENTS);
     }
 
     async create(event: EventData, eventType: keyof Events = "all"): Promise<void> {
@@ -22,7 +20,7 @@ class EventsLocalStorageService implements EventsService {
         } else {
             events.all.push(event);
         }
-        localStorage.setItem(this.localStorageKey, JSON.stringify(events));
+        storeDataInLocalStorage(LOCAL_STORAGE_KEY.SAVED_EVENTS, events);
     }
 }
 
