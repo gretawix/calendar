@@ -5,15 +5,25 @@ const setSameWidth = (baseElementId: string, targetElementId: string) => {
     const baseElement: HTMLElement | null = document.querySelector(baseElementId);
     const targetElement: HTMLElement | null = document.querySelector(targetElementId);
 
-    if (baseElement) width = `${Math.ceil(baseElement.getBoundingClientRect().width)}px`;
-    if (targetElement) targetElement.style.width = width;
-    if (baseElement) baseElement.style.width = width;
+    if (baseElement) {
+        width = `${Math.ceil(baseElement.getBoundingClientRect().width)}px`;
+    }
+    if (targetElement) {
+        targetElement.style.width = width;
+    }
+    if (baseElement) {
+        baseElement.style.width = width;
+    }
 };
 
 const createDomElement = (domEl: string = "div", classToAssign: string = "", idToAssign: string = "") => {
     const div = document.createElement(domEl);
-    if (classToAssign) div.className = classToAssign;
-    if (idToAssign) div.id = idToAssign;
+    if (classToAssign) {
+        div.className = classToAssign;
+    }
+    if (idToAssign) {
+        div.id = idToAssign;
+    }
 
     return div;
 };
@@ -36,8 +46,8 @@ const getMinutesIncrements = () => {
 };
 
 const parseTime = (hours: string | number, minutes: string | number): { hour: number; minutes: number } => {
-    let hourInt: number = 0;
-    let minutesInt: number = 0;
+    let hourInt = 0;
+    let minutesInt = 0;
     if (typeof hours === "string" && typeof minutes === "string") {
         hourInt = parseInt(hours, 10);
         minutesInt = parseInt(minutes, 10);

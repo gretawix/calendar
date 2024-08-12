@@ -55,8 +55,9 @@ const createEventTile = (eventData: EventData): HTMLElement => {
 
 const removeUnsavedEventTile = () => {
     const currentEventTile: HTMLElement | null = document.querySelector(`#${currentEventTileId}`);
-    if (currentEventTile && currentEventTile.parentElement)
+    if (currentEventTile && currentEventTile.parentElement) {
         currentEventTile.parentElement.removeChild(currentEventTile);
+    }
 };
 
 const handleEventCreationClick = async (event: MouseEvent) => {
@@ -85,12 +86,18 @@ const placeNewEventTile = (currentEventTile: HTMLElement, eventData: EventData) 
 const updateEventTile = (eventData: EventData, currentEventTile: HTMLElement, endTimeInput?: HTMLInputElement) => {
     const timeText: HTMLElement | null = currentEventTile.querySelector(".event-tile-time");
     if (getEventLength(eventData) > 0) {
-        if (endTimeInput) endTimeInput.classList.remove("error");
+        if (endTimeInput) {
+            endTimeInput.classList.remove("error");
+        }
         styleEventTile(currentEventTile, eventData);
-        if (timeText) updateTileTime(timeText, eventData);
+        if (timeText) {
+            updateTileTime(timeText, eventData);
+        }
         eventsService.create(eventData, "current");
     } else {
-        if (endTimeInput) endTimeInput.classList.add("error");
+        if (endTimeInput) {
+            endTimeInput.classList.add("error");
+        }
         eventsService.create(eventData, "current");
         throw new Error("end time cannot be earlier than start time");
     }

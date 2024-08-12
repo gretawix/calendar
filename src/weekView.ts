@@ -21,7 +21,9 @@ const createSingleWeekDay = (day: WeekDay, today: Date) => {
     Object.entries(day).forEach(([key, value]) =>
         dayDiv.setAttribute(`data-${key}`, typeof value === "number" ? value.toString() : value)
     );
-    if (day.day == today.getDate()) dayDiv.classList.add("active");
+    if (day.day == today.getDate()) {
+        dayDiv.classList.add("active");
+    }
     dayName.innerText = day.weekDay;
     dayNumber.innerText = day.day.toString();
 
@@ -124,17 +126,20 @@ const drawWeekView = () => {
 
     document.documentElement.style.setProperty("--cell-height", `${cellHeightInPx}px`);
     document.documentElement.style.setProperty("--week-grid", `${daysNumberOnTimeGrid}`);
-    if (weekView) appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
+    if (weekView) {
+        appendChildren(weekView, [weekDaysWrapper, timeGridWrapper]);
+    }
 };
 
 const initTimeGridScroll = (grid: HTMLElement) => {
     const daysRow: HTMLElement | null = document.querySelector("#days-row");
     const hoursCol: HTMLElement | null = document.querySelector("#hours-col");
-    if (hoursCol && daysRow)
+    if (hoursCol && daysRow) {
         grid.addEventListener("scroll", () => {
             hoursCol.scrollTop = grid.scrollTop;
             daysRow.scrollLeft = grid.scrollLeft;
         });
+    }
     grid.scrollBy(0, cellHeightInPx * 7);
 };
 
@@ -144,7 +149,9 @@ const initWeekView = () => {
     const grid = getGrid();
     const gridDays = getGridDays();
 
-    if (grid) initTimeGridScroll(grid);
+    if (grid) {
+        initTimeGridScroll(grid);
+    }
     gridDays?.forEach((col) => col.addEventListener("click", handleEventCreationClick));
 };
 

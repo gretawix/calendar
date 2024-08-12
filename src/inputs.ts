@@ -9,8 +9,12 @@ const setInputLabel = (dropdownItem: HTMLElement, selectedOption: HTMLElement) =
     const button: HTMLElement | null = dropdownItem.querySelector("button.dropdown .dropdown-label");
     const input: HTMLInputElement | null = dropdownItem.querySelector("input");
 
-    if (input) input.value = inputLabelText;
-    if (button) button.innerText = inputLabelText;
+    if (input) {
+        input.value = inputLabelText;
+    }
+    if (button) {
+        button.innerText = inputLabelText;
+    }
 };
 
 const handleDropdownItemSelect = (
@@ -42,8 +46,9 @@ const openDropdownClick = (dropdownItem: HTMLElement) => {
     const dropdownWarpTop = dropdownWrapper?.getBoundingClientRect().top;
     const selected = dropdownItem.querySelector("li.selected");
 
-    if (selected && dropdownWarpTop)
+    if (selected && dropdownWarpTop) {
         dropdownWrapper.scrollBy(0, selected.getBoundingClientRect().top - dropdownWarpTop - 80);
+    }
 };
 
 const initDropdownSelect = (modal: HTMLElement) => {
@@ -57,7 +62,7 @@ const initDropdownSelect = (modal: HTMLElement) => {
 const resetDropdownItem = (dropdownItem: HTMLElement) => {
     const selectOptions: NodeListOf<HTMLElement> = dropdownItem.querySelectorAll(".select-options li");
 
-    if (selectOptions)
+    if (selectOptions) {
         selectOptions.forEach((item, index) => {
             item.classList.remove("selected");
             if (index === 0) {
@@ -65,6 +70,7 @@ const resetDropdownItem = (dropdownItem: HTMLElement) => {
                 setInputLabel(dropdownItem, item);
             }
         });
+    }
 };
 
 const generateTimeDropdown = (input: HTMLInputElement) => {
@@ -78,7 +84,9 @@ const generateTimeDropdown = (input: HTMLInputElement) => {
         dropdownList.appendChild(listItem);
     }
 
-    if (parent) parent.appendChild(dropdownList);
+    if (parent) {
+        parent.appendChild(dropdownList);
+    }
 };
 
 const populateTimeDropdowns = (eventData: EventData) => {
@@ -95,7 +103,9 @@ const populateTimeDropdowns = (eventData: EventData) => {
             if (item.innerText === getDisplayableTime(time.hour, time.minutes)) {
                 item.classList.add("selected");
             }
-            if (!startTime && index === 0) setElementDisplay(item, "none");
+            if (!startTime && index === 0) {
+                setElementDisplay(item, "none");
+            }
         });
     };
 
@@ -106,8 +116,12 @@ const populateTimeDropdowns = (eventData: EventData) => {
         modalInputsIds.timeEnd
     )?.parentElement?.querySelectorAll("ul li");
 
-    if (startDropdownItems) populateDropdown(startDropdownItems, eventData.startTime, true);
-    if (endDropdownItems) populateDropdown(endDropdownItems, eventData.endTime, false);
+    if (startDropdownItems) {
+        populateDropdown(startDropdownItems, eventData.startTime, true);
+    }
+    if (endDropdownItems) {
+        populateDropdown(endDropdownItems, eventData.endTime, false);
+    }
 };
 
 export { initDropdownSelect, setInputLabel, resetDropdownItem, generateTimeDropdown, populateTimeDropdowns };

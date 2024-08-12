@@ -16,15 +16,15 @@ export type WeekDay = {
 
 export type DateInfo = [WeekDayNamesShort, MonthNamesShort, string, string];
 
-export type ModalInputs = [
-    HTMLInputElement | null | undefined,
-    HTMLInputElement | null | undefined,
-    HTMLInputElement | null | undefined,
-    HTMLInputElement | null | undefined,
-    HTMLElement | null | undefined,
-    HTMLElement | null | undefined,
-    NodeListOf<HTMLElement> | undefined
-];
+export type ModalInputs = {
+    title: HTMLInputElement | null | undefined;
+    dateInput: HTMLInputElement | null | undefined;
+    startTime: HTMLInputElement | null | undefined;
+    endTime: HTMLInputElement | null | undefined;
+    saveBtn: HTMLElement | null | undefined;
+    closeBtn: HTMLElement | null | undefined;
+    modalSettings: NodeListOf<HTMLElement> | undefined;
+};
 
 export type Time = {
     hour: string;

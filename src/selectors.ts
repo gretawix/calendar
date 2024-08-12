@@ -28,7 +28,7 @@ const getModalInputs = (): ModalInputs => {
     const closeBtn = getCloseBtn(modal);
     const modalSettings = getSettingsToggleElements(modal);
 
-    return [title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings];
+    return { title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings };
 };
 
 export {

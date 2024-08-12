@@ -64,8 +64,12 @@ const handleSettingsClick = (item: HTMLElement) => {
     const previewSettings: HTMLElement | null | undefined = parent?.querySelector(".preview-settings");
     settingsDiv?.classList.add("active");
 
-    if (previewSettings) setElementDisplay(previewSettings, "none");
-    if (parent) addSeparators(parent);
+    if (previewSettings) {
+        setElementDisplay(previewSettings, "none");
+    }
+    if (parent) {
+        addSeparators(parent);
+    }
 };
 
 const positionModalX = (modal: HTMLElement, event: MouseEvent) => {
@@ -73,12 +77,13 @@ const positionModalX = (modal: HTMLElement, event: MouseEvent) => {
     const clickedElementBox = clickedElement?.getBoundingClientRect();
     const modalWidth = modal.getBoundingClientRect().width;
 
-    if (clickedElementBox)
+    if (clickedElementBox) {
         modal.style.left = `${
             clickedElementBox.left < modalWidth
                 ? clickedElementBox.left + clickedElementBox.width + 8
                 : clickedElementBox.left - modalWidth - 12
         }px`;
+    }
 };
 
 const positionModalY = (modal: HTMLElement, event: MouseEvent) => {
@@ -109,8 +114,12 @@ const setTimeDateInputs = (modal: HTMLElement, newEventData: EventData) => {
         const btn: HTMLElement | null = modal.querySelector(`#${inputId}-btn span`);
         const input: HTMLInputElement | null = modal.querySelector(`#${inputId}`);
 
-        if (btn) btn.innerText = values[inputId];
-        if (input) input.value = values[inputId];
+        if (btn) {
+            btn.innerText = values[inputId];
+        }
+        if (input) {
+            input.value = values[inputId];
+        }
     });
     populateTimeDropdowns(newEventData);
 };
@@ -118,10 +127,14 @@ const setTimeDateInputs = (modal: HTMLElement, newEventData: EventData) => {
 const handleTitleChange = (event: Event) => {
     const input = event.target as HTMLInputElement | null;
     const inputValue = input?.value;
-    if (inputValue) input.classList.remove("error");
+    if (inputValue) {
+        input.classList.remove("error");
+    }
     try {
         const title: HTMLInputElement | null = document.querySelector(`#${currentEventTileId} .event-tile-title`);
-        if (event.type === "blur" && title) title.innerText = inputValue || emptyEventTitle;
+        if (event.type === "blur" && title) {
+            title.innerText = inputValue || emptyEventTitle;
+        }
     } catch {}
 };
 
@@ -141,7 +154,9 @@ const handleTimeChange = async (
 
     if (hours && minutes && currentEventTile && hourIsValid(hours) && minutesAreValid(minutes)) {
         eventData[timeKey] = getTime(hours, minutes);
-        if (timeKey === "startTime") eventData.endTime = getEndTime(hours, minutes, eventLength);
+        if (timeKey === "startTime") {
+            eventData.endTime = getEndTime(hours, minutes, eventLength);
+        }
         setTimeDateInputs(modal, eventData);
         updateEventTile(eventData, currentEventTile, endTimeInput);
     }
@@ -151,9 +166,13 @@ const closeModal = (): void => {
     const modal = getModal();
     const titleInput = getModalInputById(modalTitleId);
 
-    if (titleInput) titleInput.value = "";
+    if (titleInput) {
+        titleInput.value = "";
+    }
     removeUnsavedEventTile();
-    if (modal) setElementDisplay(modal, "none");
+    if (modal) {
+        setElementDisplay(modal, "none");
+    }
 };
 
 const openModal = (event: MouseEvent, newEventData: EventData) => {
@@ -167,14 +186,18 @@ const openModal = (event: MouseEvent, newEventData: EventData) => {
         positionModalX(modal, event);
         positionModalY(modal, event);
     }
-    if (titleInput) titleInput.focus();
+    if (titleInput) {
+        titleInput.focus();
+    }
 };
 
 const initModal = (): void => {
     const modal = getModal();
-    const [title, dateInput, startTime, endTime, saveBtn, closeBtn, modalSettings] = getModalInputs();
+    const { title, startTime, endTime, saveBtn, closeBtn, modalSettings } = getModalInputs();
 
-    if (startTime && endTime) [startTime, endTime].forEach(generateTimeDropdown);
+    if (startTime && endTime) {
+        [startTime, endTime].forEach(generateTimeDropdown);
+    }
     if (modal) {
         initDropdownSelect(modal);
         startTime?.addEventListener("blur", (event) => handleTimeChange(event, "startTime", modal));
@@ -188,8 +211,12 @@ const initModal = (): void => {
     title?.addEventListener("blur", handleTitleChange);
 
     modal?.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") saveEvent();
-        if (event.key === "Escape") closeModal();
+        if (event.key === "Enter") {
+            saveEvent();
+        }
+        if (event.key === "Escape") {
+            closeModal();
+        }
     });
     modalSettings?.forEach((item) => item.addEventListener("click", () => handleSettingsClick(item)));
 };

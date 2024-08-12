@@ -50,12 +50,4 @@ const MONTHS_SHORT = {
     Dec: "Dec",
 } as const;
 
-const weekDaysMap = Object.fromEntries(
-    Object.entries(WEEK_DAYS_LONG).map(([longName, fullName]) => [longName.slice(0, 3) as WeekDayNamesShort, fullName])
-) as Record<WeekDayNamesShort, WeekDayNamesLong>;
-
-const monthsMap = Object.fromEntries(
-    Object.entries(MONTHS_LONG).map(([longName, fullName]) => [longName.slice(0, 3) as MonthNamesShort, fullName])
-) as Record<MonthNamesShort, MonthNamesLong>;
-
-export { WEEK_DAYS_SHORT, WEEK_DAYS_LONG, MONTHS_SHORT, MONTHS_LONG, weekDaysMap, monthsMap };
+export { WEEK_DAYS_SHORT, WEEK_DAYS_LONG, MONTHS_SHORT, MONTHS_LONG };

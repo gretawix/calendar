@@ -12,9 +12,25 @@ import {
     minutesAreValid,
 } from "./timeCalculations";
 import eventsServiceFactory from "./dataService";
-import { WEEK_DAYS_SHORT, MONTHS_SHORT, weekDaysMap, monthsMap } from "./types/constants";
+import { WEEK_DAYS_SHORT, MONTHS_SHORT, MONTHS_LONG, WEEK_DAYS_LONG } from "./types/constants";
 import { isWeekDayShort, isMonthShort, isWeekDayLong, isMonthLong } from "./types/checking";
-import type { DateInfo, EventData, Time } from "./types/main";
+import type {
+    DateInfo,
+    EventData,
+    Time,
+    WeekDayNamesLong,
+    WeekDayNamesShort,
+    MonthNamesLong,
+    MonthNamesShort,
+} from "./types/main";
+
+const weekDaysMap = Object.fromEntries(
+    Object.entries(WEEK_DAYS_LONG).map(([longName, fullName]) => [longName.slice(0, 3) as WeekDayNamesShort, fullName])
+) as Record<WeekDayNamesShort, WeekDayNamesLong>;
+
+const monthsMap = Object.fromEntries(
+    Object.entries(MONTHS_LONG).map(([longName, fullName]) => [longName.slice(0, 3) as MonthNamesShort, fullName])
+) as Record<MonthNamesShort, MonthNamesLong>;
 
 const eventsService = eventsServiceFactory();
 
@@ -39,7 +55,9 @@ const getEventLength = (eventData: EventData) => {
 const getTime = (hour: number | string, minutes: number | string): Time => {
     const time = parseTime(hour, minutes);
 
-    if (!hourIsValid(time.hour) || !minutesAreValid(time.minutes)) throw new Error("invalid time");
+    if (!hourIsValid(time.hour) || !minutesAreValid(time.minutes)) {
+        throw new Error("invalid time");
+    }
 
     return {
         hour: `${formatHours(time.hour)}`,
@@ -83,7 +101,9 @@ const constructNewEvent = (event: MouseEvent): EventData => {
     const startHour = Math.floor(clickPosition / cellHeightInPx);
 
     let minutes = 0;
-    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) minutes = 30;
+    if (clickPosition % cellHeightInPx === cellHeightInPx / 2) {
+        minutes = 30;
+    }
     data.startTime = getTime(startHour, minutes);
     data.endTime = getEndTime(startHour, minutes);
 
@@ -117,7 +137,9 @@ const saveEventToStorage = async (eventData: EventData) => {
     const currentEventTile = document.querySelector(`#${currentEventTileId}`) as HTMLElement | null;
     if (currentEventTile) {
         placeNewEventTile(currentEventTile, eventData);
-    } else throw new Error("failed to save new event tile");
+    } else {
+        throw new Error("failed to save new event tile");
+    }
 
     await eventsService.create(eventData);
 };
@@ -177,20 +199,26 @@ const updateEventData = (
     const [endHour, endMinutes] = endTime.split(":");
 
     eventData.title = title;
-    if (weekDayLong) eventData = updateWeekday(eventData, weekDayLong);
+    if (weekDayLong) {
+        eventData = updateWeekday(eventData, weekDayLong);
+    }
     if (date) {
         const [monthLong, day] = date.split(" ");
         if (monthLong) eventData = updateMonth(eventData, monthLong);
         if (day) eventData = updateDay(eventData, day);
     }
-    if (startHour && startMinutes) eventData = updateEventTime(eventData, startHour, startMinutes, "start");
-    if (endHour && endMinutes) eventData = updateEventTime(eventData, endHour, endMinutes, "end");
+    if (startHour && startMinutes) {
+        eventData = updateEventTime(eventData, startHour, startMinutes, "start");
+    }
+    if (endHour && endMinutes) {
+        eventData = updateEventTime(eventData, endHour, endMinutes, "end");
+    }
 
     return eventData;
 };
 
 const saveEvent = async () => {
-    const [title, dateInput, startTime, endTime] = getModalInputs();
+    const { title, dateInput, startTime, endTime } = getModalInputs();
     const events = await eventsService.getAll();
 
     let eventData = events.current;
@@ -226,7 +254,9 @@ const displayAllSavedEvents = async () => {
                     day.dataset.month === oneEvent.month &&
                     day.dataset.year === oneEvent.year
             );
-            if (eventParentDiv) eventParentDiv.appendChild(eventTile);
+            if (eventParentDiv) {
+                eventParentDiv.appendChild(eventTile);
+            }
         });
     } else throw new Error("No time grid to display events");
 };
