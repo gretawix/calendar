@@ -4,10 +4,10 @@ const minutesInHour = 60;
 const daysInWeek = 7;
 const cellHeightInPx = 49;
 const currentEventTileId = "current-event-tile";
-const defaultEventLengthInHours = 1; //hours
+const defaultEventLengthInHours = 1;
 const emptyEventTitle = "(no title)";
 const timeStepInMinutes = 15;
-const modalInputsIds = { date: "date", timeStart: "time-start", timeEnd: "time-end" };
+const modalInputsIds = { date: "date", timeStart: "time-start", timeEnd: "time-end" } as const;
 const modalTitleId = "title";
 
 export {
